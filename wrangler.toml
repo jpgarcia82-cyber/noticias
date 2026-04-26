@@ -1,0 +1,10 @@
+name = "sentiment-youtube"
+main = "src/worker.js"
+compatibility_date = "2024-01-01"
+
+[env.production]
+name = "sentiment-youtube-prod"
+
+[build]
+command = "npm install"
+cwd = "."

@@ -1,0 +1,21 @@
+{
+  "name": "sentiment-youtube",
+  "version": "1.0.0",
+  "description": "Análisis de sentimiento de YouTube - Integrado en Cloudflare Workers",
+  "main": "src/worker.js",
+  "type": "module",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev"
+  },
+  "keywords": [
+    "youtube",
+    "sentiment",
+    "analysis",
+    "cloudflare",
+    "workers"
+  ],
+  "author": "JP",
+  "license": "MIT"
+}
