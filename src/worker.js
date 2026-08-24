@@ -195,6 +195,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
             <div class="cf-badge">☁️ Cloudflare Workers</div>
             <h1>💭 ANÁLISIS DE SENTIMIENTO YOUTUBE</h1>
             <p>Análisis en vivo desde Cloudflare (serverless integrado)</p>
+            <p style="margin-top: 10px;"><a href="/github-top100" style="color: #2a5298; font-weight: bold;">⭐ Ver Top 100 Repositorios de GitHub</a></p>
         </header>
 
         <div class="search-container">
@@ -399,6 +400,136 @@ const HTML_CONTENT = `<!DOCTYPE html>
 </body>
 </html>`;
 
+// HTML Frontend - Top 100 repositorios de GitHub
+const GITHUB_HTML_CONTENT = `<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 100 Repositorios GitHub - Cloudflare</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #1a1a1a;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container { max-width: 1100px; margin: 0 auto; }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        header h1 { color: #2a5298; font-size: 2em; margin-bottom: 10px; }
+        header p { color: #666; font-size: 0.95em; }
+        header a { color: #2a5298; text-decoration: none; font-weight: bold; }
+        .status {
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+            color: #e65100;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        .status.error { background: #ffebee; border-left-color: #d32f2f; color: #b71c1c; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #2a5298; color: white; }
+        tr:hover { background: #f5f5f5; }
+        td.num { text-align: right; white-space: nowrap; }
+        a.repo-link { color: #1e3c72; font-weight: bold; text-decoration: none; }
+        a.repo-link:hover { text-decoration: underline; }
+        .lang {
+            display: inline-block;
+            background: #eef2fa;
+            color: #2a5298;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⭐ TOP 100 REPOSITORIOS DE GITHUB</h1>
+            <p>Ordenados por número de estrellas &middot; <a href="/">Volver al análisis de sentimiento</a></p>
+        </header>
+
+        <div id="status" class="status">Cargando datos desde la API de GitHub...</div>
+
+        <table id="repoTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Repositorio</th>
+                    <th>Descripción</th>
+                    <th>Lenguaje</th>
+                    <th class="num">⭐ Estrellas</th>
+                    <th class="num">🍴 Forks</th>
+                </tr>
+            </thead>
+            <tbody id="repoBody"></tbody>
+        </table>
+    </div>
+
+    <script>
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str || '';
+            return div.innerHTML;
+        }
+
+        async function cargarRepos() {
+            const status = document.getElementById('status');
+            try {
+                const response = await fetch('/api/github-top100');
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Error desconocido');
+                }
+                const datos = await response.json();
+                mostrarRepos(datos.repositorios);
+                status.style.display = 'none';
+                document.getElementById('repoTable').style.display = 'table';
+            } catch (error) {
+                status.textContent = '❌ Error: ' + error.message;
+                status.classList.add('error');
+            }
+        }
+
+        function mostrarRepos(repos) {
+            const tbody = document.getElementById('repoBody');
+            tbody.innerHTML = repos.map((repo, i) => \`
+                <tr>
+                    <td>\${i + 1}</td>
+                    <td><a class="repo-link" href="\${repo.url}" target="_blank" rel="noopener">\${escapeHtml(repo.nombre)}</a></td>
+                    <td>\${escapeHtml(repo.descripcion)}</td>
+                    <td>\${repo.lenguaje ? '<span class="lang">' + escapeHtml(repo.lenguaje) + '</span>' : ''}</td>
+                    <td class="num">\${repo.estrellas.toLocaleString('es')}</td>
+                    <td class="num">\${repo.forks.toLocaleString('es')}</td>
+                </tr>
+            \`).join('');
+        }
+
+        cargarRepos();
+    </script>
+</body>
+</html>`;
+
 // Función para analizar sentimiento
 function analizarSentimiento(texto) {
     const textoBajo = texto.toLowerCase();
@@ -438,6 +569,58 @@ export default {
                     'Cache-Control': 'max-age=3600'
                 }
             });
+        }
+
+        // Servir el HTML del top 100 de GitHub
+        if (path === '/github-top100' && request.method === 'GET') {
+            return new Response(GITHUB_HTML_CONTENT, {
+                headers: {
+                    'Content-Type': 'text/html; charset=utf-8',
+                    'Cache-Control': 'max-age=3600'
+                }
+            });
+        }
+
+        // API: Top 100 repositorios de GitHub por estrellas
+        if (path === '/api/github-top100' && request.method === 'GET') {
+            try {
+                const githubUrl = 'https://api.github.com/search/repositories?q=stars:%3E1&sort=stars&order=desc&per_page=100';
+                const githubRes = await fetch(githubUrl, {
+                    headers: {
+                        'User-Agent': 'noticias-sentiment-worker',
+                        'Accept': 'application/vnd.github+json'
+                    }
+                });
+
+                if (!githubRes.ok) {
+                    return new Response(JSON.stringify({ error: `GitHub API respondió ${githubRes.status}` }), {
+                        status: 502,
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                }
+
+                const githubData = await githubRes.json();
+                const repositorios = (githubData.items || []).map(repo => ({
+                    nombre: repo.full_name,
+                    descripcion: repo.description || '',
+                    url: repo.html_url,
+                    lenguaje: repo.language,
+                    estrellas: repo.stargazers_count,
+                    forks: repo.forks_count
+                }));
+
+                return new Response(JSON.stringify({ repositorios, timestamp: new Date().toISOString() }), {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                });
+            } catch (error) {
+                return new Response(JSON.stringify({ error: error.message }), {
+                    status: 500,
+                    headers: { 'Content-Type': 'application/json' }
+                });
+            }
         }
 
         // API: Analizar sentimiento
