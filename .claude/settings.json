@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"{\\\"hookSpecificOutput\\\":{\\\"hookEventName\\\":\\\"UserPromptSubmit\\\",\\\"additionalContext\\\":\\\"Antes de responder: compara este prompt contra la description de cada uno de los 137 skills instalados en .claude/skills (listados en el system reminder de skills disponibles) y, si alguno aplica con confianza razonable, invocalo con la herramienta Skill antes de responder. Si ninguno aplica, dilo brevemente y responde normal. Indica en una linea cual skill usaste y por que.\\\"}}\""
+          }
+        ]
+      }
+    ]
+  }
+}
