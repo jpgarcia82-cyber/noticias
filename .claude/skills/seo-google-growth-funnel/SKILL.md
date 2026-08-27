@@ -1,69 +1,113 @@
 ---
 name: seo-google-growth-funnel
-description: Orquesta SEO de Google y todas las herramientas de Google (Search Console, GA4, Tag Manager, Google Ads, Google Business Profile, Merchant Center) a lo largo del funnel completo de crecimiento — Awareness, Acquisition, Activation, Retention, Referral, Revenue (AARRR extendido de Dave McClure, "Pirate Metrics", 2007). Actúa como director de growth digital experto en el ecosistema Google, coordinando los skills SEO/marketing existentes de este repo por etapa del funnel. Úsalo cuando el usuario pida "quiero ser experto en SEO de Google", "arma mi funnel completo de AARRR", "qué herramienta de Google uso para cada etapa", "mi customer journey de awareness a revenue", "estrategia digital completa con Google", o quiera coordinar SEO + herramientas Google a través de todo el ciclo de vida del cliente.
+description: Orquesta SEO de Google, todas las herramientas de Google (Search Console, GA4, Tag Manager, Google Ads, Google Business Profile, Merchant Center), los Moments of Truth (Stimulus, ZMOT, FMOT, SMOT, TMOT) y el catálogo completo de KPIs medibles en cada etapa del funnel AARRR extendido (Awareness, Acquisition, Activation, Retention, Referral, Revenue). Si no se mide la experiencia, no existe. Úsalo cuando el usuario pida "quiero ser experto en SEO de Google", "arma mi funnel completo de AARRR", "qué KPIs mido en cada etapa", "moments of truth", "zero moment of truth", "qué herramienta de Google uso para cada etapa", "mi customer journey de awareness a revenue", "estrategia digital completa con Google", o quiera coordinar SEO + herramientas Google + medición a través de todo el ciclo de vida del cliente.
 ---
 
-# SEO de Google + Funnel de Crecimiento (AARRR)
+# SEO de Google + Funnel de Crecimiento (AARRR) + Moments of Truth + KPIs
 
-Director de growth digital que coordina el ecosistema completo de herramientas Google y los skills SEO/marketing de este repo, organizados por etapa del funnel — para que ninguna etapa del customer journey se quede sin instrumentación ni estrategia.
+Director de growth digital: coordina el ecosistema completo de herramientas Google, los skills SEO/marketing de este repo, el framework de Moments of Truth, y el catálogo de KPIs — organizados por etapa, para que ninguna etapa del customer journey se quede sin instrumentación, estrategia, ni métrica.
 
-## Nota de framework (verificado)
+**Principio rector**: si una etapa no tiene un KPI medible activo, no está gestionada — está en piloto automático.
 
-El AARRR ("Pirate Metrics") lo acuñó **Dave McClure** en 2007 ("Startup Metrics for Pirates") con **5 etapas originales**: Acquisition, Activation, Retention, Referral, Revenue. **Awareness** es una extensión posterior, ampliamente adoptada, que se agrega antes de Acquisition para cubrir el momento en que el cliente ni siquiera sabe que el producto existe — la versión de 6 etapas que usas es correcta y estándar en la práctica moderna, solo no es literalmente la de McClure.
+## Dos frameworks, verificados y mapeados juntos
 
-## El stack de herramientas de Google, por función
+### AARRR ("Pirate Metrics", Dave McClure, 2007)
+5 etapas originales: Acquisition, Activation, Retention, Referral, Revenue. **Awareness** es una extensión posterior ampliamente adoptada, no parte del original — la incluimos porque es estándar en la práctica moderna.
 
-| Herramienta | Para qué sirve | Etapa principal |
-|---|---|---|
-| **Google Search Console (GSC)** | Rendimiento en búsqueda orgánica: impresiones, clics, posición, errores de indexación, Core Web Vitals | Awareness / Acquisition |
-| **Google Analytics 4 (GA4)** | Tracking de comportamiento en el sitio/app — reemplazó a Universal Analytics (retirado julio 2023) | Todas las etapas — es la columna vertebral de medición |
-| **Google Tag Manager (GTM)** | Gestión de tags/eventos sin tocar código directamente | Habilita el tracking de GA4/Ads en todas las etapas |
-| **Google Ads** | Búsqueda, Display, YouTube, Performance Max — tráfico pagado | Awareness / Acquisition |
-| **Google Business Profile (GBP)** | Visibilidad local, Map Pack | Awareness / Acquisition (local) |
-| **Google Merchant Center** | Feed de productos para Shopping Ads y resultados orgánicos de producto | Acquisition (e-commerce) |
-| **Looker Studio** | Dashboards que unen GA4/GSC/Ads en un solo lugar | Medición transversal, todas las etapas |
+### Moments of Truth (P&G 2005 + Google ZMOT 2011)
+Secuencia verificada: **Stimulus → Zero Moment of Truth (ZMOT) → First Moment of Truth (FMOT) → Second Moment of Truth (SMOT) → Third Moment of Truth (TMOT)**.
+- **Stimulus** — el disparador (un anuncio, una necesidad percibida) que hace que el consumidor empiece a considerar una compra.
+- **ZMOT** (Google, Jim Lecinski, 2011, *Winning the Zero Moment of Truth*) — el momento de investigación online *antes* de decidir: búsquedas, comparación de opciones, reseñas. Google lo definió explícitamente como tan importante como FMOT/SMOT.
+- **FMOT** (P&G, 2005) — el momento de decisión en el punto de compra/conversión (el "anaquel", físico o digital).
+- **SMOT** (P&G, 2005) — la experiencia real de uso del producto/servicio después de comprarlo.
+- **TMOT** — cuando el cliente comparte su experiencia (reseña, recomendación, publicación) convirtiéndose en fuente de estímulo para el siguiente ciclo — cierra el loop hacia un nuevo Stimulus de otra persona.
 
-## El funnel completo, etapa por etapa — herramienta Google + skill de este repo
+### Cómo se mapean entre sí
+| AARRR | Moment of Truth dominante |
+|---|---|
+| Awareness | Stimulus |
+| Acquisition | ZMOT (investigación/comparación previa al clic/decisión) |
+| Activation | FMOT (decisión de "comprar"/registrarse) + inicio de SMOT |
+| Retention | SMOT (experiencia continua de uso) |
+| Referral | TMOT |
+| Revenue | Resultado transaccional de FMOT, medido de forma recurrente en SMOT |
 
-### 1. Awareness — que sepan que existes
-- **Herramientas Google**: Search Console (posicionamiento orgánico), Google Ads (Display/YouTube), Google Business Profile (visibilidad local).
-- **Skills de este repo**: `seo-audit` (base técnica), `ai-seo` (visibilidad en respuestas de IA — el "SEO nuevo"), `schema` (rich snippets), `google-business-profile` (perfil local), `public-relations`, `social`, `influencer-marketing`.
+## KPIs por etapa — catálogo exhaustivo, por herramienta
 
-### 2. Acquisition — que lleguen al sitio/app
-- **Herramientas Google**: Google Ads (Search/PMax), Search Console (CTR orgánico), Merchant Center (si es e-commerce).
-- **Skills de este repo**: `ads`, `ad-creative`, `programmatic-seo`, `directory-submissions`, `cold-email`, `prospecting`, `co-marketing`.
+Terminología GA4 verificada: desde el **21 de marzo de 2024**, GA4 renombró "conversiones" a **"eventos clave" (key events)** de forma permanente en toda la plataforma — "conversión" ahora es exclusivo de un evento clave importado a Google Ads. Se usa la terminología correcta abajo.
 
-### 3. Activation — el primer "momento aha"
-- **Herramientas Google**: GA4 (eventos de activación configurados como conversión), GTM (instrumentar el evento clave).
-- **Skills de este repo**: `onboarding`, `signup`, `cx-design-thinking-blueprint` (mapear el momento de valor real, no solo el registro), `product-marketing`.
+### 1. Awareness (Stimulus)
+| Herramienta | KPIs |
+|---|---|
+| **Search Console** | Impresiones totales, impresiones por consulta de marca vs. no-marca, posición promedio |
+| **GA4** | Usuarios nuevos, sesiones por canal/fuente, alcance (reach) |
+| **Google Ads** | Impresiones, alcance, frecuencia, cuota de impresiones (Impression Share), tasa de visualización de video (YouTube) |
+| **Google Business Profile** | Vistas del perfil (búsqueda directa vs. descubrimiento), impresiones en Maps |
+| Social/PR (cruza con `social-listening-politica-latam`, `public-relations`) | Volumen de menciones de marca, share of voice, crecimiento de seguidores |
 
-### 4. Retention — que se queden
-- **Herramientas Google**: GA4 (cohortes, retención por evento), Looker Studio (dashboard de retención).
-- **Skills de este repo**: `churn-prevention`, `emails` (lifecycle), `marketing-loops`, `community-marketing`, `analytics`.
+### 2. Acquisition (ZMOT)
+| Herramienta | KPIs |
+|---|---|
+| **Search Console** | Clics, CTR orgánico, clics por página de aterrizaje |
+| **GA4** | Sesiones, usuarios por canal/fuente/medio, sesiones por página de aterrizaje, costo por adquisición (vía integración con Ads) |
+| **Google Ads** | CPC, CTR, tasa de conversión, CPA, Quality Score, cuota de impresiones perdida por presupuesto/rango |
+| **Google Business Profile** | Clics al sitio web, llamadas iniciadas, solicitudes de indicaciones |
+| **Merchant Center** (e-commerce) | Clics por producto, CTR de Shopping Ads |
 
-### 5. Referral — que traigan a otros
-- **Herramientas Google**: GA4 (atribución de canal referral), Google Business Profile (reseñas como señal de prominencia — ver `google-business-profile`).
-- **Skills de este repo**: `referrals`, `co-marketing`, `community-marketing`.
+### 3. Activation (FMOT)
+| Herramienta | KPIs |
+|---|---|
+| **GA4** | Tasa de finalización del evento clave de activación (ej. registro completado, primera acción de valor), tiempo hasta la primera acción de valor, tasa de engagement, sesiones con engagement |
+| Producto (cruza con `onboarding`, `signup`, `cx-design-thinking-blueprint`) | Tasa de activación (% que completa la acción "aha"), tasa de abandono en el flujo de onboarding paso a paso (funnel drop-off) |
 
-### 6. Revenue — que paguen y sigan pagando
-- **Herramientas Google**: GA4 (conversiones de e-commerce/ingresos), Google Ads (ROAS, conversion value), Merchant Center (performance de producto).
-- **Skills de este repo**: `pricing`, `paywalls`, `attribution` (qué canal realmente generó el ingreso), `revops`.
+### 4. Retention (SMOT)
+| Herramienta | KPIs |
+|---|---|
+| **GA4** | Retención por cohorte (Explorations → Cohort exploration), usuarios recurrentes, relación DAU/MAU, frecuencia de sesión, tasa de engagement a lo largo del tiempo |
+| Producto (cruza con `churn-prevention`, `analytics`) | Tasa de abandono (churn rate), frecuencia de uso de features clave, stickiness |
+| CX (fuera de Google, estándar de la industria) | NPS (Net Promoter Score), CSAT (Customer Satisfaction Score) — no son métricas nativas de Google, requieren encuesta propia |
 
-## Proceso de este skill
+### 5. Referral (TMOT)
+| Herramienta | KPIs |
+|---|---|
+| **GA4** | Sesiones/usuarios por canal "Referral", atribución de conversiones a tráfico referido |
+| **Google Business Profile** | Volumen de reseñas, calificación promedio, tasa de respuesta a reseñas (cruza con `google-business-profile`) |
+| Producto | Coeficiente viral / K-factor, tasa de conversión de invitación a registro, % de usuarios que refieren activamente |
 
-1. **Diagnóstico por etapa** — para cada una de las 6, identifica: ¿hay tracking configurado en GA4/GSC? ¿hay una estrategia activa (skill correspondiente aplicado)? ¿hay una métrica norte definida?
-2. **Prioriza la etapa más débil, no la más visible** — un funnel con Awareness fuerte pero Activation rota desperdicia todo el tráfico ganado; corregir Activation vale más que más tráfico. Aplica el mismo criterio de priorización de `pm-agile-scrum` (RICE/impacto) para decidir qué etapa atacar primero.
-3. **Instrumenta antes de optimizar** — si GA4/GSC no está bien configurado en una etapa, ese es el primer paso, no la campaña. Cruza con `analytics` para el setup técnico.
-4. **Ejecuta con el skill correspondiente** de la tabla de arriba — no reinventes la táctica, invócalo.
-5. **Mide con `attribution`** cuál etapa realmente movió la aguja, no solo cuál generó más volumen.
+### 6. Revenue (resultado de FMOT, sostenido en SMOT)
+| Herramienta | KPIs |
+|---|---|
+| **GA4** | Ingresos por compra (evento `purchase`), valor promedio de pedido (AOV), ingreso por usuario, LTV predictivo (GA4 Predictive Metrics) |
+| **Google Ads** | ROAS, valor de conversión, costo por valor de conversión |
+| **Merchant Center** | Rendimiento por producto (impresiones/clics/conversiones a nivel SKU) |
+
+## Proceso de este skill (sin cambios respecto a la versión anterior)
+
+1. **Diagnóstico por etapa** — para cada una de las 6, ¿hay tracking configurado (evento clave en GA4)? ¿hay estrategia activa? ¿hay KPI con meta numérica, no solo "medido"?
+2. **Prioriza la etapa más débil**, no la más visible — igual criterio que `pm-agile-scrum` (impacto sobre esfuerzo).
+3. **Instrumenta antes de optimizar** — si el KPI de la tabla no está configurado en GA4/GSC, ese es el paso uno.
+4. **Ejecuta con el skill correspondiente** (ver tabla original de skills por etapa — sigue vigente, ver más abajo).
+5. **Mide con `attribution`** cuál etapa realmente movió la aguja.
+
+## Skills de este repo por etapa (referencia rápida)
+
+- **Awareness**: `seo-audit`, `ai-seo`, `schema`, `google-business-profile`, `public-relations`, `social`, `influencer-marketing`
+- **Acquisition**: `ads`, `ad-creative`, `programmatic-seo`, `directory-submissions`, `cold-email`, `prospecting`, `co-marketing`
+- **Activation**: `onboarding`, `signup`, `cx-design-thinking-blueprint`, `product-marketing`
+- **Retention**: `churn-prevention`, `emails`, `marketing-loops`, `community-marketing`, `analytics`
+- **Referral**: `referrals`, `co-marketing`, `community-marketing`
+- **Revenue**: `pricing`, `paywalls`, `attribution`, `revops`
 
 ## Entregable de este skill
 
-1. **Mapa del funnel completo** — las 6 etapas con su estado actual (instrumentado/no, con estrategia activa/no).
-2. **Brecha prioritaria** — la etapa más débil, con justificación de por qué ataca esa primero.
-3. **Plan de acción por etapa**, invocando los skills correspondientes de la tabla.
-4. **Plan de medición** — qué evento/métrica en GA4 confirma que cada etapa está funcionando.
+1. **Mapa del funnel completo** — las 6 etapas, su Moment of Truth correspondiente, estado de instrumentación (KPI configurado sí/no), y meta numérica (si existe).
+2. **Brecha prioritaria** — la etapa más débil, justificada.
+3. **Plan de acción** por etapa, con el skill correspondiente invocado.
+4. **Tablero de KPIs** — lista concreta de qué medir en GA4/GSC/Ads/GBP para esa etapa, con el nombre exacto del evento/métrica a configurar.
 
 ## Referencias
-- Dave McClure, "Startup Metrics for Pirates" (Seattle Ignite, agosto 2007) — origen del framework AARRR de 5 etapas.
-- Google Analytics 4 reemplazó a Universal Analytics (fecha de retiro de procesamiento de datos: julio de 2023) — verifica el estado actual de GA4/herramientas Google contra su documentación oficial antes de citar detalles técnicos específicos que puedan haber cambiado.
+- Dave McClure, "Startup Metrics for Pirates" (2007) — AARRR original de 5 etapas.
+- Jim Lecinski / Google, *Winning the Zero Moment of Truth* (2011) — origen de ZMOT.
+- P&G (A.G. Lafley, 2005) — origen de First/Second Moment of Truth.
+- Google Analytics, cambio oficial de "conversiones" a "eventos clave", 21 de marzo de 2024.
+- Verifica vigencia de nombres de reportes/funciones específicas de GA4/Ads (cambian con frecuencia) contra la documentación oficial de Google antes de un entregable formal.
