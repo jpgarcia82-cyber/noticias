@@ -43,7 +43,7 @@ Para el producto descrito, evalúa cada eje que aplique. Cita el fundamento lega
 
 ### Transparencia y protección al usuario (CONDUSEF)
 - Fundamento: Ley de Transparencia y Ordenamiento de los Servicios Financieros, Ley de Protección y Defensa al Usuario de Servicios Financieros.
-- Verifica: Costo Anual Total (CAT) visible y calculado correctamente en crédito, contrato de adhesión registrado en el REACSSF de CONDUSEF, publicidad que no induzca a error, unidad especializada de atención a usuarios (UNE) designada.
+- Verifica: Costo Anual Total (CAT) visible y calculado correctamente en crédito, contrato de adhesión registrado en el RECA (Registro de Contratos de Adhesión) de CONDUSEF conforme al Art. 11 de la LTOSF, publicidad que no induzca a error, unidad especializada de atención a usuarios (UNE) designada.
 
 ### Protección de datos personales
 - Fundamento: LFPDPPP y su reglamento.
