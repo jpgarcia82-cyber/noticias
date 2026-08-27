@@ -1,6 +1,6 @@
 ---
 name: cx-design-thinking-blueprint
-description: Diseña experiencias digitales de cliente combinando Design Thinking (metodología Stanford d.school), Customer Journey Mapping, y Service Blueprint (Shostack 1984, extendido por Bitner/Ostrom/Morgan 2008) — de la empatía con el usuario al mapa operativo de cómo se entrega la experiencia por dentro. Úsalo cuando el usuario pida "diseña la experiencia de cliente para esto", "haz un customer journey map", "necesito un service blueprint", "aplica design thinking a este problema", "cómo mejoro la experiencia digital de mis usuarios", "mapea el proceso de principio a fin, front y back", o quiera pasar de un problema de negocio a una experiencia de cliente diseñada y operativamente viable.
+description: Diseña experiencias digitales de cliente combinando Design Thinking (metodología Stanford d.school), Customer Journey Mapping, Service Blueprint (Shostack 1984, extendido por Bitner/Ostrom/Morgan 2008), y el catálogo completo de KPIs/métricas de CX (NPS, CSAT, CES, CLV, churn, FCR) por etapa del journey y capa del blueprint — de la empatía con el usuario al mapa operativo, medido. Úsalo cuando el usuario pida "diseña la experiencia de cliente para esto", "haz un customer journey map", "necesito un service blueprint", "aplica design thinking a este problema", "qué KPIs de CX debo medir", "NPS o CSAT o CES", "cómo mejoro la experiencia digital de mis usuarios", "mapea el proceso de principio a fin, front y back", o quiera pasar de un problema de negocio a una experiencia de cliente diseñada, operativamente viable, y medida.
 ---
 
 # CX — Design Thinking + Service Blueprint
@@ -54,10 +54,49 @@ Fuente verificada: G. Lynn Shostack, "Designing Services That Deliver", *Harvard
 
 Esta última capa es la que casi siempre se salta al diseñar experiencia digital — y es la que evita prometer una experiencia que el backend/proceso real no puede sostener. Cruza con `arquitecto-flujos-erpnext` cuando el Support Processes layer implica un modelo de datos/flujo transaccional nuevo, y con `qa-universal` para auditar que la experiencia diseñada es funcionalmente viable antes de construirla.
 
+## Capa 4 — KPIs y Métricas de CX
+
+Sin medición, el diseño de experiencia es opinión, no gestión. Cada métrica de abajo está verificada en su origen — úsala con su definición exacta, no aproximada, porque mezclarlas (ej. tratar CSAT como si fuera NPS) invalida la comparación en el tiempo.
+
+### Métricas de percepción del cliente (survey-based, no nativas de ninguna plataforma)
+
+| Métrica | Qué mide | Origen verificado | Cómo se calcula |
+|---|---|---|---|
+| **NPS** (Net Promoter Score) | Lealtad/probabilidad de recomendar | Fred Reichheld, *Harvard Business Review*, 2003, "The One Number You Need to Grow" | Escala 0-10 a "¿qué tan probable es que recomiendes...?" → % Promotores (9-10) − % Detractores (0-6). Los 7-8 son "pasivos", no cuentan en el cálculo. |
+| **CSAT** (Customer Satisfaction Score) | Satisfacción con una interacción/momento puntual | Constructo estándar de investigación de satisfacción del cliente, sin un origen único citable como NPS/CES | Escala típica 1-5, % que responde 4-5 sobre el total. Se mide justo después de una interacción específica (compra, ticket de soporte), no de la relación completa. |
+| **CES** (Customer Effort Score) | Qué tan fácil fue resolver algo | CEB (ahora Gartner) — Matthew Dixon, Karen Freeman, Nick Toman, *Harvard Business Review*, 2010, "Stop Trying to Delight Your Customers" | Escala 1-5 o 1-7 a "¿qué tan fácil fue [resolver tu problema/completar tu compra]?". La investigación original de CEB encontró que reducir el esfuerzo predice lealtad mejor que "deleitar" al cliente. |
+
+**Cuándo usar cada una**: NPS para salud relacional de largo plazo (encuesta periódica, no por transacción). CSAT para un momento específico del journey (post-compra, post-soporte). CES específicamente para procesos de resolución de problemas o transacciones (checkout, soporte) — si el proceso fue difícil, CES lo va a mostrar aunque CSAT/NPS no lo capten de inmediato.
+
+### Métricas operativas y de negocio (medibles en sistemas, no encuesta)
+
+| Métrica | Qué mide | Dónde se mide |
+|---|---|---|
+| **CLV/LTV** (Customer Lifetime Value) | Valor total esperado de un cliente durante la relación | GA4 (LTV predictivo), o cálculo propio: margen promedio × vida útil promedio del cliente |
+| **Churn Rate / Tasa de retención** | % de clientes que se van vs. se quedan en un periodo | Cruza con `churn-prevention`, GA4 (cohortes) |
+| **First Contact Resolution (FCR)** | % de casos de soporte resueltos en el primer contacto, sin escalar | Sistema de soporte/CRM — señal directa de si el Backstage del Service Blueprint está funcionando |
+| **Time to Resolution** | Tiempo promedio de principio a fin para resolver un caso | Sistema de soporte — mapea directo a la duración de la etapa "Backstage Actions" del blueprint |
+| **Customer Health Score** | Score compuesto (uso, soporte, pagos, engagement) que predice riesgo de churn | Práctica estándar de Customer Success (SaaS), no una métrica única estandarizada — se construye a medida combinando las de arriba |
+
+### Mapeo de KPIs a las capas de este skill
+
+- **Design Thinking (fase Test)**: usa CSAT/CES sobre el prototipo probado, no solo feedback cualitativo — dale un número al aprendizaje.
+- **Journey Map**: un KPI por etapa (ej. tasa de abandono en "evaluación", CSAT en "onboarding", CES en "soporte") — no un solo número agregado para todo el journey, porque oculta en qué etapa está el problema real.
+- **Service Blueprint — Customer Actions**: CSAT/CES en cada punto de contacto (Line of Interaction).
+- **Service Blueprint — Backstage/Support Processes**: FCR, Time to Resolution — estas son las métricas que explican *por qué* el Frontstage tiene un CSAT bajo, cuando lo tiene.
+- **Relación completa**: NPS y CLV — la vista de largo plazo, no de un solo momento.
+
+Cruza con `seo-google-growth-funnel` para el catálogo de KPIs de adquisición/activación/revenue del funnel completo — este skill cubre específicamente la experiencia y percepción del cliente, no todo el funnel de growth.
+
 ## Entregable de este skill
 
 1. **Problem statement** (Design Thinking, fase Define) — centrado en usuario, no en solución.
-2. **Journey map** con etapas, acciones, emociones/fricciones, y touchpoints.
+2. **Journey map** con etapas, acciones, emociones/fricciones, touchpoints, y **un KPI asignado por etapa**.
 3. **Service Blueprint** de al menos la(s) etapa(s) crítica(s) — 5 capas + 3 líneas, explícito qué es frontstage vs backstage.
 4. **Brechas identificadas** — dónde el backstage actual no puede sostener la experiencia frontstage deseada (esto es el hallazgo más valioso del ejercicio, no un detalle secundario).
-5. Si el gap requiere nuevo desarrollo/integración, entrega el puente hacia `pm-agile-scrum` (historias de usuario) y `arquitecto-flujos-erpnext`/`arquitecto-apis-integraciones` (qué hay que construir).
+5. **Tablero de métricas de CX** — qué medir (NPS/CSAT/CES/FCR/etc.), dónde, y con qué frecuencia, mapeado a la etapa/capa correspondiente.
+6. Si el gap requiere nuevo desarrollo/integración, entrega el puente hacia `pm-agile-scrum` (historias de usuario) y `arquitecto-flujos-erpnext`/`arquitecto-apis-integraciones` (qué hay que construir).
+
+## Referencias adicionales
+- Fred Reichheld, "The One Number You Need to Grow", *Harvard Business Review*, diciembre 2003 — origen de NPS.
+- Matthew Dixon, Karen Freeman, Nick Toman, "Stop Trying to Delight Your Customers", *Harvard Business Review*, 2010 (investigación CEB) — origen de CES.
