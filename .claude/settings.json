@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"{\\\"hookSpecificOutput\\\": {\\\"hookEventName\\\": \\\"UserPromptSubmit\\\", \\\"additionalContext\\\": \\\"Antes de responder: compara este prompt contra la description de cada uno de los 138 skills instalados en .claude/skills (listados en el system reminder de skills disponibles) y, si alguno aplica con confianza razonable, invocalo con la herramienta Skill antes de responder. Despues de aplicar ese skill y construir el entregable, corre tambien el skill qa-universal sobre ese entregable (QA funcional, de arquitectura y de codigo/formulas) y corrige los hallazgos bloqueantes o importantes antes de presentarlo como terminado. Si ninguno aplica, dilo brevemente y responde normal. Indica en una linea cual skill(s) usaste y por que.\\\"}}\""
+            "command": "echo \"{\\\"hookSpecificOutput\\\": {\\\"hookEventName\\\": \\\"UserPromptSubmit\\\", \\\"additionalContext\\\": \\\"Antes de responder: compara este prompt contra la description de cada uno de los 141 skills instalados en .claude/skills (listados en el system reminder de skills disponibles) y, si alguno aplica con confianza razonable, invocalo con la herramienta Skill antes de responder. Despues de aplicar ese skill y construir el entregable, corre tambien el skill qa-universal sobre ese entregable (QA funcional, de arquitectura y de codigo/formulas) y corrige los hallazgos bloqueantes o importantes antes de presentarlo como terminado. Si ninguno aplica, dilo brevemente y responde normal. Indica en una linea cual skill(s) usaste y por que.\\\"}}\""
           }
         ]
       }
