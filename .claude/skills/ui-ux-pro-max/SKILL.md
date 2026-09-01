@@ -209,6 +209,16 @@ Then synthesize the design system + detailed searches and implement.
 | Layout breaks on small screens | `references/quick-reference.md` §5: `mobile-first` + `breakpoint-consistency` |
 | Performance / jank | `references/quick-reference.md` §3: `virtualize-lists` + `main-thread-budget` + `debounce-throttle` |
 
+## Repos de referencia externa verificados (fuera del motor de datos de este skill)
+
+Cuando el `--stack shadcn` no cubra un componente específico o se necesite inspeccionar la implementación real (no solo la regla resumida), estos son los repos de referencia — verificados por popularidad/actividad real, no por memoria:
+- **[shadcn/ui](https://github.com/shadcn-ui/ui)** — ya integrado como `--stack shadcn` en este skill (69 reglas verificadas, agosto 2026); consulta el repo real solo si necesitas ver la implementación fuente de un componente que la regla resumida no cubre.
+- **[Mantine](https://github.com/mantinedev/mantine)** — 120+ componentes React con TypeScript completo y theming integrado; útil cuando el stack detectado es React puro sin Tailwind/shadcn.
+- **[Material UI](https://github.com/mui/material-ui)** — Material Design de Google; usar cuando el producto pide explícitamente ese lenguaje visual (no mezclar con shadcn/Tailwind en el mismo proyecto).
+- **[awesome-ui-component-library](https://github.com/anubhavsrivastava/awesome-ui-component-library)** — índice curado por framework/estilo (incluye Gestalt de Pinterest, Grommet, GovUK React) para casos fuera de los stacks ya cubiertos en `data/stacks/`.
+
+No copies código de estos repos sin adaptarlo a los tokens/reglas ya resueltos por `--design-system` de este skill — son referencia de patrón, no un stack adicional a mezclar sin criterio con el resultado ya generado.
+
 ## Before Delivering App UI
 
 Read `references/pro-rules.md` and run through its canonical Pre-Delivery Checklist. It covers icon/visual-element discipline, interaction feedback, light/dark contrast, safe-area layout, and accessibility — scoped to native/mobile app UI (iOS/Android/React Native/Flutter).
