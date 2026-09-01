@@ -219,6 +219,8 @@ Cuando el `--stack shadcn` no cubra un componente específico o se necesite insp
 
 No copies código de estos repos sin adaptarlo a los tokens/reglas ya resueltos por `--design-system` de este skill — son referencia de patrón, no un stack adicional a mezclar sin criterio con el resultado ya generado.
 
+**Cruce con `frontend-design`** (skill oficial de Anthropic, copiado verbatim en este repo) — ese skill cubre la dirección creativa/anti-genérico (brainstorm → plan → crítica, un riesgo estético justificado, copywriting como material de diseño) que decide *qué* pedirle a este motor de datos; este skill (`ui-ux-pro-max`) ejecuta esa dirección con paletas/tipografía/reglas verificadas. Úsalos en ese orden: `frontend-design` primero para la dirección, luego `ui-ux-pro-max` para la ejecución con datos.
+
 ## Before Delivering App UI
 
 Read `references/pro-rules.md` and run through its canonical Pre-Delivery Checklist. It covers icon/visual-element discipline, interaction feedback, light/dark contrast, safe-area layout, and accessibility — scoped to native/mobile app UI (iOS/Android/React Native/Flutter).
