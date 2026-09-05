@@ -17,13 +17,18 @@ Todo el contenido de referencia fue extraído **del código fuente real** de `fr
 
 ## Proceso a seguir
 
+**Resolución de rutas — leer esto antes del paso 2 o cualquier lectura de `references/`:** las rutas relativas tipo `references/00-framework-frappe.md` **no resuelven de forma confiable** en claude.ai ni en Claude Code (se resuelven contra el directorio de trabajo del proceso, no contra la carpeta de este skill — bug documentado en `anthropics/skills#1153`, sin `$SKILL_DIR` disponible aún). Antes de leer cualquier archivo de `references/`, construye la ruta **absoluta**:
+- Si el turno te muestra un directorio base para este skill (ej. "Base directory for this skill: ..."), úsalo como prefijo exacto.
+- Si no lo muestra explícitamente, localiza primero dónde vive este skill (en Claude Code suele ser `.claude/skills/arquitecto-flujos-erpnext/` dentro del repo del proyecto, o la carpeta de skills subida a tu cuenta en claude.ai) y arma la ruta completa desde ahí — nunca una ruta relativa suelta como `references/...`.
+- Si después de eso el archivo sigue sin encontrarse, dilo explícitamente al usuario en vez de inventar o resumir contenido del módulo de memoria — el contenido de `references/` es lo único verificado contra el código fuente real de `frappe/erpnext`.
+
 1. **Identifica el modo**: ¿diseño de algo propio (greenfield) o configuración de ERPNext real? Pregúntalo si no es obvio — cambia el entregable (blueprint de DocTypes vs. pasos de configuración en la UI de ERPNext).
 
-2. **Lee `references/00-framework-frappe.md` primero**, siempre. Ahí está el vocabulario y las reglas (DocType, Link=FK, Table=hija, ciclo Draft/Submit/Cancel, permisos por rol, hooks). Todo lo demás se apoya en esto.
+2. **Lee `references/00-framework-frappe.md` primero** (con ruta absoluta, ver arriba), siempre. Ahí está el vocabulario y las reglas (DocType, Link=FK, Table=hija, ciclo Draft/Submit/Cancel, permisos por rol, hooks). Todo lo demás se apoya en esto.
 
-3. **Lee `references/01-metodologia-diseno.md`** para el proceso de 6 pasos y los flujos de referencia de punta a punta (Order-to-Cash, Procure-to-Pay, Plan-to-Produce, Hire-to-Retire, Activos, Calidad, Servicio, Proyectos).
+3. **Lee `references/01-metodologia-diseno.md`** (ruta absoluta) para el proceso de 6 pasos y los flujos de referencia de punta a punta (Order-to-Cash, Procure-to-Pay, Plan-to-Produce, Hire-to-Retire, Activos, Calidad, Servicio, Proyectos).
 
-4. **Para el módulo específico en juego**, lee su archivo en `references/modulos/`:
+4. **Para el módulo específico en juego**, lee su archivo en `references/modulos/` (ruta absoluta):
    - `selling.md` — Ventas (Customer, Quotation, Sales Order, Delivery Note, Sales Invoice…)
    - `crm.md` — CRM (Lead, Opportunity, Prospect…)
    - `buying.md` — Compras (Supplier, Purchase Order, Purchase Receipt…)

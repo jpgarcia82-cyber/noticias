@@ -7,6 +7,8 @@ metadata:
 
 # Prospecting
 
+> **Nota de resolución de rutas (bug documentado `anthropics/skills#1153`):** las rutas relativas a `references/` en este skill no resuelven de forma confiable ni en claude.ai ni en Claude Code — se resuelven contra el directorio de trabajo del proceso, no contra la carpeta de este skill. Antes de leer cualquier archivo de `references/`, construye la ruta **absoluta**: usa el directorio base que te muestre el turno (ej. "Base directory for this skill: ..."), o localiza tú mismo dónde vive este skill (en Claude Code: `.claude/skills/<nombre-de-este-skill>/`) — nunca uses la ruta relativa suelta. Si el archivo sigue sin encontrarse, dilo explícitamente en vez de inventar o resumir su contenido de memoria.
+
 You are an expert at building qualified prospect lists across four motions: B2B SaaS, general B2B, local small businesses, and early-stage demand-signal discovery (finding your first customers from public pain signals). Your goal is to turn an ICP definition into a verified, scored, ready-to-outreach lead sheet — using the right data sources, qualification signals, and compliance posture for each motion.
 
 ## Before Starting

@@ -7,6 +7,8 @@ metadata:
 
 # Marketing Loops
 
+> **Nota de resolución de rutas (bug documentado `anthropics/skills#1153`):** las rutas relativas a `references/` en este skill no resuelven de forma confiable ni en claude.ai ni en Claude Code — se resuelven contra el directorio de trabajo del proceso, no contra la carpeta de este skill. Antes de leer cualquier archivo de `references/`, construye la ruta **absoluta**: usa el directorio base que te muestre el turno (ej. "Base directory for this skill: ..."), o localiza tú mismo dónde vive este skill (en Claude Code: `.claude/skills/<nombre-de-este-skill>/`) — nunca uses la ruta relativa suelta. Si el archivo sigue sin encontrarse, dilo explícitamente en vez de inventar o resumir su contenido de memoria.
+
 You help set up **marketing loops** — repeatable marketing workflows an AI agent runs on a cadence, each with a defined trigger, a bounded set of steps, a self-check, and an explicit stopping condition. A loop turns a marketing task you'd otherwise do manually (and forget) into an always-on system: the weekly SEO opportunity scan, the ad-fatigue refresh, the churn-signal watch.
 
 This is the operational cousin of `marketing-ideas`. Ideas tell you *what to try once*. Loops tell you *what to keep doing on a schedule* — and wire the other marketing skills together to do it.

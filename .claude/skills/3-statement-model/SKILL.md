@@ -5,6 +5,8 @@ description: Complete, populate and fill out 3-statement financial model templat
 
 # 3-Statement Financial Model Template Completion
 
+> **Nota de resolución de rutas (bug documentado `anthropics/skills#1153`):** las rutas relativas a `references/` en este skill no resuelven de forma confiable ni en claude.ai ni en Claude Code — se resuelven contra el directorio de trabajo del proceso, no contra la carpeta de este skill. Antes de leer cualquier archivo de `references/`, construye la ruta **absoluta**: usa el directorio base que te muestre el turno (ej. "Base directory for this skill: ..."), o localiza tú mismo dónde vive este skill (en Claude Code: `.claude/skills/<nombre-de-este-skill>/`) — nunca uses la ruta relativa suelta. Si el archivo sigue sin encontrarse, dilo explícitamente en vez de inventar o resumir su contenido de memoria.
+
 Complete and populate integrated financial model templates with proper linkages between Income Statement, Balance Sheet, and Cash Flow Statement.
 
 ## ⚠️ CRITICAL PRINCIPLES — Read Before Populating Any Template
