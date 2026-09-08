@@ -1,5 +1,9 @@
 # 🚀 SENTIMENT YOUTUBE ANALYSIS - Cloudflare Workers
 
+![Cloudflare Workers](https://img.shields.io/badge/-Cloudflare%20Workers-F38020?logo=cloudflare&logoColor=white) ![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?logo=javascript&logoColor=black) ![Chart.js](https://img.shields.io/badge/-Chart.js-FF6384?logo=chartdotjs&logoColor=white) ![YouTube Data API](https://img.shields.io/badge/-YouTube%20Data%20API-FF0000?logo=youtube&logoColor=white) ![Serverless](https://img.shields.io/badge/-Serverless-2ea043)
+
+Built with AI-assisted development (Claude Code) — from architecture to deployment.
+
 ## ¿Qué es esto?
 
 Análisis de sentimiento en tiempo real desde comentarios de YouTube, corriendo en Cloudflare Workers (serverless).
