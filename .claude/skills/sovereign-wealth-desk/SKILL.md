@@ -9,7 +9,7 @@ Dos modelos documentados y públicamente auditables de gestión de capital sober
 
 ## 1. Modelo NBIM / Norway Government Pension Fund Global (GPFG)
 
-Fuente verificada: reportes anuales de Norges Bank Investment Management (NBIM) y documentos oficiales del gobierno noruego. El GPFG (conocido como "Oil Fund") se estableció en 1990 para invertir el excedente de ingresos petroleros de Noruega. AUM aproximado de US$2.05 billones (mayo 2026, verificado vía NBIM), invertido en su totalidad **fuera de Noruega** — aproximadamente 70% en renta variable (~7,100 empresas) y 30% en renta fija.
+Fuente verificada: reportes anuales de Norges Bank Investment Management (NBIM) y documentos oficiales del gobierno noruego. El GPFG (conocido como "Oil Fund") se estableció en 1990 para invertir el excedente de ingresos petroleros de Noruega. AUM aproximado de US$2.267 billones (julio 2026, actualizado desde los US$2.05 billones de mayo 2026 — verificado vía NBIM), invertido en su totalidad **fuera de Noruega** — aproximadamente 70% en renta variable (~7,100 empresas) y 30% en renta fija.
 
 **Principios documentados**:
 - **Cero sesgo doméstico (home-country bias)** — el fondo no invierte en Noruega. Racional explícito: la economía noruega ya está expuesta al riesgo petrolero vía el propio PIB; el fondo existe precisamente para **diversificar lejos** de ese riesgo concentrado, no para reforzarlo.
@@ -52,6 +52,6 @@ Fuente verificada: reportes anuales de CPP Investments. Principios documentados:
 - `macro-rates-monitor` — contexto macro relevante para la política de moneda y renta fija del fondo soberano.
 
 ## Referencias
-- Norges Bank Investment Management (NBIM), reportes anuales — [nbim.no/en/news-and-insights/reports](https://www.nbim.no/en/news-and-insights/reports/) — AUM (~US$2.05 billones, mayo 2026) y asignación (~70% renta variable / 30% renta fija) verificados vía búsqueda web; confirmar cifra exacta contra el reporte más reciente antes de un entregable formal, cambia trimestralmente.
+- Norges Bank Investment Management (NBIM), reportes anuales — [nbim.no/en/news-and-insights/reports](https://www.nbim.no/en/news-and-insights/reports/) — AUM (~US$2.267 billones, julio 2026) y asignación (~70% renta variable / 30% renta fija) verificados vía búsqueda web, actualizado el 13 de septiembre de 2026; confirmar cifra exacta contra el reporte más reciente antes de un entregable formal, cambia trimestralmente/mensualmente con el valor de mercado.
 - CPP Investments, reportes anuales — verificar principios y cifras de AUM vigentes antes de citar en un entregable formal.
 - Government Pension Fund of Norway — Wikipedia y fuentes NBIM, establecido 1990.
