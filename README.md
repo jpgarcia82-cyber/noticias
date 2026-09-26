@@ -83,18 +83,18 @@ Abre: http://localhost:8787
 
 ---
 
-## ⚙️ Cambiar API Key (IMPORTANTE)
+## ⚙️ API Key de YouTube (IMPORTANTE)
 
-La API key de YouTube actual es pública. Para producción:
+La key ya no va en el código: el worker la lee de `env.YOUTUBE_API_KEY`.
 
-1. Crea una nueva en: https://console.cloud.google.com/
-2. Reemplaza en `worker.js` (línea 3):
-   ```javascript
-   const YOUTUBE_API_KEY = 'tu-nueva-key';
-   ```
-3. Vuelve a desplegar:
+1. Crea una key en: https://console.cloud.google.com/
+2. Guárdala como secreto en Cloudflare:
    ```bash
-   wrangler deploy
+   wrangler secret put YOUTUBE_API_KEY
+   ```
+3. Para desarrollo local, crea `.dev.vars` (no se sube a git):
+   ```
+   YOUTUBE_API_KEY=tu-key
    ```
 
 ---

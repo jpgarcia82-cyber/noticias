@@ -1,6 +1,6 @@
 // worker.js - Todo integrado en Cloudflare Workers
 
-const YOUTUBE_API_KEY = 'AIzaSyDmuNb4bZSv2qQyS5zpaOefARxbA-ZyUNg';
+// La API key de YouTube se lee de env.YOUTUBE_API_KEY (wrangler secret put YOUTUBE_API_KEY)
 
 // Palabras clave para análisis de sentimiento
 const sentimentKeywords = {
@@ -449,6 +449,14 @@ export default {
                 if (!query) {
                     return new Response(JSON.stringify({ error: 'Query vacío' }), {
                         status: 400,
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                }
+
+                const YOUTUBE_API_KEY = env.YOUTUBE_API_KEY;
+                if (!YOUTUBE_API_KEY) {
+                    return new Response(JSON.stringify({ error: 'Falta configurar YOUTUBE_API_KEY' }), {
+                        status: 500,
                         headers: { 'Content-Type': 'application/json' }
                     });
                 }
