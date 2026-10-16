@@ -519,7 +519,7 @@ export default {
         // Radar Martech & SEO: herramienta de auditoría
         if (path === '/radar' && request.method === 'GET') {
             return new Response(RADAR_HTML, {
-                headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'max-age=300' }
+                headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' }
             });
         }
 
