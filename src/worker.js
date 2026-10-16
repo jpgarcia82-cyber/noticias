@@ -436,13 +436,48 @@ function radarJson(body, status = 200) {
     });
 }
 
+function radarHostAllowed(u) {
+    return /^https?:$/.test(u.protocol) && u.hostname.includes('.') &&
+        !/^(localhost|127\.|10\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.|0\.|\[)/i.test(u.hostname);
+}
+
+// Comprueba hasta 20 direcciones por llamada (el plan gratuito permite 50 subpeticiones)
+async function radarLinks(request) {
+    let urls;
+    try { urls = (await request.json()).urls; } catch (e) { return radarJson({ error: 'JSON inválido' }, 400); }
+    if (!Array.isArray(urls)) return radarJson({ error: 'Falta la lista urls' }, 400);
+    const check = async (raw) => {
+        let u;
+        try { u = new URL(raw); } catch (e) { return { url: raw, error: 'Dirección inválida' }; }
+        if (!radarHostAllowed(u)) return { url: raw, error: 'Dirección no permitida' };
+        const opts = method => ({
+            method,
+            redirect: 'manual',
+            headers: { 'User-Agent': 'Mozilla/5.0 (compatible; RadarMartechSEO/1.0)' },
+            signal: AbortSignal.timeout(8000)
+        });
+        try {
+            let res = await fetch(u.href, opts('HEAD'));
+            if ([400, 403, 405, 501].includes(res.status)) {
+                res = await fetch(u.href, opts('GET'));
+                if (res.body) await res.body.cancel();
+            }
+            const out = { url: raw, status: res.status };
+            const loc = res.headers.get('location');
+            if (loc) { try { out.location = new URL(loc, u).href; } catch (e) { out.location = loc; } }
+            return out;
+        } catch (e) {
+            return { url: raw, error: /timeout|abort/i.test(String(e)) ? 'Tardó demasiado en responder' : 'No respondió' };
+        }
+    };
+    const results = await Promise.all(urls.slice(0, 20).map(check));
+    return radarJson({ results });
+}
+
 async function radarFetch(target) {
     let u;
     try { u = new URL(target); } catch (e) { return radarJson({ error: 'URL inválida' }, 400); }
-    if (!/^https?:$/.test(u.protocol)) return radarJson({ error: 'Solo http o https' }, 400);
-    if (/^(localhost|127\.|10\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.|0\.|\[)/i.test(u.hostname) || !u.hostname.includes('.')) {
-        return radarJson({ error: 'Host no permitido' }, 400);
-    }
+    if (!radarHostAllowed(u)) return radarJson({ error: 'Host no permitido' }, 400);
     try {
         const res = await fetch(u.href, {
             redirect: 'follow',
@@ -486,6 +521,11 @@ export default {
             return new Response(RADAR_HTML, {
                 headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'max-age=300' }
             });
+        }
+
+        // API: revisa si los enlaces y archivos de la página responden
+        if (path === '/api/radar-links' && request.method === 'POST') {
+            return radarLinks(request);
         }
 
         // API: descarga el HTML de una página para el Radar (evita CORS)

@@ -76,7 +76,7 @@ ol.steps{margin:0;padding-left:20px;font-size:13.5px;color:var(--muted);display:
 .dial .val{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
 .dial .val b{font:800 44px/1 var(--f-display);font-variant-numeric:tabular-nums}
 .dial .val span{font:500 12px var(--f-mono);color:var(--muted)}
-.grade{display:inline-grid;place-content:center;font:800 22px var(--f-display);width:46px;height:46px;border-radius:10px;background:var(--ink);color:var(--bg)}
+.grade{display:inline-grid;place-content:center;font:700 15px var(--f-display);height:36px;padding:0 14px;border-radius:999px;color:var(--surface)}
 .sumhead{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
 .counts{display:flex;gap:8px;flex-wrap:wrap}
 .chip{display:inline-flex;align-items:center;gap:6px;font:500 12.5px var(--f-body);padding:3px 10px;border-radius:999px;background:var(--sunk);color:var(--ink);white-space:nowrap}
@@ -104,14 +104,19 @@ td.grp{font:600 12px var(--f-mono);text-transform:uppercase;letter-spacing:.06em
 .stack{display:flex;flex-wrap:wrap;gap:6px}
 
 .checks{display:grid;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.ck{display:grid;grid-template-columns:76px 1fr;gap:4px 14px;padding:12px 14px;border-bottom:1px solid var(--line);background:var(--surface)}
+.ck{display:grid;grid-template-columns:84px 1fr;gap:4px 14px;padding:12px 14px;border-bottom:1px solid var(--line);background:var(--surface)}
 .ck:last-child{border-bottom:0}
-.ck .st{grid-row:1 / span 3;align-self:start;text-align:center;font:600 11px var(--f-mono);text-transform:uppercase;letter-spacing:.05em;padding:4px 0;border-radius:5px}
+.ck .st{grid-row:1 / span 4;align-self:start;text-align:center;font:600 11px var(--f-mono);text-transform:uppercase;letter-spacing:.05em;padding:4px 0;border-radius:5px}
 .ck.pass .st{background:var(--good-soft);color:var(--good)} .ck.warn .st{background:var(--warn-soft);color:var(--warn)} .ck.fail .st{background:var(--bad-soft);color:var(--bad)} .ck.na .st{background:var(--na-soft);color:var(--na)}
 .ck h3{font:600 14.5px var(--f-body)}
 .ck .e{font-size:13.5px;color:var(--muted);min-width:0;overflow-wrap:anywhere}
 .ck .fx{font-size:13.5px;min-width:0}
 .ck .fx b{font-weight:600}
+details.tech{grid-column:2;font-size:12.5px;color:var(--muted)}
+details.tech summary{cursor:pointer;color:var(--accent);font:500 12px var(--f-mono);width:max-content}
+details.tech p{margin-top:4px;overflow-wrap:anywhere}
+.prompt{font:12.5px/1.55 var(--f-mono);min-height:340px;background:var(--sunk)}
+code.mono{background:var(--sunk);padding:1px 6px;border-radius:4px}
 details.catsec{border-top:1px solid var(--line);padding-top:14px}
 details.catsec > summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
 details.catsec > summary::-webkit-details-marker{display:none}
@@ -159,7 +164,8 @@ details.catsec[open] > summary{margin-bottom:12px}
   .ri{grid-template-columns:56px 1fr}
   .ri .tags{grid-column:2;justify-content:flex-start}
   .ck{grid-template-columns:1fr}
-  .ck .st{grid-row:auto;width:76px}
+  .ck .st{grid-row:auto;width:84px}
+  details.tech{grid-column:auto}
 }
 @media (prefers-reduced-motion:no-preference){ .cat .bar i{transition:width .6s ease} .dial circle.fg{transition:stroke-dashoffset .8s ease} }
 </style>
@@ -167,31 +173,31 @@ details.catsec[open] > summary{margin-bottom:12px}
 <div class="wrap">
   <header class="top">
     <div style="display:grid;gap:6px">
-      <span class="eyebrow">Auditoría de código · martech · SEO · rendimiento · accesibilidad</span>
+      <span class="eyebrow">Revisión de páginas web · marketing · Google · velocidad · accesibilidad</span>
       <h1>Radar Martech &amp; SEO</h1>
-      <p>Lee el HTML de una página, inventaría cada herramienta de marketing que carga, califica 72 puntos de SEO y calidad técnica, y te dice qué le falta para jugar en la liga de las mejores páginas del mundo.</p>
+      <p>Escribe la dirección de una página y te explica, en palabras sencillas, qué herramientas de marketing usa, qué tan bien está para Google, si sus enlaces funcionan y qué cambiar para que sea de las mejores del mundo. Al final te da las instrucciones listas para que Claude Code haga los cambios.</p>
     </div>
     <button class="btn" id="exportBtn" type="button">Copiar informe (Markdown)</button>
   </header>
 
   <section class="panel" aria-label="Entrada">
     <div class="tabs" role="tablist">
-      <button class="tab" role="tab" id="tab-url" aria-selected="true" data-p="p-url" type="button">URL</button>
+      <button class="tab" role="tab" id="tab-url" aria-selected="true" data-p="p-url" type="button">Dirección web</button>
       <button class="tab" role="tab" id="tab-paste" aria-selected="false" data-p="p-paste" type="button">Pegar código</button>
       <button class="tab" role="tab" id="tab-file" aria-selected="false" data-p="p-file" type="button">Subir archivo .html</button>
     </div>
 
-    <form id="p-url" class="pane" style="display:grid;gap:10px">
+    <form id="p-url" class="pane" novalidate style="display:grid;gap:10px">
       <div class="row">
-        <input type="url" id="urlIn" placeholder="https://www.ejemplo.com/pagina" required autocomplete="url">
-        <button class="btn primary" id="goUrl" type="submit">Analizar URL</button>
+        <input type="text" id="urlIn" inputmode="url" placeholder="tusitio.com o www.tusitio.com/pagina" autocomplete="url" autocapitalize="off" spellcheck="false" aria-label="Dirección de la página">
+        <button class="btn primary" id="goUrl" type="submit">Analizar</button>
         <button class="btn" id="demoBtn" type="button">Cargar ejemplo</button>
       </div>
-      <p class="hint" id="urlHint">Descarga el HTML de la página y lo analiza. Si el sitio bloquea la descarga, usa el marcador de la pestaña <b>Pegar código</b>, que además captura las etiquetas que inyecta Google Tag Manager.</p>
+      <p class="hint" id="urlHint">No hace falta escribir https://. Si un sitio no deja descargarse, usa el marcador de la pestaña <b>Pegar código</b>.</p>
     </form>
 
     <form id="p-paste" class="pane" hidden style="display:grid;gap:10px">
-      <input type="text" id="pasteUrl" placeholder="URL de la página (opcional, mejora el análisis de enlaces y HTTPS)">
+      <input type="text" id="pasteUrl" placeholder="Dirección de la página (opcional; sirve para revisar los enlaces)">
       <textarea id="pasteIn" spellcheck="false" placeholder="Pega aquí el código fuente (Ctrl+U → Ctrl+A → Ctrl+C) o lo que copia el marcador"></textarea>
       <div class="row"><button class="btn primary" type="submit">Analizar código</button><span class="hint" id="pasteSize"></span></div>
       <div class="bm">
@@ -207,7 +213,7 @@ details.catsec[open] > summary{margin-bottom:12px}
     </form>
 
     <form id="p-file" class="pane" hidden style="display:grid;gap:10px">
-      <input type="text" id="fileUrl" placeholder="URL de la página (opcional)">
+      <input type="text" id="fileUrl" placeholder="Dirección de la página (opcional; sirve para revisar los enlaces)">
       <input type="file" id="fileIn" accept=".html,.htm,text/html">
       <p class="hint">Sirve un “Guardar como → Página web, solo HTML” del navegador o un archivo de tu repositorio.</p>
     </form>
@@ -455,14 +461,14 @@ const has = (c, name) => c.mt.some(t => t.n === name);
 const hasCat = (c, cat) => c.mtCats.has(cat);
 
 const CATS = [
-  { id: 'tec', name: 'SEO técnico', w: 18, blurb: 'Que Google pueda rastrear, entender e indexar la página.' },
-  { id: 'onp', name: 'SEO on-page', w: 13, blurb: 'Títulos, descripciones, encabezados y enlaces.' },
-  { id: 'con', name: 'Contenido y E-E-A-T', w: 10, blurb: 'Profundidad, frescura, autoría y respuestas para buscadores con IA.' },
-  { id: 'soc', name: 'Social y vista previa', w: 6, blurb: 'Cómo se ve al compartirse.' },
-  { id: 'per', name: 'Rendimiento', w: 15, blurb: 'Señales en el código que afectan Core Web Vitals.' },
-  { id: 'a11y', name: 'Accesibilidad', w: 12, blurb: 'Que cualquier persona pueda usarla.' },
-  { id: 'pri', name: 'Privacidad y confianza', w: 11, blurb: 'Consentimiento, legales y contenido seguro.' },
-  { id: 'mtk', name: 'Madurez martech', w: 15, blurb: 'Calidad de la medición y del stack de marketing.' }
+  { id: 'tec', name: 'Que Google la encuentre', w: 18, blurb: 'Lo básico para que Google pueda leer, entender y mostrar la página.' },
+  { id: 'onp', name: 'Textos para Google', w: 13, blurb: 'Título, descripción, subtítulos y enlaces.' },
+  { id: 'con', name: 'Contenido y confianza', w: 10, blurb: 'Qué tan completa, actual y confiable es la información.' },
+  { id: 'soc', name: 'Al compartir en redes', w: 6, blurb: 'Cómo se ve el enlace en WhatsApp, Facebook, LinkedIn o X.' },
+  { id: 'per', name: 'Velocidad', w: 15, blurb: 'Qué tan rápido carga y responde, sobre todo en celular.' },
+  { id: 'a11y', name: 'Fácil de usar para todos', w: 12, blurb: 'Que cualquier persona, incluso con discapacidad, pueda usarla.' },
+  { id: 'pri', name: 'Privacidad y seguridad', w: 11, blurb: 'Permiso de cookies, avisos legales y protección.' },
+  { id: 'mtk', name: 'Medición y marketing', w: 15, blurb: 'Qué tan bien mide visitas, campañas y clientes.' }
 ];
 
 const CHECKS = [
@@ -479,6 +485,7 @@ const CHECKS = [
   { id:'hreflang', cat:'tec', label:'Versiones por idioma o país (hreflang)', w:1, imp:1, eff:2, run:c => { const n = $$('link[rel="alternate" i][hreflang]', c.doc).length; const xd = !!c.doc.querySelector('link[hreflang="x-default" i]'); return n >= 2 && xd ? ok(`${n} alternativas con x-default.`) : n ? warn(`${n} alternativa(s)${xd ? '' : ', sin x-default'}.`, 'Declara todas las versiones de forma recíproca e incluye x-default.') : warn('Sin hreflang.', 'Si atiendes a varios países o idiomas (p. ej. es-MX, es-ES, en-US), declara cada versión con hreflang para no competir contigo mismo.'); } },
   { id:'favicon', cat:'tec', label:'Favicon e iconos', w:1, imp:1, eff:1, run:c => { const f = !!c.doc.querySelector('link[rel~="icon" i]'); const a = !!c.doc.querySelector('link[rel="apple-touch-icon" i]'); return f && a ? ok('Favicon y apple-touch-icon.') : f ? warn('Solo favicon.', 'Añade apple-touch-icon de 180×180 px.') : warn('Sin favicon declarado.', 'Declara un favicon (SVG o 48×48 px múltiplo): Google lo muestra en los resultados móviles.'); } },
   { id:'csr', cat:'tec', label:'Contenido visible sin JavaScript', w:3, imp:3, eff:3, run:c => c.words < 80 && c.ext.length > 5 ? bad(`Solo ${c.words} palabras en el HTML y ${c.ext.length} scripts.`, 'El contenido depende de JavaScript. Usa renderizado en servidor (SSR) o estático (SSG) para que buscadores y bots de IA vean el texto sin ejecutar JS.') : ok(`${c.words} palabras presentes en el HTML.`) },
+  { id:'links', cat:'tec', label:'Enlaces y archivos rotos', w:3, imp:3, eff:1, run:c => { const L = c.lc; if(!L || L.state === 'off') return na('Se revisan en tu versión /radar al analizar una página con su dirección.'); if(L.state !== 'done') return na(`Revisando ${L.done} de ${L.total}…`); const k = linkStats(c); const t = `${k.total} revisados: ${k.broken} rotos, ${k.redir} desvían, ${k.unk} sin verificar.`; return !k.broken && k.redir <= Math.max(3, k.total * .1) ? ok(t) : k.broken <= 2 ? warn(t, 'Corrige los enlaces 404 y apunta los que redirigen directamente a su destino final.') : bad(t, 'Corrige o elimina los enlaces y archivos que devuelven 404 o error de servidor.'); } },
   { id:'refresh', cat:'tec', label:'Sin meta refresh', w:1, imp:2, eff:1, run:c => c.doc.querySelector('meta[http-equiv="refresh" i]') ? bad('Usa meta refresh.', 'Sustitúyelo por una redirección 301 en el servidor.') : ok('No usa meta refresh.') },
   { id:'pwa', cat:'tec', label:'Manifest y theme-color', w:1, imp:1, eff:1, run:c => { const m = !!c.doc.querySelector('link[rel="manifest" i]'); const t = !!c.meta('name','theme-color'); return m && t ? ok('Manifest y theme-color presentes.') : warn(m ? 'Falta theme-color.' : t ? 'Falta manifest.' : 'Sin manifest ni theme-color.', 'Añade un web app manifest y theme-color: mejora la experiencia instalada y la barra del navegador móvil.'); } },
 
@@ -555,13 +562,92 @@ const CHECKS = [
   { id:'bloat', cat:'mtk', label:'Tamaño del stack', w:2, imp:2, eff:2, run:c => { const n = c.mt.length; return n <= 15 ? ok(`${n} herramientas.`) : n <= 25 ? warn(`${n} herramientas.`, 'Revisa trimestralmente cada etiqueta con su dueño; elimina las que no se usan en decisiones.') : bad(`${n} herramientas.`, 'Stack inflado: cada herramienta cuesta rendimiento, privacidad y dinero.'); } }
 ];
 
+/* Plain-language texts: [title, why it matters, what to do] */
+const PLAIN = {
+  https: ['Conexión segura (candado)', 'Sin el candado, el navegador avisa “No seguro”, la gente desconfía y Google la baja en resultados.', 'Pide a tu proveedor de hosting que active el certificado SSL y que todo el sitio abra con https.'],
+  status: ['La página responde bien', 'Si el servidor responde con error o con desvíos, Google puede dejar de mostrarla.', 'Revisa con quien administra el sitio que esta dirección cargue directamente, sin errores ni desvíos.'],
+  links: ['Enlaces y archivos que funcionan', 'Los enlaces rotos frustran a los visitantes y le dicen a Google que el sitio está descuidado.', 'Corrige o quita los enlaces que dan error (están en la lista de enlaces) y actualiza los que desvían.'],
+  title: ['Título que aparece en Google', 'Es la línea azul que la gente lee en Google antes de decidir si entra.', 'Escribe un título de 30 a 60 letras que diga qué ofreces y termine con tu marca.'],
+  canonical: ['Dirección oficial de la página', 'Le dice a Google cuál es la versión original y evita que la fuerza de la página se reparta entre copias.', 'Indica en el código la dirección oficial completa de esta página.'],
+  robots: ['Permiso para aparecer en Google', 'Si la página pide no ser indexada, nunca aparecerá en los resultados.', 'Quita la instrucción “noindex” si quieres que esta página salga en Google.'],
+  lang: ['Idioma de la página', 'Ayuda a Google a mostrarla a la gente correcta y a los lectores de pantalla a pronunciar bien.', 'Indica el idioma de la página (por ejemplo, español de México).'],
+  viewport: ['Adaptada a celular', 'La mayoría de las visitas llegan desde el celular y Google evalúa primero la versión móvil.', 'Agrega la instrucción que hace que la página se ajuste al ancho del teléfono.'],
+  charset: ['Acentos y eñes bien escritos', 'Sin esto pueden aparecer símbolos raros en lugar de acentos.', 'Declara la codificación utf-8 al inicio del código.'],
+  schema: ['Ficha para Google y la IA (datos estructurados)', 'Es una ficha invisible que explica a Google y a asistentes como ChatGPT qué es tu negocio, producto o artículo. Activa estrellas, precios y preguntas en los resultados.', 'Agrega la ficha de tu empresa, del sitio y del tipo de página (producto, artículo, negocio local, preguntas frecuentes).'],
+  hreflang: ['Versiones para otros países o idiomas', 'Si vendes en varios países o idiomas, evita que tus propias páginas compitan entre sí. Si solo atiendes un país, ignóralo.', 'Solo si tienes versiones por país o idioma: enlázalas entre sí en el código.'],
+  favicon: ['Ícono de la pestaña', 'Es el logo pequeño de la pestaña del navegador y el que aparece junto a tu resultado en Google móvil.', 'Agrega tu logo como ícono del sitio, también en versión para iPhone.'],
+  csr: ['Texto visible para Google sin esperar', 'Si el texto aparece solo después de que cargan los programas, Google y las IA pueden ver la página casi vacía.', 'Pide a tu desarrollador que el texto principal venga ya escrito en el código que entrega el servidor.'],
+  refresh: ['Sin recargas automáticas', 'Las recargas automáticas confunden a Google y a los visitantes.', 'Cámbiala por una redirección hecha en el servidor.'],
+  pwa: ['Ícono para guardar en el celular', 'Permite guardar el sitio en la pantalla del teléfono con el color de tu marca.', 'Agrega el archivo de app web (manifest) y el color de tu marca.'],
+  desc: ['Descripción que aparece en Google', 'Es el texto gris bajo el título en Google. Una buena descripción hace que más gente haga clic.', 'Escribe de 140 a 160 letras con el beneficio principal y una invitación a actuar.'],
+  h1: ['Un solo título principal', 'La página debe tener un único título principal visible que diga de qué trata.', 'Deja un solo título principal (H1) y convierte los demás en subtítulos.'],
+  hier: ['Orden de títulos y subtítulos', 'Un buen índice de títulos ayuda a leer rápido y a que Google entienda cada sección.', 'Organiza: título principal, luego subtítulos por sección, sin saltar niveles.'],
+  align: ['El título de Google y el de la página coinciden', 'Si prometes algo en Google y la página dice otra cosa, la gente se va.', 'Usa las mismas palabras clave en el título de Google y en el título principal.'],
+  url: ['Dirección web fácil de leer', 'Una dirección corta y clara se comparte mejor y da confianza.', 'Usa direcciones cortas, en minúsculas y con guiones, por ejemplo /cafe-de-chiapas.'],
+  intlinks: ['Enlaces a otras páginas de tu sitio', 'Invitan al visitante a seguir navegando y ayudan a Google a descubrir tus páginas.', 'Agrega enlaces a productos, artículos o secciones relacionadas.'],
+  anchors: ['Textos de enlaces claros', '“Clic aquí” o “Leer más” no dicen a dónde lleva el enlace.', 'Escribe en el enlace el destino, por ejemplo “Ver precios de suscripción”.'],
+  breadcrumb: ['Ruta de navegación', 'Una ruta como “Inicio › Tienda › Café” orienta al visitante y Google la muestra en los resultados.', 'Agrega la ruta de navegación arriba del título y márcala para Google.'],
+  words: ['Cantidad de información útil', 'Las páginas con poca información rara vez ganan en Google frente a competidores más completos.', 'Amplía con beneficios, detalles, ejemplos, preguntas frecuentes y datos propios.'],
+  read: ['Fácil de leer', 'Las frases largas cansan y la gente abandona.', 'Usa frases cortas, párrafos breves y listas.'],
+  media: ['Variedad: fotos, video y listas', 'Mezclar formatos mantiene la atención y te abre la puerta a Google Imágenes y Videos.', 'Agrega fotos propias, una tabla comparativa o un video corto.'],
+  fresh: ['Fecha de publicación o actualización', 'Muestra que la información está vigente.', 'Muestra la fecha de publicación y la de última actualización.'],
+  eeat: ['Quién está detrás (confianza)', 'Google y los clientes confían más cuando saben quién escribe y qué empresa responde.', 'Muestra el autor o la empresa y enlaza a “Quiénes somos” y “Contacto”.'],
+  aeo: ['Preguntas y respuestas', 'Google y los asistentes de IA toman respuestas directas de las páginas que las tienen bien escritas.', 'Agrega una sección de preguntas frecuentes con respuestas cortas y directas.'],
+  og: ['Vista previa al compartir', 'Define el título, el texto y la imagen que aparecen al compartir en WhatsApp, Facebook o LinkedIn.', 'Completa título, descripción, imagen y dirección para redes sociales.'],
+  ogimg: ['Imagen al compartir', 'Sin imagen, el enlace compartido pasa desapercibido.', 'Crea una imagen de 1200 × 630 píxeles con tu mensaje y declara sus medidas.'],
+  tw: ['Vista previa en X (Twitter)', 'Hace que el enlace se vea grande en X.', 'Agrega la tarjeta de imagen grande para X.'],
+  sameas: ['Enlaces a tus redes sociales', 'Conectan tu sitio con tus perfiles oficiales y refuerzan tu marca en Google.', 'Enlaza tus redes oficiales desde el sitio y en la ficha de la empresa.'],
+  size: ['Peso de la página', 'Una página pesada tarda más en aparecer, sobre todo con datos móviles.', 'Pide a tu desarrollador quitar código innecesario y activar la compresión.'],
+  scripts: ['Cantidad de programas que carga', 'Cada programa extra hace la página más lenta al tocarla y al desplazarse.', 'Elimina los programas que ya no se usan.'],
+  third: ['Servicios de otras empresas que carga', 'Cada servicio externo (anuncios, chats, analítica) suma lentitud y riesgos de privacidad.', 'Revisa con tu equipo cuáles se usan de verdad y quita el resto.'],
+  block: ['Programas que frenan la carga', 'Algunos programas obligan al navegador a esperar antes de mostrar la página.', 'Pide que esos programas carguen “en diferido” (atributo defer).'],
+  css: ['Archivos de diseño', 'Muchos archivos de diseño retrasan lo primero que ve el visitante.', 'Une los archivos de diseño y elimina los que no se usan.'],
+  dims: ['Imágenes que no mueven el texto', 'Si las imágenes no tienen medidas, el texto “salta” al cargar y la gente toca donde no quería.', 'Indica ancho y alto en cada imagen.'],
+  lazy: ['Imágenes que cargan cuando hacen falta', 'Cargar todas las imágenes de golpe hace lenta la primera vista.', 'Haz que las imágenes de más abajo carguen solo al desplazarse (loading="lazy").'],
+  formats: ['Imágenes ligeras', 'Los formatos WebP o AVIF pesan la mitad con la misma calidad.', 'Convierte las imágenes a WebP o AVIF.'],
+  srcset: ['Imágenes del tamaño justo para cada pantalla', 'Así el celular no descarga imágenes gigantes pensadas para computadora.', 'Prepara cada imagen en varios tamaños (srcset).'],
+  hints: ['Conexiones anticipadas', 'Preparar la conexión con los servidores clave ahorra tiempo de carga.', 'Agrega conexión anticipada (preconnect) a tus 2 o 3 servidores principales.'],
+  lcp: ['La imagen principal carga primero', 'La imagen grande de arriba es lo que la gente siente como “ya cargó”.', 'Marca la imagen principal como prioritaria (fetchpriority="high").'],
+  fonts: ['Tipografías que no esconden el texto', 'Si la tipografía tarda, el texto queda invisible unos segundos.', 'Configura las tipografías para que el texto se vea de inmediato (font-display: swap).'],
+  inline: ['Código metido dentro de la página', 'Mucho código dentro de la página se descarga de nuevo en cada visita.', 'Pasa ese código a archivos aparte.'],
+  alt: ['Descripción de las imágenes', 'Las personas ciegas escuchan esa descripción, y Google la usa para mostrarte en Imágenes.', 'Describe cada imagen en pocas palabras (texto alternativo).'],
+  main: ['Contenido principal señalado', 'Permite a quien usa lector de pantalla saltar directo a lo importante.', 'Marca la zona de contenido principal en el código (etiqueta main).'],
+  landmarks: ['Partes de la página bien marcadas', 'Encabezado, menú y pie bien marcados facilitan la navegación con lector de pantalla.', 'Usa las etiquetas de encabezado, menú y pie de página (header, nav, footer).'],
+  skip: ['Atajo “Saltar al contenido”', 'Evita que quien navega con teclado recorra todo el menú en cada página.', 'Agrega un enlace “Saltar al contenido” al inicio de la página.'],
+  labels: ['Formularios con nombre en cada campo', 'Sin nombre, quien usa lector de pantalla no sabe qué escribir; también bajan las conversiones.', 'Pon un nombre visible a cada campo del formulario.'],
+  names: ['Botones con nombre', 'Un botón que solo tiene un ícono se anuncia como “botón” sin decir qué hace.', 'Da nombre a cada botón o ícono (por ejemplo “Buscar” o “Abrir menú”).'],
+  iframes: ['Contenidos incrustados con título', 'Mapas o videos incrustados sin título confunden a los lectores de pantalla.', 'Ponle un título a cada mapa, video o formulario incrustado.'],
+  zoom: ['Se puede hacer zoom', 'Bloquear el zoom impide leer a personas con baja visión.', 'Permite ampliar la página en el celular.'],
+  cmp: ['Aviso de cookies con permiso', 'La ley pide pedir permiso antes de rastrear a los visitantes; sin él hay riesgo de multas.', 'Instala un gestor de cookies que bloquee las herramientas de rastreo hasta que la persona acepte.'],
+  cmv2: ['Modo de consentimiento de Google', 'Google lo exige para seguir midiendo conversiones y audiencias respetando la privacidad.', 'Activa el “Consent Mode v2” de Google en tu gestor de cookies o en Tag Manager.'],
+  privacy: ['Aviso de privacidad', 'Es obligatorio por ley y da confianza al dejar datos.', 'Enlaza el aviso de privacidad en el pie de página y en cada formulario.'],
+  legal: ['Términos y política de cookies', 'Protegen a tu empresa y dan certeza a los clientes.', 'Publica y enlaza los términos y condiciones y la política de cookies.'],
+  mixed: ['Todo carga de forma segura', 'Si algún archivo carga sin candado, el navegador lo bloquea o muestra alerta.', 'Cambia esos archivos a direcciones https.'],
+  secheaders: ['Protecciones de seguridad del servidor', 'Son candados extra que protegen a tus visitantes de ataques comunes.', 'Pide a tu hosting activar las cabeceras de seguridad (HSTS, CSP y otras).'],
+  noopener: ['Enlaces externos seguros', 'Los enlaces que abren otra pestaña pueden ser aprovechados por sitios maliciosos.', 'Agrega rel="noopener" a los enlaces que abren en pestaña nueva.'],
+  tms: ['Administrador de etiquetas (Tag Manager)', 'Permite agregar o quitar herramientas de marketing sin tocar el código.', 'Instala Google Tag Manager y mueve ahí tus herramientas de medición.'],
+  analytics: ['Medición de visitas', 'Sin medir visitas no sabes qué funciona ni de dónde llegan tus clientes.', 'Instala Google Analytics 4 (o una alternativa).'],
+  ua: ['Sin herramientas viejas', 'Hay código de herramientas que Google ya apagó: solo hacen más pesada la página.', 'Elimina el código de Universal Analytics y Google Optimize.'],
+  dup: ['Medición sin duplicados', 'Si la misma visita se cuenta dos veces, tus reportes engañan.', 'Revisa que cada herramienta se instale una sola vez.'],
+  datalayer: ['Registro de acciones importantes', 'Medir clics en “comprar”, formularios enviados o registros es lo que conecta la web con las ventas.', 'Pide a tu desarrollador registrar esas acciones para Tag Manager (dataLayer).'],
+  ads: ['Medición de publicidad pagada', 'Sin esto no sabes qué anuncios generan ventas.', 'Si haces publicidad, instala la medición de conversiones de Google Ads, Meta y las demás redes.'],
+  sst: ['Medición más precisa desde tu servidor', 'Los bloqueadores y algunos navegadores hacen perder hasta 30 % de los datos; medir desde tu servidor los recupera.', 'Con tu agencia: configura Tag Manager en servidor y la API de conversiones de Meta.'],
+  ux: ['Mapas de calor', 'Ver dónde hacen clic y dónde se atoran tus visitantes muestra qué mejorar.', 'Instala Microsoft Clarity (gratis).'],
+  ab: ['Pruebas A/B', 'Las mejores páginas prueban versiones distintas y se quedan con la que vende más.', 'Usa una herramienta de pruebas A/B para probar títulos, botones y ofertas.'],
+  crm: ['Captura de clientes potenciales', 'Cada visitante que se va sin dejar sus datos es una venta perdida.', 'Conecta un formulario o un boletín a tu CRM o herramienta de email.'],
+  rum: ['Monitoreo de velocidad y errores reales', 'Te avisa si la página se vuelve lenta o falla para tus clientes reales.', 'Instala medición de velocidad real y de errores.'],
+  bloat: ['Demasiadas herramientas', 'Cada herramienta extra cuesta velocidad, privacidad y dinero.', 'Revisa cada herramienta con su responsable y quita lo que no se usa.']
+};
+/* Items that are solved outside the page code (server, GTM, vendors) */
+const OUTSIDE = ['status','secheaders','sst','ab','ux','ads','crm','tms','analytics','cmv2','cmp','rum','bloat','dup'];
+
 /* World-class benchmark: checks a top page passes */
 const BENCH = [
-  ['third', 'Máximo 6 dominios de terceros'], ['block', 'Cero scripts bloqueantes'], ['formats', 'Imágenes AVIF o WebP'], ['lcp', 'Imagen LCP priorizada'],
-  ['schema', 'Grafo Schema con 3 o más tipos'], ['csr', 'Contenido renderizado en servidor'], ['canonical', 'Canónica absoluta'], ['h1', 'Un H1 claro'],
-  ['eeat', 'Autor y organización identificables'], ['aeo', 'Respuestas listas para IA'], ['og', 'Vista previa social completa'], ['alt', 'Imágenes con alt'],
-  ['main', 'Semántica y región main'], ['cmp', 'Consentimiento antes del seguimiento'], ['cmv2', 'Consent Mode v2'], ['sst', 'Medición server-side'],
-  ['datalayer', 'dataLayer con eventos de negocio'], ['rum', 'Core Web Vitals reales monitorizados'], ['ab', 'Experimentación continua']
+  ['third', 'Pocos servicios externos'], ['block', 'Nada frena la carga'], ['formats', 'Imágenes ligeras'], ['lcp', 'Imagen principal prioritaria'],
+  ['schema', 'Ficha completa para Google e IA'], ['csr', 'Texto visible sin esperar'], ['canonical', 'Dirección oficial declarada'], ['h1', 'Un título principal claro'],
+  ['links', 'Sin enlaces rotos'], ['eeat', 'Se sabe quién está detrás'], ['aeo', 'Respuestas listas para IA'], ['og', 'Se ve bien al compartir'], ['alt', 'Imágenes descritas'],
+  ['main', 'Estructura accesible'], ['cmp', 'Permiso antes de rastrear'], ['cmv2', 'Consentimiento de Google v2'], ['sst', 'Medición desde servidor'],
+  ['datalayer', 'Acciones clave medidas'], ['rum', 'Velocidad real monitoreada'], ['ab', 'Pruebas A/B continuas']
 ];
 
 function score(c){
@@ -573,101 +659,230 @@ function score(c){
   results.forEach(r => { const cat = cats.find(x => x.id === r.cat); r.gain = r.s === 'na' || !cat.W ? 0 : cat.w / CW * r.w * (1 - val(r.s)) / cat.W * 100; });
   return { results, cats, total };
 }
-const grade = s => s >= 95 ? 'A+' : s >= 90 ? 'A' : s >= 80 ? 'B' : s >= 70 ? 'C' : s >= 55 ? 'D' : 'F';
-const verdict = s => s >= 90 ? 'Nivel de referencia. Lo que queda son detalles de clase mundial.' : s >= 80 ? 'Sólida. Con las mejoras de mayor impacto entra en el grupo de élite.' : s >= 70 ? 'Correcta pero con huecos que cuestan tráfico y datos.' : s >= 55 ? 'Por debajo de lo competitivo: hay fallos de base que corregir primero.' : 'Necesita una reconstrucción de los fundamentos.';
+const grade = s => s >= 90 ? 'Excelente' : s >= 80 ? 'Buena' : s >= 70 ? 'Regular' : s >= 55 ? 'Baja' : 'Crítica';
+const verdict = s => s >= 90 ? 'Está entre las mejores. Lo que queda son detalles finos.' : s >= 80 ? 'Va bien. Con pocos ajustes puede estar entre las mejores.' : s >= 70 ? 'Funciona, pero está perdiendo visitas, clientes y datos.' : s >= 55 ? 'Tiene fallas básicas que conviene corregir antes que nada.' : 'Necesita una revisión a fondo.';
 const colorFor = s => s >= 80 ? 'var(--good)' : s >= 60 ? 'var(--warn)' : 'var(--bad)';
+const f10 = s => s == null ? '—' : (s / 10).toFixed(1);
 const LV = ['', 'bajo', 'medio', 'alto'];
-const ST = { pass: 'Bien', warn: 'Mejorar', fail: 'Falla', na: 'N/A' };
+const LOAD = ['', 'ligero', 'medio', 'pesado'];
+const ST = { pass: 'Bien', warn: 'Mejorar', fail: 'Problema', na: 'No aplica' };
+const P = id => PLAIN[id] || [id, '', ''];
+const prio = (a, b) => b.gain * b.imp / b.eff - a.gain * a.imp / a.eff;
+
+/* ───────────── Link validation ───────────── */
+function collectLinks(c){
+  if(!c.url) return [];
+  const seen = new Map();
+  const add = (raw, kind, text) => {
+    if(!raw) return; raw = raw.trim();
+    if(/^(#|javascript:|mailto:|tel:|data:|blob:|sms:|whatsapp:|about:)/i.test(raw)) return;
+    let u; try { u = new URL(raw, c.url); } catch(e) { return; }
+    if(!/^https?:$/.test(u.protocol)) return;
+    u.hash = ''; const k = u.href;
+    if(!seen.has(k)) seen.set(k, { url: k, kind, text: clip((text || '').replace(/\s+/g, ' ').trim(), 70), internal: rootDomain(u.hostname) === c.root });
+  };
+  $$('a[href]', c.doc).forEach(a => add(a.getAttribute('href'), 'Enlace', a.textContent || a.getAttribute('aria-label')));
+  $$('img[src]', c.doc).forEach(i => add(i.getAttribute('src'), 'Imagen', i.getAttribute('alt')));
+  $$('script[src]', c.doc).forEach(s => add(s.getAttribute('src'), 'Programa'));
+  $$('link[rel~="stylesheet" i][href],link[rel~="icon" i][href]', c.doc).forEach(l => add(l.getAttribute('href'), /icon/i.test(l.getAttribute('rel')) ? 'Ícono' : 'Diseño'));
+  return [...seen.values()].sort((a, b) => b.internal - a.internal).slice(0, 250);
+}
+const lclass = x => { if(!x || !x.status) return 'unk'; const s = x.status; return s >= 200 && s < 300 ? 'ok' : s >= 300 && s < 400 ? 'redir' : s === 404 || s === 410 || s >= 500 ? 'broken' : 'unk'; };
+function linkStats(c){ const k = { ok: 0, redir: 0, broken: 0, unk: 0, total: 0 }; (c.lc.items || []).forEach(it => { k[lclass(c.lc.res.get(it.url))]++; k.total++; }); return k; }
+const canCheckLinks = c => !!c.url && !inViewer() && /^https?:$/.test(location.protocol);
+async function checkLinks(c){
+  const items = collectLinks(c);
+  if(!items.length){ c.lc = { state: 'off' }; return; }
+  c.lc = { state: 'running', done: 0, total: items.length, items, res: new Map() };
+  render(c, LAST.isExample);
+  const chunks = []; for(let i = 0; i < items.length; i += 20) chunks.push(items.slice(i, i + 20));
+  let next = 0, unavailable = false;
+  const lane = async () => {
+    while(next < chunks.length && !unavailable){
+      const ch = chunks[next++];
+      try {
+        const r = await fetch('/api/radar-links', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ urls: ch.map(x => x.url) }) });
+        if(r.status === 404){ unavailable = true; break; }
+        const j = await r.json(); (j.results || []).forEach(x => c.lc.res.set(x.url, x));
+      } catch(e) { ch.forEach(x => c.lc.res.set(x.url, { url: x.url, error: 'No respondió' })); }
+      c.lc.done = Math.min(c.lc.total, c.lc.done + ch.length);
+      const p = $('#lcProgress'); if(p) p.textContent = `Revisando enlaces y archivos: ${c.lc.done} de ${c.lc.total}…`;
+    }
+  };
+  await Promise.all([lane(), lane(), lane()]);
+  if(LAST.c !== c) return;
+  c.lc.state = unavailable ? 'off' : 'done';
+  render(c, LAST.isExample);
+}
+function linksHTML(c){
+  const L = c.lc;
+  if(!L || L.state === 'off') return `<p class="note">${inViewer() ? 'Dentro de claude.ai no se pueden revisar los enlaces. Usa tu versión en <b>/radar</b> para hacerlo.' : c.url ? 'No se pudieron revisar los enlaces desde aquí. Usa tu versión en <b>/radar</b>.' : 'Para revisar los enlaces, escribe la dirección de la página (o analízala por su dirección).'}</p>`;
+  if(L.state === 'running') return `<p class="note" id="lcProgress">Revisando enlaces y archivos: ${L.done} de ${L.total}…</p>`;
+  const k = linkStats(c);
+  const order = { broken: 0, unk: 1, redir: 2, ok: 3 };
+  const lab = { broken: 'Roto', unk: 'Sin verificar', redir: 'Desvía', ok: 'Funciona' };
+  const chipc = { broken: 'fail', unk: 'na', redir: 'warn', ok: 'pass' };
+  const rows = L.items.map(it => { const r = L.res.get(it.url); return { ...it, r, cl: lclass(r) }; }).sort((a, b) => order[a.cl] - order[b.cl]);
+  const tr = x => `<tr><td><span class="chip ${chipc[x.cl]}">${lab[x.cl]}</span></td><td class="num">${x.r && x.r.status ? x.r.status : '—'}</td><td>${x.kind}${x.internal ? '' : '<div class="muted" style="font-size:12px">otro sitio</div>'}</td><td class="ev" style="max-width:none"><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(clip(x.url, 95))}</a>${x.text ? `<div>“${esc(x.text)}”</div>` : ''}${x.r && x.r.location ? `<div>Lleva a → ${esc(clip(x.r.location, 95))}</div>` : ''}${x.r && x.r.error ? `<div>${esc(x.r.error)}</div>` : ''}</td></tr>`;
+  const head = '<thead><tr><th>Estado</th><th>Código</th><th>Tipo</th><th>Dirección y dónde aparece</th></tr></thead>';
+  const problems = rows.filter(x => x.cl !== 'ok'), fine = rows.filter(x => x.cl === 'ok');
+  return `<div class="counts"><span class="chip fail">${k.broken} rotos</span><span class="chip warn">${k.redir} desvían</span><span class="chip na">${k.unk} sin verificar</span><span class="chip pass">${k.ok} funcionan</span></div>
+    ${problems.length ? `<div class="tblwrap"><table>${head}<tbody>${problems.map(tr).join('')}</tbody></table></div>` : '<p class="note ok">Todos los enlaces y archivos revisados funcionan.</p>'}
+    ${fine.length ? `<details><summary class="hint" style="cursor:pointer">Ver los ${fine.length} que funcionan</summary><div class="tblwrap" style="margin-top:8px"><table>${head}<tbody>${fine.map(tr).join('')}</tbody></table></div></details>` : ''}
+    <p class="hint"><b>Roto</b>: da error 404 o falla del servidor. <b>Desvía</b>: funciona pero manda a otra dirección; conviene enlazar directo a la final. <b>Sin verificar</b>: el sitio no dejó comprobarlo (pasa con redes sociales); revísalo a mano si es importante.</p>`;
+}
+
+/* ───────────── Prompt for Claude Code ───────────── */
+function buildPrompt(c, S){
+  const issues = S.results.filter(r => r.s === 'fail' || r.s === 'warn').sort(prio);
+  const inCode = issues.filter(r => !OUTSIDE.includes(r.id)), outside = issues.filter(r => OUTSIDE.includes(r.id));
+  const L = [];
+  L.push('Eres un desarrollador web senior especializado en SEO, velocidad, accesibilidad y analítica de marketing. Trabajas sobre el código de este proyecto.');
+  L.push('', 'OBJETIVO', `Llevar la página ${c.url ? c.url.href : '(indica aquí la dirección)'} de ${f10(S.total)}/10 a 10/10 según la auditoría de Radar Martech & SEO, sin cambiar el diseño visual ni el tono de la marca.`);
+  L.push('', 'PASO 1 · UBICAR', 'Encuentra los archivos que generan esta página (plantilla, componente, tema o HTML) y los que comparte con el resto del sitio (head, layout, header, footer). Dime cuáles son y tu plan antes de editar.');
+  L.push('', 'PASO 2 · CORREGIR EN EL CÓDIGO (en este orden de prioridad)');
+  inCode.forEach((r, i) => L.push(`${i + 1}. ${P(r.id)[0]}. Situación actual: ${r.ev} Cambio: ${r.fix}`));
+  if(!inCode.length) L.push('No hay cambios pendientes en el código según la auditoría; revisa el paso 4.');
+  const D = [];
+  D.push(`- Título actual: "${c.title || '(vacío)'}" (${c.title.length} caracteres)`);
+  D.push(`- Descripción actual: "${c.desc || '(no tiene)'}" (${(c.desc || '').length} caracteres)`);
+  if(c.h1.length) D.push(`- Títulos principales (H1) actuales: ${c.h1.map(h => '"' + clip(h.t, 80) + '"').join(', ')}`);
+  D.push(`- Datos estructurados actuales: ${[...c.ld.types].join(', ') || 'ninguno'}`);
+  const noAlt = uniq(c.imgs.filter(i => !i.hasAttribute('alt')).map(i => i.getAttribute('src')).filter(Boolean));
+  if(noAlt.length) D.push('- Imágenes sin texto alternativo:\n' + noAlt.slice(0, 30).map(s => '    ' + s).join('\n') + (noAlt.length > 30 ? `\n    …y ${noAlt.length - 30} más` : ''));
+  const noDims = uniq(c.imgs.filter(i => !(i.hasAttribute('width') && i.hasAttribute('height'))).map(i => i.getAttribute('src')).filter(Boolean));
+  if(noDims.length) D.push('- Imágenes sin ancho y alto:\n' + noDims.slice(0, 20).map(s => '    ' + s).join('\n'));
+  const blocking = c.ext.filter(s => s.head && !s.async && !s.defer && !s.module).map(s => s.src);
+  if(blocking.length) D.push('- Programas que bloquean la carga (agregar defer o async):\n' + blocking.map(s => '    ' + s).join('\n'));
+  if(c.lc && c.lc.state === 'done'){
+    const rows = c.lc.items.map(it => ({ ...it, r: c.lc.res.get(it.url) }));
+    const broken = rows.filter(x => lclass(x.r) === 'broken'), redir = rows.filter(x => lclass(x.r) === 'redir');
+    if(broken.length) D.push('- Enlaces y archivos rotos (corregir o quitar):\n' + broken.map(x => `    ${x.url} → ${x.r.status}${x.text ? ` (texto: "${x.text}")` : ''}`).join('\n'));
+    if(redir.length) D.push('- Enlaces que desvían (apuntar directo al destino final):\n' + redir.slice(0, 40).map(x => `    ${x.url} → ${x.r.location || x.r.status}`).join('\n'));
+  }
+  L.push('', 'DATOS CONCRETOS DE LA AUDITORÍA', ...D);
+  L.push('', 'PASO 3 · REGLAS',
+    '- No inventes datos del negocio (precios, direcciones, teléfonos, reseñas, autores, fechas). Si hacen falta, deja un comentario TODO y pregúntame.',
+    '- Redacta los textos nuevos (títulos, descripciones, textos alternativos, preguntas frecuentes) en el idioma de la página y con el tono de la marca, y muéstramelos para aprobarlos.',
+    '- No quites herramientas de medición ni píxeles sin preguntarme.',
+    '- Si el proyecto tiene build, lint o pruebas, ejecútalos después de los cambios y corrige lo que falle.');
+  L.push('', 'PASO 4 · FUERA DEL CÓDIGO', 'Al terminar, dame la lista de lo que no se resuelve en el código y quién debe hacerlo (hosting, Google Tag Manager, agencia, proveedores):');
+  outside.forEach(r => L.push(`- ${P(r.id)[0]}: ${P(r.id)[2]}`));
+  L.push('- Verificar en PageSpeed Insights, Rich Results Test y Search Console después de publicar.');
+  L.push('', 'PASO 5 · RESUMEN', 'Lista de archivos modificados, qué cambió en cada uno y la nota que esperas después de los cambios.');
+  return L.join('\n');
+}
 
 /* ───────────── Render ───────────── */
 let LAST = null;
+const SRC = { fetch: 'página descargada por su dirección', dom: 'página capturada con el marcador', paste: 'código pegado', file: 'archivo subido', demo: 'página de ejemplo' };
+function ckRow(r){
+  const p = P(r.id);
+  const open = r.s === 'fail' || r.s === 'warn';
+  return `<div class="ck ${r.s}"><span class="st">${ST[r.s]}</span><h3>${esc(p[0])}</h3>${open
+    ? `<div class="e">${esc(p[1])}</div><div class="fx"><b>Qué hacer:</b> ${esc(p[2])}</div><details class="tech"><summary>Detalle técnico</summary><p><b>Lo que encontramos:</b> ${esc(r.ev)}</p>${r.fix ? `<p><b>Para quien programa:</b> ${esc(r.fix)}</p>` : ''}</details>`
+    : `<div class="e">${esc(r.ev)}</div>`}</div>`;
+}
 function render(c, isExample){
+  const same = LAST && LAST.c === c; const y = window.scrollY;
   const S = score(c); LAST = { c, S, isExample };
   const R = S.results;
   const nFail = R.filter(r => r.s === 'fail').length, nWarn = R.filter(r => r.s === 'warn').length, nPass = R.filter(r => r.s === 'pass').length;
   const circ = 2 * Math.PI * 62;
-  const road = R.filter(r => r.gain > 0.05).map(r => ({ ...r, pri: r.gain * r.imp / r.eff })).sort((a, b) => b.pri - a.pri);
+  const road = R.filter(r => r.gain > 0.05).sort(prio);
   const potential = Math.min(100, S.total + road.slice(0, 5).reduce((a, r) => a + r.gain, 0));
-  const benchRows = BENCH.map(([id, label]) => { const r = R.find(x => x.id === id); return { label, yes: r && r.s === 'pass', na: r && r.s === 'na' }; }).filter(b => !b.na);
+  const benchRows = BENCH.map(([id, label]) => { const r = R.find(x => x.id === id); return { label, yes: r && r.s === 'pass', na: !r || r.s === 'na' }; }).filter(b => !b.na);
   const benchYes = benchRows.filter(b => b.yes).length;
 
-  // martech table
   const byCat = CAT_ORDER.map(cat => [cat, c.mt.filter(t => t.c === cat)]).filter(([, l]) => l.length);
-  const mtRows = byCat.map(([cat, l]) => `<tr><td class="grp" colspan="4">${esc(cat)} · ${l.length}</td></tr>` + l.map(t => `<tr><td><b>${esc(t.n)}</b><div class="muted" style="font-size:12.5px">${esc(t.d)}</div></td><td class="mono">${t.ids.length ? t.ids.map(esc).join('<br>') : '<span class="muted">—</span>'}</td><td><span class="load" title="Peso de carga ${LV[t.load]}">${[1,2,3].map(i => `<i class="${i <= t.load ? 'on' : ''}"></i>`).join('')}</span> <span class="muted" style="font-size:12px">${LV[t.load]}</span></td><td class="ev">${esc(clip(t.ev, 120))}</td></tr>`).join('')).join('');
-
-  const outline = c.heads.slice(0, 60).map((h, i, a) => { const skip = i && h.l > a[i-1].l + 1; return `<div style="padding-left:${(h.l - 1) * 16}px" class="${skip ? 'skip' : ''}"><b>H${h.l}</b>${esc(clip(h.t, 110)) || '<i class="muted">(vacío)</i>'}</div>`; }).join('') || '<div class="muted">Sin encabezados.</div>';
-  const serpUrl = c.url ? (c.url.hostname + c.url.pathname.replace(/\/$/, '').split('/').filter(Boolean).map(p => ' › ' + p).join('')) : 'tu-dominio.com';
+  const mtRows = byCat.map(([cat, l]) => `<tr><td class="grp" colspan="4">${esc(cat)} · ${l.length}</td></tr>` + l.map(t => `<tr><td><b>${esc(t.n)}</b><div class="muted" style="font-size:12.5px">${esc(t.d)}</div></td><td class="mono">${t.ids.length ? t.ids.map(esc).join('<br>') : '<span class="muted">—</span>'}</td><td><span class="load" title="Efecto en la velocidad: ${LOAD[t.load]}">${[1,2,3].map(i => `<i class="${i <= t.load ? 'on' : ''}"></i>`).join('')}</span> <span class="muted" style="font-size:12px">${LOAD[t.load]}</span></td><td class="ev">${esc(clip(t.ev, 120))}</td></tr>`).join('')).join('');
+  const outline = c.heads.slice(0, 60).map((h, i, a) => { const skip = i && h.l > a[i-1].l + 1; return `<div style="padding-left:${(h.l - 1) * 16}px" class="${skip ? 'skip' : ''}"><b>${h.l === 1 ? 'Título' : 'Subtítulo ' + (h.l - 1)}</b>${esc(clip(h.t, 110)) || '<i class="muted">(vacío)</i>'}</div>`; }).join('') || '<div class="muted">La página no tiene títulos ni subtítulos.</div>';
+  const serpUrl = c.url ? (c.url.hostname + c.url.pathname.replace(/\/$/, '').split('/').filter(Boolean).map(p => ' › ' + p).join('')) : 'tu-sitio.com';
   const enc = encodeURIComponent(c.url ? c.url.href : '');
 
   $('#report').innerHTML = `
   <section class="panel" aria-label="Resumen">
     <div class="score">
-      <div class="dial" role="img" aria-label="Puntuación ${S.total} de 100">
+      <div class="dial" role="img" aria-label="Calificación ${f10(S.total)} de 10">
         <svg viewBox="0 0 150 150"><circle cx="75" cy="75" r="62" fill="none" stroke="var(--sunk)" stroke-width="12"/><circle class="fg" cx="75" cy="75" r="62" fill="none" stroke="${colorFor(S.total)}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${circ * (1 - S.total / 100)}"/></svg>
-        <div class="val"><b>${S.total}</b><span>de 100</span></div>
+        <div class="val"><b>${f10(S.total)}</b><span>de 10</span></div>
       </div>
       <div style="display:grid;gap:10px;min-width:0">
-        <div class="sumhead"><span class="grade">${grade(S.total)}</span><div style="min-width:0"><h2>${esc(clip(c.title || '(página sin título)', 90))}</h2><div class="meta-line">${esc(c.url ? c.url.href : 'URL no indicada')}</div></div>${isExample ? '<span class="example-flag">Ejemplo ficticio</span>' : ''}</div>
-        <p>${verdict(S.total)} ${road.length ? `Con las ${Math.min(5, road.length)} primeras acciones de la hoja de ruta subiría a <b class="num">${Math.round(potential)}</b>.` : ''}</p>
-        <div class="counts"><span class="chip fail">${nFail} fallas</span><span class="chip warn">${nWarn} por mejorar</span><span class="chip pass">${nPass} bien</span><span class="chip acc">${c.mt.length} herramientas martech</span><span class="chip">${Math.round(c.size/1024)} KB · ${c.ext.length} scripts · ${c.thirdHosts.size} dominios externos</span></div>
-        <div class="meta-line">Fuente: ${esc({ fetch: 'descarga del HTML del servidor', dom: 'DOM renderizado (marcador)', paste: 'código pegado', file: 'archivo subido', demo: 'página de ejemplo integrada' }[c.source] || c.source)} · ${new Date().toLocaleString('es')}</div>
+        <div class="sumhead"><span class="grade" style="background:${colorFor(S.total)}">${grade(S.total)}</span><div style="min-width:0"><h2>${esc(clip(c.title || '(página sin título)', 90))}</h2><div class="meta-line">${esc(c.url ? c.url.href : 'Dirección no indicada')}</div></div>${isExample ? '<span class="example-flag">Ejemplo ficticio</span>' : ''}</div>
+        <p>${verdict(S.total)} ${road.length ? `Si haces las ${Math.min(5, road.length)} primeras mejoras de la lista, subiría a <b class="num">${f10(potential)}</b>.` : ''}</p>
+        <div class="counts"><span class="chip fail">${nFail} problemas</span><span class="chip warn">${nWarn} por mejorar</span><span class="chip pass">${nPass} bien</span><span class="chip acc">${c.mt.length} herramientas de marketing</span></div>
+        <div class="meta-line">Fuente: ${esc(SRC[c.source] || c.source)} · ${Math.round(c.size/1024)} KB · ${new Date().toLocaleString('es')}</div>
       </div>
     </div>
-    <div class="cats">${S.cats.map(x => `<a class="cat" href="#sec-${x.id}"><span>${esc(x.name)} <small>· peso ${x.w}%</small></span><b>${x.score == null ? '—' : x.score}</b><span class="bar"><i style="width:${x.score || 0}%;background:${colorFor(x.score || 0)}"></i></span></a>`).join('')}</div>
+    <div class="cats">${S.cats.map(x => `<a class="cat" href="#sec-${x.id}"><span>${esc(x.name)}</span><b>${f10(x.score)}</b><span class="bar"><i style="width:${x.score || 0}%;background:${colorFor(x.score || 0)}"></i></span></a>`).join('')}</div>
   </section>
 
-  <section class="panel" aria-label="Hoja de ruta">
-    <div style="display:grid;gap:4px"><span class="eyebrow">Qué le falta para ser de las mejores del mundo</span><h2>Hoja de ruta priorizada</h2><p class="muted">Ordenada por puntos ganados × impacto ÷ esfuerzo. Los puntos son los que sumaría a la nota global.</p></div>
-    ${road.length ? `<div class="road">${road.slice(0, 14).map(r => `<div class="ri"><div class="gain">+${r.gain.toFixed(1)}<small>PUNTOS</small></div><div class="body"><h3>${esc(r.label)}</h3><p>${esc(r.fix || r.ev)}</p></div><div class="tags"><span class="chip ${r.s}">${ST[r.s]}</span><span class="chip">Impacto ${LV[r.imp]}</span><span class="chip">Esfuerzo ${LV[r.eff]}</span></div></div>`).join('')}</div>` : '<p class="note ok">No quedan mejoras detectables en el código. Pasa a los puntos que este análisis no puede ver.</p>'}
-    <div style="display:grid;gap:10px"><h3>Comparación con el estándar de clase mundial · <span class="num">${benchYes} de ${benchRows.length}</span></h3>
+  <section class="panel" aria-label="Qué mejorar primero">
+    <div style="display:grid;gap:4px"><span class="eyebrow">Qué le falta para ser de las mejores del mundo</span><h2>Qué mejorar primero</h2><p class="muted">Ordenado por lo que más sube la calificación con menos trabajo. El número verde es cuánto subiría la nota de 10.</p></div>
+    ${road.length ? `<div class="road">${road.slice(0, 12).map(r => `<div class="ri"><div class="gain">+${Math.max(.1, r.gain / 10).toFixed(1)}<small>PUNTOS</small></div><div class="body"><h3>${esc(P(r.id)[0])}</h3><p>${esc(P(r.id)[2])}</p></div><div class="tags"><span class="chip ${r.s}">${ST[r.s]}</span><span class="chip">Impacto ${LV[r.imp]}</span><span class="chip">Esfuerzo ${LV[r.eff]}</span></div></div>`).join('')}</div>` : '<p class="note ok">No quedan mejoras que se vean en el código. Revisa la lista de abajo.</p>'}
+    <div style="display:grid;gap:10px"><h3>Comparada con las mejores páginas del mundo · <span class="num">${benchYes} de ${benchRows.length}</span></h3>
       <div class="bench">${benchRows.map(b => `<div class="bi ${b.yes ? 'yes' : 'no'}"><span class="mk">${b.yes ? '✓' : '×'}</span><span>${esc(b.label)}</span></div>`).join('')}</div></div>
-    <div style="display:grid;gap:10px"><h3>Lo que el código no muestra y también cuenta</h3>
+    <div style="display:grid;gap:10px"><h3>También cuenta, aunque no se ve en el código</h3>
       <div class="beyond">
-        <div><b>Core Web Vitals de usuarios reales</b><span class="muted">LCP < 2,5 s, INP < 200 ms, CLS < 0,1 en el percentil 75.</span>${c.url ? `<a href="https://pagespeed.web.dev/analysis?url=${enc}" target="_blank" rel="noopener">Abrir PageSpeed Insights</a>` : ''}</div>
-        <div><b>Resultados enriquecidos</b><span class="muted">Valida que Google acepte tu Schema.</span>${c.url ? `<a href="https://search.google.com/test/rich-results?url=${enc}" target="_blank" rel="noopener">Abrir Rich Results Test</a>` : ''}</div>
-        <div><b>Cabeceras de seguridad</b><span class="muted">HSTS, CSP, X-Content-Type-Options, Referrer-Policy.</span>${c.url ? `<a href="https://securityheaders.com/?q=${enc}&followRedirects=on" target="_blank" rel="noopener">Abrir securityheaders.com</a>` : ''}</div>
-        <div><b>robots.txt, sitemap.xml y llms.txt</b><span class="muted">Que existan, se enlacen entre sí y no bloqueen recursos.</span>${c.url ? `<a href="${esc(c.url.origin)}/robots.txt" target="_blank" rel="noopener">Ver robots.txt</a>` : ''}</div>
-        <div><b>Autoridad y enlaces entrantes</b><span class="muted">Menciones y enlaces de medios del sector pesan más que cualquier ajuste on-page.</span></div>
-        <div><b>Eventos que realmente se disparan</b><span class="muted">Verifica en GA4 DebugView y Tag Assistant, antes y después de aceptar cookies.</span></div>
+        <div><b>Velocidad real en celulares</b><span class="muted">Google mide cuánto tarda para tus visitantes reales.</span>${c.url ? `<a href="https://pagespeed.web.dev/analysis?url=${enc}" target="_blank" rel="noopener">Medir en PageSpeed Insights</a>` : ''}</div>
+        <div><b>Ficha para Google aceptada</b><span class="muted">Comprueba que Google lee bien tus datos estructurados.</span>${c.url ? `<a href="https://search.google.com/test/rich-results?url=${enc}" target="_blank" rel="noopener">Probar en Rich Results Test</a>` : ''}</div>
+        <div><b>Seguridad del servidor</b><span class="muted">Candados extra que configura tu hosting.</span>${c.url ? `<a href="https://securityheaders.com/?q=${enc}&followRedirects=on" target="_blank" rel="noopener">Revisar en securityheaders.com</a>` : ''}</div>
+        <div><b>Mapa del sitio para Google</b><span class="muted">Archivos robots.txt y sitemap.xml al día.</span>${c.url ? `<a href="${esc(c.url.origin)}/robots.txt" target="_blank" rel="noopener">Ver robots.txt</a>` : ''}</div>
+        <div><b>Reputación en internet</b><span class="muted">Que otros sitios y medios te mencionen y enlacen pesa más que cualquier ajuste.</span></div>
+        <div><b>Que la medición funcione de verdad</b><span class="muted">Revisa en Google Analytics (DebugView) que cada acción importante se registre, antes y después de aceptar cookies.</span></div>
       </div></div>
   </section>
 
-  <section class="panel" aria-label="Inventario martech">
-    <div class="top"><div style="display:grid;gap:4px"><span class="eyebrow">Inventario martech</span><h2>${c.mt.length} herramientas en ${byCat.length} categorías</h2></div>
-    <div class="stack" aria-label="Stack tecnológico">${c.stack.map(s => `<span class="chip">${esc(s)}</span>`).join('') || '<span class="muted">Stack no identificado</span>'}</div></div>
-    ${c.mt.length ? `<div class="tblwrap"><table><thead><tr><th>Herramienta</th><th>ID detectado</th><th>Peso de carga</th><th>Evidencia en el código</th></tr></thead><tbody>${mtRows}</tbody></table></div>` : '<p class="note">No se detectó ninguna herramienta. Si la página usa GTM, captura el DOM con el marcador: las etiquetas que inyecta no aparecen en el código fuente.</p>'}
-    ${c.source === 'fetch' || c.source === 'paste' || c.source === 'file' ? '<p class="hint">Se analizó el código fuente. Lo que Google Tag Manager carga después solo aparece si capturas el DOM renderizado con el marcador.</p>' : ''}
+  <section class="panel" aria-label="Enlaces y archivos">
+    <div style="display:grid;gap:4px"><span class="eyebrow">Todo lo que la página enlaza o carga</span><h2>Enlaces y archivos${c.lc && c.lc.items ? ` · <span class="num">${c.lc.items.length}</span>` : ''}</h2><p class="muted">Revisamos cada enlace, imagen, programa y archivo de diseño de la página para ver si funciona.</p></div>
+    ${linksHTML(c)}
   </section>
 
-  <section class="panel" aria-label="Datos SEO">
-    <div style="display:grid;gap:4px"><span class="eyebrow">Cómo te ven Google y las redes</span><h2>Vista previa y datos extraídos</h2></div>
+  <section class="panel" aria-label="Herramientas de marketing">
+    <div class="top"><div style="display:grid;gap:4px"><span class="eyebrow">Herramientas de marketing instaladas</span><h2>${c.mt.length} herramientas en ${byCat.length} categorías</h2></div>
+    <div style="display:grid;gap:6px;justify-items:end"><span class="hint">Tecnología del sitio</span><div class="stack">${c.stack.map(s => `<span class="chip">${esc(s)}</span>`).join('') || '<span class="muted">No identificada</span>'}</div></div></div>
+    ${c.mt.length ? `<div class="tblwrap"><table><thead><tr><th>Herramienta y para qué sirve</th><th>Identificador</th><th>Efecto en la velocidad</th><th>Dónde aparece en el código</th></tr></thead><tbody>${mtRows}</tbody></table></div>` : '<p class="note">No encontramos herramientas de marketing. Si usas Google Tag Manager, captura la página con el marcador: lo que Tag Manager agrega no aparece en el código original.</p>'}
+    ${c.source !== 'dom' && c.source !== 'demo' ? '<p class="hint">Se revisó el código original. Las herramientas que agrega Google Tag Manager después de cargar solo aparecen si capturas la página con el marcador.</p>' : ''}
+  </section>
+
+  <section class="panel" aria-label="Cómo te ven">
+    <div style="display:grid;gap:4px"><span class="eyebrow">Cómo te ven Google y las redes</span><h2>Vista previa</h2></div>
     <div class="grid2">
       <div style="display:grid;gap:12px">
-        <div class="serp" aria-label="Vista previa en Google"><span class="u">${esc(serpUrl)}</span><span class="t">${esc(clip(c.title || '(sin título)', 60))}</span><span class="d">${esc(clip(c.desc || 'Google generará un fragmento con texto de la página porque no hay meta description.', 158))}</span></div>
-        <div class="og" aria-label="Vista previa al compartir"><div class="img">${c.og.image ? 'og:image<br>' + esc(clip(c.og.image, 120)) : 'Sin og:image: la tarjeta saldrá sin imagen'}</div><div class="tx"><small>${esc(c.og.site_name || c.host || 'sitio')}</small><b>${esc(clip(c.og.title || c.title || '(sin título)', 80))}</b><span class="muted" style="font-size:13px">${esc(clip(c.og.description || c.desc || '', 120))}</span></div></div>
-        <dl class="kv">
-          <dt>CANONICAL</dt><dd>${esc(c.canonical || '—')}</dd>
-          <dt>ROBOTS</dt><dd>${esc(c.robots.trim() || 'index, follow (por defecto)')}</dd>
-          <dt>LANG</dt><dd>${esc(c.lang || '—')}</dd>
-          <dt>SCHEMA</dt><dd>${esc([...c.ld.types].join(', ') || '—')}</dd>
-          <dt>ENLACES</dt><dd class="num">${c.intLinks.length} internos · ${c.extLinks.length} externos</dd>
-          <dt>PALABRAS</dt><dd class="num">${c.words.toLocaleString('es')}</dd>
-        </dl>
+        <span class="hint">Así aparecería en Google</span>
+        <div class="serp"><span class="u">${esc(serpUrl)}</span><span class="t">${esc(clip(c.title || '(sin título)', 60))}</span><span class="d">${esc(clip(c.desc || 'Sin descripción: Google pondrá un pedazo cualquiera del texto de la página.', 158))}</span></div>
+        <span class="hint">Así se vería al compartir en WhatsApp o Facebook</span>
+        <div class="og"><div class="img">${c.og.image ? 'Imagen para compartir:<br>' + esc(clip(c.og.image, 120)) : 'Sin imagen para compartir: el enlace saldrá sin foto'}</div><div class="tx"><small>${esc(c.og.site_name || c.host || 'sitio')}</small><b>${esc(clip(c.og.title || c.title || '(sin título)', 80))}</b><span class="muted" style="font-size:13px">${esc(clip(c.og.description || c.desc || '', 120))}</span></div></div>
       </div>
-      <div style="display:grid;gap:8px;align-content:start"><h3>Estructura de encabezados</h3><div class="outline">${outline}</div><span class="hint">En rojo, los saltos de nivel.</span></div>
+      <div style="display:grid;gap:8px;align-content:start"><h3>Índice de títulos de la página</h3><div class="outline">${outline}</div><span class="hint">En rojo, donde se salta un nivel. ${c.words.toLocaleString('es')} palabras · ${c.intLinks.length} enlaces a tu sitio · ${c.extLinks.length} a otros sitios.</span></div>
     </div>
   </section>
 
   <section class="panel" id="aiPanel" aria-label="Diagnóstico de Claude" hidden>
-    <div class="top"><div style="display:grid;gap:4px"><span class="eyebrow">Segunda opinión</span><h2>Diagnóstico estratégico de Claude</h2><p class="muted">Envía el resumen de esta auditoría (no el HTML completo) y recibe un plan escrito para tu sector.</p></div><button class="btn primary" id="aiBtn" type="button">Pedir diagnóstico</button></div>
+    <div class="top"><div style="display:grid;gap:4px"><span class="eyebrow">Segunda opinión</span><h2>Diagnóstico de Claude para tu negocio</h2><p class="muted">Envía el resumen de esta revisión (no el código de la página) y recibe un plan escrito para tu sector.</p></div><button class="btn primary" id="aiBtn" type="button">Pedir diagnóstico</button></div>
     <div class="ai-out" id="aiOut" hidden></div>
   </section>
 
   <section class="panel" aria-label="Detalle">
-    <div style="display:grid;gap:4px"><span class="eyebrow">Detalle de los ${R.length} puntos</span><h2>Calificación por área</h2></div>
-    ${S.cats.map(cat => { const rs = R.filter(r => r.cat === cat.id).sort((a, b) => ({fail:0,warn:1,pass:2,na:3}[a.s]) - ({fail:0,warn:1,pass:2,na:3}[b.s])); const f = rs.filter(r => r.s === 'fail').length, w = rs.filter(r => r.s === 'warn').length; return `<details class="catsec" id="sec-${cat.id}" ${f + w ? 'open' : ''}><summary><div style="display:grid;gap:2px"><h3>${esc(cat.name)} · <span class="num" style="color:${colorFor(cat.score || 0)}">${cat.score == null ? '—' : cat.score}</span></h3><span class="hint">${esc(cat.blurb)} ${f} fallas, ${w} por mejorar.</span></div></summary><div class="checks">${rs.map(r => `<div class="ck ${r.s}"><span class="st">${ST[r.s]}</span><h3>${esc(r.label)}</h3><div class="e">${esc(r.ev)}</div>${r.fix && r.s !== 'pass' ? `<div class="fx"><b>Cómo arreglarlo:</b> ${esc(r.fix)}</div>` : ''}</div>`).join('')}</div></details>`; }).join('')}
+    <div style="display:grid;gap:4px"><span class="eyebrow">Los ${R.length} puntos revisados</span><h2>Calificación por área</h2><p class="muted">Cada punto dice por qué importa y qué hacer. Abre “Detalle técnico” para pasárselo a quien programa.</p></div>
+    ${S.cats.map(cat => { const rs = R.filter(r => r.cat === cat.id).sort((a, b) => ({fail:0,warn:1,pass:2,na:3}[a.s]) - ({fail:0,warn:1,pass:2,na:3}[b.s])); const f = rs.filter(r => r.s === 'fail').length, w = rs.filter(r => r.s === 'warn').length; return `<details class="catsec" id="sec-${cat.id}" ${f + w ? 'open' : ''}><summary><div style="display:grid;gap:2px"><h3>${esc(cat.name)} · <span class="num" style="color:${colorFor(cat.score || 0)}">${f10(cat.score)}</span></h3><span class="hint">${esc(cat.blurb)} ${f} problemas, ${w} por mejorar.</span></div></summary><div class="checks">${rs.map(ckRow).join('')}</div></details>`; }).join('')}
+  </section>
+
+  <section class="panel" aria-label="Instrucciones para Claude Code">
+    <div class="top"><div style="display:grid;gap:4px"><span class="eyebrow">Para dejarla en 10 de 10</span><h2>Instrucciones para corregir la página con Claude Code</h2></div><button class="btn primary" id="promptCopy" type="button">Copiar instrucciones</button></div>
+    <ol class="steps" style="color:var(--ink)">
+      <li>Abre la Terminal y entra a la carpeta donde está el código de tu sitio, por ejemplo: <code class="mono">cd ~/Documents/mi-sitio</code></li>
+      <li>Escribe <code class="mono">claude</code> y pulsa Enter. Si no lo tienes instalado: <code class="mono">npm install -g @anthropic-ai/claude-code</code></li>
+      <li>Pega estas instrucciones y pulsa Enter. Claude te mostrará su plan y los textos nuevos antes de cambiar nada.</li>
+    </ol>
+    ${c.lc && c.lc.state === 'running' ? '<p class="hint">Las instrucciones se completarán con los enlaces rotos cuando termine la revisión de enlaces.</p>' : ''}
+    <textarea id="promptTxt" class="prompt" readonly spellcheck="false" aria-label="Instrucciones para Claude Code">${esc(buildPrompt(c, S))}</textarea>
+    <p class="hint">¿Tu sitio está en WordPress, Shopify o Wix y no tienes el código? Pega las instrucciones en Claude igual: te dirá dónde cambiar cada cosa desde el panel de tu plataforma.</p>
   </section>`;
   setupAI();
+  const pb = $('#promptCopy');
+  pb.onclick = () => { const t = $('#promptTxt'); const done = () => { pb.textContent = 'Instrucciones copiadas'; setTimeout(() => pb.textContent = 'Copiar instrucciones', 2200); }; const fb = () => { t.focus(); t.select(); setStatus('Selecciona el texto de las instrucciones y cópialo con Ctrl+C (Cmd+C en Mac).'); }; try { navigator.clipboard.writeText(t.value).then(done, fb); } catch(e) { fb(); } };
+  if(same) window.scrollTo(0, y);
 }
 
 /* ───────────── Claude (sample capability) ───────────── */
@@ -683,12 +898,12 @@ async function askClaude(sample){
   if(aiCtl) aiCtl.abort(); aiCtl = new AbortController();
   btn.disabled = true; btn.textContent = 'Analizando…'; out.hidden = false; out.textContent = 'Pensando…';
   const summary = {
-    url: c.url ? c.url.href : null, titulo: c.title, descripcion: c.desc, puntuacion: S.total, nota: grade(S.total),
-    areas: S.cats.map(x => ({ area: x.name, puntuacion: x.score })), stack: c.stack,
+    url: c.url ? c.url.href : null, titulo: c.title, descripcion: c.desc, calificacion_de_10: f10(S.total), nivel: grade(S.total),
+    areas: S.cats.map(x => ({ area: x.name, calificacion_de_10: f10(x.score) })), stack: c.stack,
     martech: c.mt.map(t => `${t.n} [${t.c}]`), palabras: c.words, schema: [...c.ld.types], dominios_terceros: c.thirdHosts.size,
     fallas: S.results.filter(r => r.s === 'fail').map(r => `${r.label}: ${r.ev}`), mejoras: S.results.filter(r => r.s === 'warn').map(r => `${r.label}: ${r.ev}`)
   };
-  const prompt = `Eres consultor sénior de SEO, CRO y martech. Con esta auditoría automática de una página web, escribe en español un diagnóstico estratégico breve (máx. 450 palabras), en texto plano con títulos en MAYÚSCULAS y viñetas con guion:\n1. QUÉ ES Y A QUIÉN SIRVE (deduce sector y objetivo de la página).\n2. DIAGNÓSTICO EN 3 FRASES.\n3. CINCO ACCIONES PRIORITARIAS, cada una con impacto esperado y un primer paso concreto.\n4. CÓMO SERÍA LA MEJOR PÁGINA DEL MUNDO EN ESTE SECTOR: 4 rasgos concretos que esta página no tiene.\n5. RIESGOS en martech y privacidad.\nNo repitas la tabla de datos; interpreta. Si algo es una suposición, dilo.\n\nAUDITORÍA:\n${JSON.stringify(summary, null, 1)}`;
+  const prompt = `Eres consultor sénior de SEO, CRO y martech. Con esta auditoría automática de una página web, escribe en español sencillo, para el dueño del negocio y sin tecnicismos, un diagnóstico estratégico breve (máx. 450 palabras), en texto plano con títulos en MAYÚSCULAS y viñetas con guion:\n1. QUÉ ES Y A QUIÉN SIRVE (deduce sector y objetivo de la página).\n2. DIAGNÓSTICO EN 3 FRASES.\n3. CINCO ACCIONES PRIORITARIAS, cada una con impacto esperado y un primer paso concreto.\n4. CÓMO SERÍA LA MEJOR PÁGINA DEL MUNDO EN ESTE SECTOR: 4 rasgos concretos que esta página no tiene.\n5. RIESGOS en martech y privacidad.\nNo repitas la tabla de datos; interpreta. Si algo es una suposición, dilo.\n\nAUDITORÍA:\n${JSON.stringify(summary, null, 1)}`;
   try {
     const r = await sample(prompt, { signal: aiCtl.signal, modelTier: 'default', onText: ({ text }) => { out.textContent = text; } });
     out.textContent = r.text + (r.truncated ? '\n\n(Respuesta recortada.)' : '');
@@ -702,12 +917,13 @@ async function askClaude(sample){
 function toMarkdown(){
   if(!LAST) return '';
   const { c, S } = LAST;
-  const L = [`# Auditoría Radar Martech & SEO`, ``, `- URL: ${c.url ? c.url.href : 'no indicada'}`, `- Puntuación: **${S.total}/100 (${grade(S.total)})**`, `- Fecha: ${new Date().toLocaleString('es')}`, ``, `## Puntuación por área`, ...S.cats.map(x => `- ${x.name}: ${x.score ?? '—'}`), ``, `## Martech (${c.mt.length})`];
+  const L = ['# Revisión Radar Martech & SEO', '', `- Página: ${c.url ? c.url.href : 'no indicada'}`, `- Calificación: **${f10(S.total)} de 10 (${grade(S.total)})**`, `- Fecha: ${new Date().toLocaleString('es')}`, '', '## Calificación por área', ...S.cats.map(x => `- ${x.name}: ${f10(x.score)}`), '', `## Herramientas de marketing (${c.mt.length})`];
   CAT_ORDER.forEach(cat => { const l = c.mt.filter(t => t.c === cat); if(l.length) L.push(`- **${cat}:** ${l.map(t => t.n + (t.ids.length ? ` (${t.ids.join(', ')})` : '')).join(', ')}`); });
-  L.push('', `Stack: ${c.stack.join(', ') || '—'}`, '', '## Hoja de ruta');
-  S.results.filter(r => r.gain > .05).sort((a, b) => b.gain * b.imp / b.eff - a.gain * a.imp / a.eff).forEach((r, i) => L.push(`${i + 1}. **${r.label}** (+${r.gain.toFixed(1)} pts, impacto ${LV[r.imp]}, esfuerzo ${LV[r.eff]}): ${r.fix}`));
+  L.push('', `Tecnología del sitio: ${c.stack.join(', ') || '—'}`, '', '## Qué mejorar primero');
+  S.results.filter(r => r.gain > .05).sort(prio).forEach((r, i) => L.push(`${i + 1}. **${P(r.id)[0]}** (+${Math.max(.1, r.gain / 10).toFixed(1)}): ${P(r.id)[2]}`));
   L.push('', '## Detalle');
-  S.cats.forEach(cat => { L.push(`### ${cat.name} — ${cat.score ?? '—'}`); S.results.filter(r => r.cat === cat.id).forEach(r => L.push(`- [${ST[r.s]}] ${r.label}: ${r.ev}`)); L.push(''); });
+  S.cats.forEach(cat => { L.push(`### ${cat.name} · ${f10(cat.score)}`); S.results.filter(r => r.cat === cat.id).forEach(r => L.push(`- [${ST[r.s]}] ${P(r.id)[0]}: ${r.ev}`)); L.push(''); });
+  L.push('## Instrucciones para Claude Code', '', '```', buildPrompt(c, S), '```');
   return L.join('\n');
 }
 $('#exportBtn').addEventListener('click', () => {
@@ -717,6 +933,13 @@ $('#exportBtn').addEventListener('click', () => {
 });
 
 /* ───────────── Input handling ───────────── */
+function normUrl(v){
+  v = String(v || '').trim().replace(/\s+/g, '');
+  if(!v) return null;
+  if(/^\/\//.test(v)) v = 'https:' + v;
+  if(!/^[a-z][a-z0-9+.-]*:\/\//i.test(v)) v = 'https://' + v;
+  try { const x = new URL(v); return /^https?:$/.test(x.protocol) && x.hostname.includes('.') ? x.href : null; } catch(e) { return null; }
+}
 function setStatus(msg, kind){ const s = $('#status'); s.hidden = !msg; s.className = 'note' + (kind ? ' ' + kind : ''); s.innerHTML = msg || ''; }
 $$('.tab').forEach(t => t.addEventListener('click', () => { $$('.tab').forEach(x => x.setAttribute('aria-selected', String(x === t))); $$('.pane').forEach(p => p.hidden = p.id !== t.dataset.p); try { localStorage.setItem('radar-tab', t.dataset.p); } catch(e){} }));
 
@@ -725,7 +948,8 @@ function run(html, url, source, status, headers){
   const isDom = /^\s*<!--url:/.test(html);
   const c = buildCtx(html, url, isDom ? 'dom' : source); c.status = status ?? null; c.headers = headers || null;
   render(c, source === 'demo');
-  setStatus(source === 'demo' ? '' : `Análisis listo: ${c.mt.length} herramientas y ${CHECKS.length} puntos evaluados.`, source === 'demo' ? '' : 'ok');
+  setStatus(source === 'demo' ? '' : `Listo: ${CHECKS.length} puntos revisados y ${c.mt.length} herramientas encontradas.`, source === 'demo' ? '' : 'ok');
+  if(source !== 'demo' && canCheckLinks(c)) checkLinks(c); else if(!c.lc) c.lc = { state: 'off' };
   if(source !== 'demo') $('#report').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -751,14 +975,14 @@ async function fetchVia(u){
 }
 $('#p-url').addEventListener('submit', async e => {
   e.preventDefault();
-  let u = $('#urlIn').value.trim(); if(!/^https?:\/\//i.test(u)) u = 'https://' + u;
-  try { new URL(u); } catch(_) { setStatus('Esa URL no es válida. Ejemplo: https://www.tusitio.com/pagina', 'err'); return; }
+  const u = normUrl($('#urlIn').value);
+  if(!u){ setStatus('Escribe la dirección de la página, por ejemplo: tusitio.com o www.tusitio.com/contacto', 'err'); return; }
   try { localStorage.setItem('radar-url', u); } catch(_){}
   if(inViewer()){ guide(u); return; }
-  const b = $('#goUrl'); b.disabled = true; b.textContent = 'Descargando…'; setStatus('Descargando el HTML de la página…');
+  const b = $('#goUrl'); b.disabled = true; b.textContent = 'Descargando…'; setStatus('Descargando la página…');
   const r = await fetchVia(u);
-  b.disabled = false; b.textContent = 'Analizar URL';
-  if(r){ run(r.html, r.finalUrl || u, 'fetch', r.status, r.headers); setStatus(`Análisis listo (descargado vía ${r.via}). Para ver también lo que inyecta GTM, usa el marcador.`, 'ok'); }
+  b.disabled = false; b.textContent = 'Analizar';
+  if(r){ run(r.html, r.finalUrl || u, 'fetch', r.status, r.headers); setStatus(`Listo. ${LAST.c.lc && LAST.c.lc.state === 'running' ? 'Ahora revisamos uno por uno los enlaces y archivos; la lista se actualiza sola.' : ''}`, 'ok'); }
   if(!r) guide(u, true);
 });
 const inViewer = () => !!(window.claude && window.claude.use) || /claude\.ai|claudeusercontent/.test(location.hostname + ' ' + document.referrer);
@@ -770,12 +994,12 @@ function guide(u, failed){
     <li>Vuelve aquí, pega en el cuadro y pulsa <b>Analizar código</b>.</li></ol>`, failed ? 'err' : '');
   $('#pasteIn').focus();
 }
-function viewerHint(){ if(!inViewer()) return; $('#urlHint').innerHTML = 'Dentro de claude.ai no se pueden descargar otras webs: al pulsar <b>Preparar análisis</b> te llevo al marcador con la URL ya puesta. Fuera de claude.ai (o en tu Worker en <code>/radar</code>) la URL se descarga directamente.'; $('#goUrl').textContent = 'Preparar análisis'; }
+function viewerHint(){ if(!inViewer()) return; $('#urlHint').innerHTML = 'Dentro de claude.ai no se pueden descargar otras webs: al pulsar <b>Preparar análisis</b> te llevo al marcador con la dirección ya puesta. En tu versión <b>/radar</b> la página se descarga directamente.'; $('#goUrl').textContent = 'Preparar análisis'; }
 viewerHint(); setTimeout(viewerHint, 800);
-$('#p-paste').addEventListener('submit', e => { e.preventDefault(); run($('#pasteIn').value, $('#pasteUrl').value.trim(), 'paste'); });
+$('#p-paste').addEventListener('submit', e => { e.preventDefault(); run($('#pasteIn').value, normUrl($('#pasteUrl').value) || '', 'paste'); });
 $('#pasteIn').addEventListener('input', () => { const n = $('#pasteIn').value.length; $('#pasteSize').textContent = n ? `${Math.round(n / 1024)} KB pegados` : ''; const m = $('#pasteIn').value.match(/^\s*<!--url:(.*?)-->/); if(m && !$('#pasteUrl').value) $('#pasteUrl').value = m[1].trim(); });
 $('#p-file').addEventListener('submit', e => e.preventDefault());
-$('#fileIn').addEventListener('change', () => { const f = $('#fileIn').files[0]; if(!f) return; const rd = new FileReader(); rd.onload = () => run(String(rd.result), $('#fileUrl').value.trim(), 'file'); rd.readAsText(f); });
+$('#fileIn').addEventListener('change', () => { const f = $('#fileIn').files[0]; if(!f) return; const rd = new FileReader(); rd.onload = () => run(String(rd.result), normUrl($('#fileUrl').value) || '', 'file'); rd.readAsText(f); });
 $('#demoBtn').addEventListener('click', () => { run(DEMO, 'https://www.cafealtura.mx/tienda/cafe-de-especialidad-chiapas', 'demo'); setStatus('Cargado el ejemplo ficticio “Café Altura”. Pega tu URL o tu código para auditar una página real.'); });
 
 const BM = `javascript:(()=>{const h='<!--url:'+location.href+'-->\\n<!doctype html>\\n'+document.documentElement.outerHTML;const d=()=>alert('Radar: '+Math.round(h.length/1024)+' KB copiados. Pégalos en el auditor.');const f=()=>{const t=document.createElement('textarea');t.value=h;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();d()};navigator.clipboard?navigator.clipboard.writeText(h).then(d,f):f()})()`;
