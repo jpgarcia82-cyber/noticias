@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+</head>
+<body>
+<title>Radar Martech &amp; SEO</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: instrument panel — input console on top, then a scorecard band, then dense report sections in a single 1080px column with 2-up grids that stack on phones. */
+:root{
+  --bg:#F2F3F6; --surface:#FFFFFF; --sunk:#E9EBF0; --ink:#151821; --muted:#5A6072; --line:#D9DCE4;
+  --accent:#2E46E6; --accent-ink:#FFFFFF; --accent-soft:#E5E8FD;
+  --good:#1A7F4F; --good-soft:#DDF2E7; --warn:#A35F00; --warn-soft:#FBEBD2; --bad:#C0302B; --bad-soft:#FADCDA; --na:#7B8193; --na-soft:#E6E8EE;
+  --serp-link:#1A0DAB; --serp-url:#1E6B33;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0E1016; --surface:#161922; --sunk:#1D212C; --ink:#E7E9F0; --muted:#9AA0B3; --line:#2A2F3D;
+  --accent:#8492FF; --accent-ink:#0E1016; --accent-soft:#232848;
+  --good:#45C68A; --good-soft:#163024; --warn:#F0A945; --warn-soft:#33260F; --bad:#FF746B; --bad-soft:#3A1918; --na:#8C92A5; --na-soft:#23262F;
+  --serp-link:#99B4FF; --serp-url:#7FCB95; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0E1016; --surface:#161922; --sunk:#1D212C; --ink:#E7E9F0; --muted:#9AA0B3; --line:#2A2F3D;
+  --accent:#8492FF; --accent-ink:#0E1016; --accent-soft:#232848;
+  --good:#45C68A; --good-soft:#163024; --warn:#F0A945; --warn-soft:#33260F; --bad:#FF746B; --bad-soft:#3A1918; --na:#8C92A5; --na-soft:#23262F;
+  --serp-link:#99B4FF; --serp-url:#7FCB95; color-scheme:dark }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+.wrap{max-width:1080px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));display:grid;gap:22px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(28px,4.4vw,40px);font-weight:800;letter-spacing:-.02em}
+h2{font-size:22px;font-weight:700;letter-spacing:-.01em}
+h3{font-size:16px;font-weight:700}
+p{margin:0}
+a{color:var(--accent)}
+.eyebrow{font-family:var(--f-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+.muted{color:var(--muted)}
+.mono{font-family:var(--f-mono);font-size:12.5px}
+.num{font-variant-numeric:tabular-nums}
+.top{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px}
+.top p{max-width:62ch;color:var(--muted)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;gap:14px;min-width:0}
+.tabs{display:flex;gap:4px;background:var(--sunk);padding:4px;border-radius:8px;width:max-content;max-width:100%;flex-wrap:wrap}
+.tab{border:0;background:transparent;color:var(--muted);font:500 14px var(--f-body);padding:7px 14px;border-radius:6px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.row > input[type=url], .row > input[type=text]{flex:1 1 260px;min-width:0}
+input[type=url],input[type=text],textarea{font:14px var(--f-mono);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%}
+textarea{min-height:130px;resize:vertical}
+input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn{font:600 14px var(--f-body);border-radius:8px;padding:10px 16px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink);white-space:nowrap}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:hover{filter:brightness(1.05)}
+.btn[disabled]{opacity:.55;cursor:progress}
+.hint{font-size:13px;color:var(--muted)}
+.note{font-size:13.5px;border-radius:8px;padding:10px 12px;background:var(--sunk)}
+.note.err{background:var(--bad-soft);color:var(--ink)}
+.note.ok{background:var(--good-soft)}
+.bm{display:grid;gap:8px;border-top:1px dashed var(--line);padding-top:14px}
+.bm a.drag{display:inline-block;font:600 13px var(--f-body);background:var(--accent-soft);color:var(--accent);border:1px dashed var(--accent);padding:6px 12px;border-radius:999px;text-decoration:none;cursor:grab}
+ol.steps{margin:0;padding-left:20px;font-size:13.5px;color:var(--muted);display:grid;gap:2px}
+
+/* scorecard */
+.score{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+.dial{position:relative;width:150px;height:150px}
+.dial svg{width:150px;height:150px;transform:rotate(-90deg)}
+.dial .val{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.dial .val b{font:800 44px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.dial .val span{font:500 12px var(--f-mono);color:var(--muted)}
+.grade{display:inline-grid;place-content:center;font:800 22px var(--f-display);width:46px;height:46px;border-radius:10px;background:var(--ink);color:var(--bg)}
+.sumhead{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.counts{display:flex;gap:8px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:6px;font:500 12.5px var(--f-body);padding:3px 10px;border-radius:999px;background:var(--sunk);color:var(--ink);white-space:nowrap}
+.chip.fail{background:var(--bad-soft);color:var(--bad)} .chip.warn{background:var(--warn-soft);color:var(--warn)} .chip.pass{background:var(--good-soft);color:var(--good)} .chip.na{background:var(--na-soft);color:var(--na)}
+.chip.acc{background:var(--accent-soft);color:var(--accent)}
+.meta-line{font:12.5px var(--f-mono);color:var(--muted);word-break:break-all}
+.example-flag{font:600 11px var(--f-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--warn);background:var(--warn-soft);padding:3px 8px;border-radius:4px}
+
+.cats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 28px}
+.cat{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:baseline;text-decoration:none;color:inherit}
+.cat .bar{grid-column:1 / -1;height:8px;border-radius:4px;background:var(--sunk);overflow:hidden}
+.cat .bar i{display:block;height:100%;border-radius:4px}
+.cat b{font:700 15px var(--f-display);font-variant-numeric:tabular-nums}
+.cat small{color:var(--muted);font-size:12px}
+
+/* tables & lists */
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:620px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 11.5px var(--f-mono);text-transform:uppercase;letter-spacing:.07em;color:var(--muted);background:var(--sunk)}
+tr:last-child td{border-bottom:0}
+td.grp{font:600 12px var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--accent);background:var(--accent-soft)}
+.ev{font:12px var(--f-mono);color:var(--muted);word-break:break-all;max-width:340px}
+.load{display:inline-flex;gap:2px} .load i{width:7px;height:12px;border-radius:2px;background:var(--line)} .load i.on{background:var(--warn)}
+.stack{display:flex;flex-wrap:wrap;gap:6px}
+
+.checks{display:grid;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.ck{display:grid;grid-template-columns:76px 1fr;gap:4px 14px;padding:12px 14px;border-bottom:1px solid var(--line);background:var(--surface)}
+.ck:last-child{border-bottom:0}
+.ck .st{grid-row:1 / span 3;align-self:start;text-align:center;font:600 11px var(--f-mono);text-transform:uppercase;letter-spacing:.05em;padding:4px 0;border-radius:5px}
+.ck.pass .st{background:var(--good-soft);color:var(--good)} .ck.warn .st{background:var(--warn-soft);color:var(--warn)} .ck.fail .st{background:var(--bad-soft);color:var(--bad)} .ck.na .st{background:var(--na-soft);color:var(--na)}
+.ck h3{font:600 14.5px var(--f-body)}
+.ck .e{font-size:13.5px;color:var(--muted);min-width:0;overflow-wrap:anywhere}
+.ck .fx{font-size:13.5px;min-width:0}
+.ck .fx b{font-weight:600}
+details.catsec{border-top:1px solid var(--line);padding-top:14px}
+details.catsec > summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+details.catsec > summary::-webkit-details-marker{display:none}
+details.catsec > summary h3{font-size:18px}
+details.catsec > summary::after{content:"Mostrar";font:500 12px var(--f-mono);color:var(--accent)}
+details.catsec[open] > summary::after{content:"Ocultar"}
+details.catsec[open] > summary{margin-bottom:12px}
+
+.road{display:grid;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.ri{display:grid;grid-template-columns:64px 1fr auto;gap:4px 14px;padding:13px 14px;border-bottom:1px solid var(--line);align-items:start}
+.ri:last-child{border-bottom:0}
+.ri .gain{font:700 17px var(--f-display);color:var(--good);font-variant-numeric:tabular-nums;text-align:right}
+.ri .gain small{display:block;font:500 10.5px var(--f-mono);color:var(--muted);letter-spacing:.04em}
+.ri .body{min-width:0;display:grid;gap:3px}
+.ri .body p{font-size:13.5px;color:var(--muted)}
+.ri .tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.bench{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.bi{display:flex;gap:10px;align-items:start;padding:10px 12px;border-radius:8px;background:var(--sunk);font-size:13.5px}
+.bi .mk{flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-content:center;font:700 12px var(--f-mono)}
+.bi.yes .mk{background:var(--good);color:var(--surface)} .bi.no .mk{background:var(--bad-soft);color:var(--bad)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.grid2 > *{min-width:0}
+.serp{border:1px solid var(--line);border-radius:8px;padding:14px;background:var(--surface);display:grid;gap:2px}
+.serp .u{font-size:12.5px;color:var(--serp-url);overflow-wrap:anywhere}
+.serp .t{font-size:19px;color:var(--serp-link);line-height:1.3;font-family:Arial, sans-serif}
+.serp .d{font-size:13.5px;color:var(--muted);font-family:Arial, sans-serif}
+.og{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+.og .img{aspect-ratio:1.91/1;max-width:100%;background:repeating-linear-gradient(135deg,var(--sunk) 0 10px,var(--bg) 10px 20px);display:grid;place-content:center;padding:12px;text-align:center;font:12px var(--f-mono);color:var(--muted);overflow-wrap:anywhere}
+.og .tx{padding:10px 12px;display:grid;gap:2px;border-top:1px solid var(--line)}
+.og .tx small{font:11.5px var(--f-mono);text-transform:uppercase;color:var(--muted)}
+.outline{font:13px var(--f-mono);display:grid;gap:3px;max-height:340px;overflow:auto;padding:12px;background:var(--sunk);border-radius:8px}
+.outline div{overflow-wrap:anywhere}
+.outline b{color:var(--accent);font-weight:500;margin-right:6px}
+.outline .skip{color:var(--bad)}
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;font-size:13.5px}
+.kv dt{color:var(--muted);font:12px var(--f-mono);padding-top:2px}
+.kv dd{margin:0;overflow-wrap:anywhere;min-width:0}
+.ai-out{white-space:pre-wrap;font-size:14.5px;line-height:1.6;background:var(--sunk);padding:14px 16px;border-radius:8px;min-height:60px}
+.beyond{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.beyond div{padding:12px;border:1px dashed var(--line);border-radius:8px;font-size:13.5px;display:grid;gap:4px}
+.beyond b{font-weight:600}
+@media (max-width:720px){
+  .score{grid-template-columns:1fr;justify-items:start}
+  .cats,.grid2{grid-template-columns:1fr}
+  .ri{grid-template-columns:56px 1fr}
+  .ri .tags{grid-column:2;justify-content:flex-start}
+  .ck{grid-template-columns:1fr}
+  .ck .st{grid-row:auto;width:76px}
+}
+@media (prefers-reduced-motion:no-preference){ .cat .bar i{transition:width .6s ease} .dial circle.fg{transition:stroke-dashoffset .8s ease} }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div style="display:grid;gap:6px">
+      <span class="eyebrow">Auditoría de código · martech · SEO · rendimiento · accesibilidad</span>
+      <h1>Radar Martech &amp; SEO</h1>
+      <p>Lee el HTML de una página, inventaría cada herramienta de marketing que carga, califica más de 70 puntos de SEO y calidad técnica, y te dice qué le falta para jugar en la liga de las mejores páginas del mundo.</p>
+    </div>
+    <button class="btn" id="exportBtn" type="button">Copiar informe (Markdown)</button>
+  </header>
+
+  <section class="panel" aria-label="Entrada">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tab-url" aria-selected="true" data-p="p-url" type="button">URL</button>
+      <button class="tab" role="tab" id="tab-paste" aria-selected="false" data-p="p-paste" type="button">Pegar código</button>
+      <button class="tab" role="tab" id="tab-file" aria-selected="false" data-p="p-file" type="button">Subir archivo .html</button>
+    </div>
+
+    <form id="p-url" class="pane" style="display:grid;gap:10px">
+      <div class="row">
+        <input type="url" id="urlIn" placeholder="https://www.ejemplo.com/pagina" required autocomplete="url">
+        <button class="btn primary" id="goUrl" type="submit">Analizar URL</button>
+        <button class="btn" id="demoBtn" type="button">Cargar ejemplo</button>
+      </div>
+      <p class="hint">Descarga el HTML a través de un proxy CORS público. Dentro del visor de claude.ai las descargas a otras webs están bloqueadas: ahí usa el marcador de la pestaña <b>Pegar código</b>, que además captura las etiquetas que inyecta Google Tag Manager.</p>
+    </form>
+
+    <form id="p-paste" class="pane" hidden style="display:grid;gap:10px">
+      <input type="text" id="pasteUrl" placeholder="URL de la página (opcional, mejora el análisis de enlaces y HTTPS)">
+      <textarea id="pasteIn" spellcheck="false" placeholder="Pega aquí el código fuente (Ctrl+U → Ctrl+A → Ctrl+C) o lo que copia el marcador"></textarea>
+      <div class="row"><button class="btn primary" type="submit">Analizar código</button><span class="hint" id="pasteSize"></span></div>
+      <div class="bm">
+        <h3>Marcador “Copiar DOM para Radar”</h3>
+        <ol class="steps">
+          <li>Arrastra el botón azul a tu barra de marcadores (o crea un marcador y pega el código de abajo como URL).</li>
+          <li>Abre la página que quieres auditar, espera a que cargue y acepta cookies si quieres medir lo que dispara tras el consentimiento.</li>
+          <li>Pulsa el marcador: copia el DOM ya renderizado con su URL. Vuelve aquí y pégalo.</li>
+        </ol>
+        <div class="row"><a class="drag" id="bmLink" href="#">Copiar DOM para Radar</a><button class="btn" id="bmCopy" type="button">Copiar código del marcador</button></div>
+        <input type="text" id="bmCode" readonly aria-label="Código del marcador">
+      </div>
+    </form>
+
+    <form id="p-file" class="pane" hidden style="display:grid;gap:10px">
+      <input type="text" id="fileUrl" placeholder="URL de la página (opcional)">
+      <input type="file" id="fileIn" accept=".html,.htm,text/html">
+      <p class="hint">Sirve un “Guardar como → Página web, solo HTML” del navegador o un archivo de tu repositorio.</p>
+    </form>
+    <div id="status" class="note" hidden role="status"></div>
+  </section>
+
+  <main id="report" style="display:grid;gap:22px"></main>
+</div>
+
+<script>
+'use strict';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clip = (s, n) => { s = String(s ?? ''); return s.length > n ? s.slice(0, n - 1) + '…' : s; };
+const uniq = a => [...new Set(a)];
+
+/* ───────────── Martech database ───────────── */
+const MT = [];
+const T = (n, c, re, load, d, id) => MT.push({n, c, re, load, d, id});
+// Tag managers y CDP
+T('Google Tag Manager','Tag manager y CDP',/googletagmanager\.com\/gtm\.js|\bGTM-[A-Z0-9]{5,8}\b/,2,'Contenedor de etiquetas: centraliza píxeles y eventos.',/\bGTM-[A-Z0-9]{5,8}\b/g);
+T('Adobe Experience Platform Tags','Tag manager y CDP',/assets\.adobedtm\.com/,2,'Gestor de etiquetas de Adobe (Launch).');
+T('Tealium iQ','Tag manager y CDP',/tags\.tiqcdn\.com|utag\.js/,2,'Gestor de etiquetas empresarial.');
+T('Segment','Tag manager y CDP',/cdn\.segment\.(com|io)|analytics\.load\(/,2,'CDP: recoge eventos una vez y los reparte a otras herramientas.');
+T('RudderStack','Tag manager y CDP',/rudderlabs|rudderanalytics/,2,'CDP open source.');
+T('mParticle','Tag manager y CDP',/mparticle\.com/,2,'CDP empresarial.');
+// Analítica
+T('Google Analytics 4','Analítica',/gtag\/js\?id=G-|gtag\(\s*['"]config['"]\s*,\s*['"]G-|google-analytics\.com\/g\/collect/,2,'Analítica web de Google basada en eventos.',/\bG-[A-Z0-9]{8,12}\b/g);
+T('Universal Analytics (retirado)','Analítica',/\bUA-\d{4,10}-\d{1,4}\b|google-analytics\.com\/(analytics|ga)\.js/,2,'Analítica antigua de Google; dejó de procesar datos en 2023-2024.',/\bUA-\d{4,10}-\d{1,4}\b/g);
+T('Adobe Analytics','Analítica',/AppMeasurement|s_code\.js|\.sc\.omtrdc\.net|omniture/i,3,'Analítica empresarial de Adobe.');
+T('Mixpanel','Analítica',/cdn\.mxpnl\.com|mixpanel\.init/,2,'Analítica de producto por eventos.');
+T('Amplitude','Analítica',/cdn\.amplitude\.com|amplitude\.(init|getInstance)/,2,'Analítica de producto por eventos.');
+T('Heap','Analítica',/heapanalytics\.com|heap\.load\(/,2,'Analítica con autocaptura de eventos.');
+T('PostHog','Analítica',/posthog\.init|i\.posthog\.com|posthog-js/,2,'Analítica de producto, flags y grabación.');
+T('Matomo','Analítica',/matomo\.js|piwik\.js|_paq\.push/,1,'Analítica open source, apta para alojarse en casa.');
+T('Plausible','Analítica',/plausible\.io\/js/,1,'Analítica ligera sin cookies.');
+T('Fathom','Analítica',/cdn\.usefathom\.com/,1,'Analítica ligera sin cookies.');
+T('Simple Analytics','Analítica',/simpleanalyticscdn\.com/,1,'Analítica ligera sin cookies.');
+T('Umami','Analítica',/cloud\.umami\.is|umami\.js/,1,'Analítica open source sin cookies.');
+T('Yandex Metrica','Analítica',/mc\.yandex\.ru\/metrika|\bym\(\d{5,}/,2,'Analítica de Yandex con mapas de calor.');
+T('Piano Analytics','Analítica',/xiti\.com|piano-analytics|pa\.setConfigurations|cdn\.tinypass\.com/,2,'Analítica y muros de pago para medios.');
+T('Chartbeat','Analítica',/static\.chartbeat\.com/,1,'Analítica en tiempo real para editoriales.');
+T('Comscore','Analítica',/scorecardresearch\.com/,1,'Medición de audiencias para medios.');
+T('Parse.ly','Analítica',/cdn\.parsely\.com|parsely-cfg/,1,'Analítica de contenidos editoriales.');
+T('Vercel Web Analytics','Analítica',/\/_vercel\/insights/,1,'Analítica integrada de Vercel.');
+// Publicidad
+T('Google Ads','Publicidad y conversión',/\bAW-\d{6,12}\b|googleadservices\.com\/pagead\/conversion/,2,'Conversiones y remarketing de Google Ads.',/\bAW-\d{6,12}\b/g);
+T('Campaign Manager 360 / Floodlight','Publicidad y conversión',/fls\.doubleclick\.net|\bDC-\d{6,}\b/,2,'Etiquetas Floodlight de Google Marketing Platform.',/\bDC-\d{6,}\b/g);
+T('Google AdSense','Publicidad y conversión',/pagead2\.googlesyndication\.com|adsbygoogle/,3,'Monetización con anuncios de display.',/ca-pub-\d{10,}/g);
+T('Google Ad Manager','Publicidad y conversión',/securepubads\.g\.doubleclick\.net|googletag\.defineSlot/,3,'Servidor de anuncios para editores.');
+T('Prebid.js','Publicidad y conversión',/prebid[\w.-]*\.js|\bpbjs\./,3,'Subastas header bidding.');
+T('Meta Pixel','Publicidad y conversión',/connect\.facebook\.net\/[^"'\s]*fbevents\.js|fbq\(\s*['"]init/,2,'Medición y audiencias de Facebook e Instagram.',/fbq\(\s*['"]init['"]\s*,\s*['"](\d{8,20})/g);
+T('TikTok Pixel','Publicidad y conversión',/analytics\.tiktok\.com|ttq\.load/,2,'Conversiones y audiencias de TikTok Ads.');
+T('LinkedIn Insight Tag','Publicidad y conversión',/snap\.licdn\.com|_linkedin_partner_id/,2,'Conversiones y audiencias B2B de LinkedIn.');
+T('X (Twitter) Pixel','Publicidad y conversión',/static\.ads-twitter\.com|\btwq\(/,2,'Conversiones de X Ads.');
+T('Pinterest Tag','Publicidad y conversión',/s\.pinimg\.com\/ct|pintrk\(/,2,'Conversiones de Pinterest Ads.');
+T('Snap Pixel','Publicidad y conversión',/sc-static\.net\/scevent|snaptr\(/,2,'Conversiones de Snapchat Ads.');
+T('Reddit Pixel','Publicidad y conversión',/redditstatic\.com\/ads|rdt\(\s*['"]init/,2,'Conversiones de Reddit Ads.');
+T('Microsoft Advertising UET','Publicidad y conversión',/bat\.bing\.com|uetq/,2,'Conversiones de Microsoft (Bing) Ads.');
+T('Criteo','Publicidad y conversión',/static\.criteo\.net|criteo_q/,3,'Retargeting de producto.');
+T('Taboola','Publicidad y conversión',/cdn\.taboola\.com|_tfa\b/,3,'Recomendación patrocinada de contenidos.');
+T('Outbrain','Publicidad y conversión',/outbrain\.com|obApi/,3,'Recomendación patrocinada de contenidos.');
+T('Amazon Ads','Publicidad y conversión',/amazon-adsystem\.com/,3,'Publicidad y header bidding de Amazon.');
+// Afiliación
+T('Impact','Afiliación',/impactradius|impact\.com\/js/,1,'Plataforma de afiliados y partners.');
+T('Awin','Afiliación',/dwin1\.com/,1,'Red de afiliación.');
+T('CJ Affiliate','Afiliación',/emjcd\.com/,1,'Red de afiliación.');
+T('Skimlinks','Afiliación',/skimresources\.com/,2,'Monetización automática de enlaces.');
+// Heatmaps
+T('Hotjar','Heatmaps y sesiones',/static\.hotjar\.com|hjid\s*:/,2,'Mapas de calor, grabaciones y encuestas.');
+T('Microsoft Clarity','Heatmaps y sesiones',/clarity\.ms\/tag|www\.clarity\.ms/,2,'Mapas de calor y grabaciones gratuitas.');
+T('FullStory','Heatmaps y sesiones',/fullstory\.com\/s\/fs\.js|edge\.fullstory\.com|_fs_org/,3,'Grabación de sesiones y analítica digital.');
+T('Crazy Egg','Heatmaps y sesiones',/script\.crazyegg\.com/,2,'Mapas de calor.');
+T('Mouseflow','Heatmaps y sesiones',/cdn\.mouseflow\.com/,2,'Mapas de calor y embudos.');
+T('Lucky Orange','Heatmaps y sesiones',/luckyorange\.(com|net)/,2,'Mapas de calor y chat.');
+T('Smartlook','Heatmaps y sesiones',/rec\.smartlook\.com|smartlook\(/,2,'Grabación de sesiones.');
+T('Contentsquare','Heatmaps y sesiones',/t\.contentsquare\.net/,3,'Analítica de experiencia empresarial.');
+T('Quantum Metric','Heatmaps y sesiones',/quantummetric\.com/,3,'Analítica de experiencia empresarial.');
+// Experimentación
+T('Optimizely','Experimentación y personalización',/cdn\.optimizely\.com/,3,'Tests A/B y personalización.');
+T('VWO','Experimentación y personalización',/visualwebsiteoptimizer\.com|_vwo_code/,3,'Tests A/B y personalización.');
+T('AB Tasty','Experimentación y personalización',/try\.abtasty\.com/,3,'Tests A/B y personalización.');
+T('Kameleoon','Experimentación y personalización',/kameleoon\.(eu|io|com)/,3,'Tests A/B y personalización.');
+T('Convert','Experimentación y personalización',/convertexperiments\.com/,3,'Tests A/B.');
+T('Dynamic Yield','Experimentación y personalización',/cdn\.dynamicyield\.com/,3,'Personalización y recomendaciones.');
+T('Google Optimize (retirado)','Experimentación y personalización',/googleoptimize\.com|\bOPT-[A-Z0-9]{6,}\b/,3,'Retirado en 2023: código muerto que conviene eliminar.');
+T('LaunchDarkly','Experimentación y personalización',/launchdarkly/,2,'Feature flags y experimentos.');
+// CRM
+T('HubSpot','CRM y automatización',/js\.hs-scripts\.com|js\.hsforms\.net|hs-analytics\.net|js\.hs-banner\.com/,2,'CRM, formularios, email y analítica de marketing.',/hs-scripts\.com\/(\d+)/g);
+T('Marketo','CRM y automatización',/munchkin\.marketo\.net|Munchkin\.init/,2,'Automatización de marketing B2B.');
+T('Salesforce Account Engagement (Pardot)','CRM y automatización',/pi\.pardot\.com|piAId/,2,'Automatización de marketing de Salesforce.');
+T('Salesforce Marketing Cloud','CRM y automatización',/igodigital\.com|exacttarget/,2,'Email y journeys de Salesforce.');
+T('ActiveCampaign','CRM y automatización',/trackcmp\.net|activehosted\.com/,2,'Email marketing y automatización.');
+T('Klaviyo','CRM y automatización',/static\.klaviyo\.com|klaviyo\.com\/onsite/,2,'Email y SMS para ecommerce.');
+T('Mailchimp','CRM y automatización',/chimpstatic\.com|list-manage\.com/,1,'Email marketing.');
+T('Brevo (Sendinblue)','CRM y automatización',/sibautomation\.com|sibforms\.com|brevo\.com\/js/,1,'Email, SMS y CRM.');
+T('Customer.io','CRM y automatización',/assets\.customer\.io/,2,'Mensajería basada en eventos.');
+T('Braze','CRM y automatización',/appboycdn\.com|braze\.initialize|\.braze\.com\/api/,2,'Engagement multicanal.');
+T('Zoho','CRM y automatización',/salesiq\.zoho|zohopublic|zohocdn/,2,'CRM y chat de Zoho.');
+// Chat
+T('Intercom','Chat y soporte',/widget\.intercom\.io|intercomSettings/,3,'Chat, bots y centro de ayuda.');
+T('Drift','Chat y soporte',/js\.driftt\.com/,3,'Chat conversacional B2B.');
+T('Zendesk','Chat y soporte',/static\.zdassets\.com|zEmbed/,3,'Soporte y chat.');
+T('LiveChat','Chat y soporte',/cdn\.livechatinc\.com/,2,'Chat en vivo.');
+T('Tawk.to','Chat y soporte',/embed\.tawk\.to/,2,'Chat en vivo gratuito.');
+T('Crisp','Chat y soporte',/client\.crisp\.chat/,2,'Chat en vivo.');
+T('Tidio','Chat y soporte',/code\.tidio\.co/,2,'Chat y bots.');
+T('Freshchat','Chat y soporte',/wchat\.freshchat\.com|freshworks/,2,'Chat de Freshworks.');
+T('WhatsApp (clic para chatear)','Chat y soporte',/wa\.me\/|api\.whatsapp\.com\/send/,1,'Enlace directo a WhatsApp.');
+// Consentimiento
+T('OneTrust','Consentimiento (CMP)',/cdn\.cookielaw\.org|optanon|onetrust/i,2,'Gestor de consentimiento de cookies.');
+T('Cookiebot','Consentimiento (CMP)',/consent\.cookiebot\.com/,2,'Gestor de consentimiento de cookies.');
+T('CookieYes','Consentimiento (CMP)',/cdn-cookieyes\.com/,1,'Gestor de consentimiento de cookies.');
+T('Usercentrics','Consentimiento (CMP)',/usercentrics\.eu|app\.usercentrics/,2,'Gestor de consentimiento de cookies.');
+T('Didomi','Consentimiento (CMP)',/privacy-center\.org|didomi/i,2,'Gestor de consentimiento de cookies.');
+T('iubenda','Consentimiento (CMP)',/cdn\.iubenda\.com/,1,'Consentimiento y textos legales.');
+T('Osano','Consentimiento (CMP)',/cmp\.osano\.com/,1,'Gestor de consentimiento de cookies.');
+T('Quantcast Choice','Consentimiento (CMP)',/quantcast\.mgr\.consensu|cmp\.quantcast/,2,'CMP compatible con TCF.');
+T('TrustArc','Consentimiento (CMP)',/consent\.trustarc\.com/,2,'Gestor de consentimiento.');
+T('Termly','Consentimiento (CMP)',/app\.termly\.io/,1,'Gestor de consentimiento.');
+T('Complianz','Consentimiento (CMP)',/complianz/i,1,'Plugin de consentimiento para WordPress.');
+// Push & engagement
+T('OneSignal','Push y engagement',/cdn\.onesignal\.com/,2,'Notificaciones push web.');
+T('Insider','Push y engagement',/useinsider/,3,'Personalización y engagement multicanal.');
+T('CleverTap','Push y engagement',/clevertap/i,2,'Engagement y retención.');
+T('MoEngage','Push y engagement',/moengage/i,2,'Engagement y retención.');
+// Reseñas
+T('Trustpilot','Reseñas y UGC',/widget\.trustpilot\.com/,2,'Widget de reseñas.');
+T('Yotpo','Reseñas y UGC',/yotpo\.com/,2,'Reseñas y fidelización.');
+T('Bazaarvoice','Reseñas y UGC',/bazaarvoice/i,2,'Reseñas y UGC.');
+T('Judge.me','Reseñas y UGC',/judge\.me/,1,'Reseñas para Shopify.');
+// Búsqueda
+T('Algolia','Búsqueda y recomendación',/algolia(net)?\.(com|net)|algoliasearch/,2,'Búsqueda instantánea.');
+T('Klevu','Búsqueda y recomendación',/klevu/i,2,'Búsqueda para ecommerce.');
+T('Nosto','Búsqueda y recomendación',/nosto\.com|nostojs/,2,'Recomendaciones de producto.');
+T('Bloomreach','Búsqueda y recomendación',/bloomreach|exponea/i,2,'Búsqueda y personalización.');
+T('Constructor.io','Búsqueda y recomendación',/constructor\.io/,2,'Búsqueda para ecommerce.');
+// Formularios
+T('Typeform','Formularios y agenda',/embed\.typeform\.com/,2,'Formularios conversacionales.');
+T('Calendly','Formularios y agenda',/assets\.calendly\.com/,2,'Agenda de reuniones.');
+T('Chili Piper','Formularios y agenda',/chilipiper/i,2,'Agenda y enrutado de leads.');
+T('Jotform','Formularios y agenda',/jotform/i,2,'Formularios.');
+// Seguridad
+T('Google reCAPTCHA','Antibot y seguridad',/google\.com\/recaptcha|grecaptcha/,2,'Protección antispam de formularios.');
+T('hCaptcha','Antibot y seguridad',/hcaptcha\.com/,2,'Protección antispam.');
+T('Cloudflare Turnstile','Antibot y seguridad',/challenges\.cloudflare\.com\/turnstile/,1,'Protección antibot sin fricción.');
+// Pagos
+T('Stripe','Pagos',/js\.stripe\.com/,2,'Pasarela de pago.');
+T('PayPal','Pagos',/paypal\.com\/sdk|paypalobjects\.com/,2,'Pasarela de pago.');
+T('Mercado Pago','Pagos',/mercadopago/i,2,'Pasarela de pago para LATAM.');
+// RUM
+T('Sentry','Monitoreo y RUM',/sentry-cdn\.com|Sentry\.init/,1,'Errores y rendimiento de frontend.');
+T('Datadog RUM','Monitoreo y RUM',/datadoghq-browser-agent|DD_RUM/,2,'Monitoreo de usuarios reales.');
+T('New Relic Browser','Monitoreo y RUM',/js-agent\.newrelic\.com|NREUM/,2,'Monitoreo de usuarios reales.');
+T('SpeedCurve','Monitoreo y RUM',/speedcurve|lux\.js/i,1,'Core Web Vitals de usuarios reales.');
+T('Dynatrace','Monitoreo y RUM',/ruxitagentjs|dynatrace/i,2,'Monitoreo de usuarios reales.');
+T('web-vitals','Monitoreo y RUM',/web-vitals(@|\/|\.)/,1,'Librería de Google para medir Core Web Vitals.');
+T('Vercel Speed Insights','Monitoreo y RUM',/\/_vercel\/speed-insights/,1,'Core Web Vitals de usuarios reales.');
+// Social
+T('ShareThis / AddThis','Social',/sharethis\.com|addthis\.com/,2,'Botones para compartir.');
+
+const CAT_ORDER = ['Tag manager y CDP','Analítica','Publicidad y conversión','Afiliación','Heatmaps y sesiones','Experimentación y personalización','CRM y automatización','Chat y soporte','Push y engagement','Consentimiento (CMP)','Reseñas y UGC','Búsqueda y recomendación','Formularios y agenda','Pagos','Antibot y seguridad','Monitoreo y RUM','Social'];
+const TRACKING_CATS = ['Analítica','Publicidad y conversión','Heatmaps y sesiones','Afiliación','Experimentación y personalización'];
+
+const STACK = [
+  ['WordPress',/wp-content\/|wp-includes\//],['WooCommerce',/woocommerce/i],['Shopify',/cdn\.shopify\.com|Shopify\.theme/],['Magento / Adobe Commerce',/Magento_|mage\/cookies/],
+  ['PrestaShop',/prestashop/i],['VTEX',/vtexassets|vteximg|\.vtex\./],['Salesforce Commerce Cloud',/demandware/],['BigCommerce',/bigcommerce\.com/],
+  ['Next.js',/__NEXT_DATA__|\/_next\/static/],['Nuxt',/__NUXT__|\/_nuxt\//],['Gatsby',/___gatsby/],['Astro',/astro-island|data-astro-cid/],['SvelteKit',/__sveltekit|data-sveltekit/],['Remix',/__remixContext/],
+  ['React',/data-reactroot|react-dom|__reactContainer/],['Vue',/data-v-[a-f0-9]{8}|vue(\.runtime)?(\.min)?\.js/],['Angular',/ng-version=|ng-app/],
+  ['Webflow',/data-wf-page|webflow\.js/],['Wix',/static\.wixstatic\.com|wix-bolt/],['Squarespace',/static1\.squarespace\.com/],['Framer',/framerusercontent\.com/],
+  ['Drupal',/Drupal\.settings|drupal\.js|\/sites\/default\/files/],['Joomla',/\/media\/jui\/|Joomla!/],['Ghost',/ghost-(portal|search)|content="Ghost/],['HubSpot CMS',/hs-sites\.com|hs_cos_wrapper/],
+  ['AMP',/<html[^>]*\s(amp|⚡)[\s>]/],['jQuery',/jquery[.-]?(\d|min|\.js)/i],['Bootstrap',/bootstrap(\.bundle)?(\.min)?\.(css|js)/],['Tailwind CSS',/tailwind/i],
+  ['Cloudflare',/\/cdn-cgi\//],['Vercel',/\/_vercel\//],['Google Fonts',/fonts\.googleapis\.com/],['Font Awesome',/font-?awesome/i]
+];
+
+/* ───────────── Context ───────────── */
+function rootDomain(h){ if(!h) return ''; const p = h.replace(/^www\./,'').split('.'); if(p.length > 2 && /^(com|co|org|net|gob|gov|edu|ac|or|ne)$/.test(p[p.length-2]) && p[p.length-1].length === 2) return p.slice(-3).join('.'); return p.slice(-2).join('.'); }
+
+function buildCtx(html, url, source){
+  const tagUrl = html.match(/^\s*<!--url:(.*?)-->/);
+  if(!url && tagUrl) url = tagUrl[1].trim();
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const meta = (attr, v) => { const el = doc.querySelector(`meta[${attr}="${v}" i]`); return el ? (el.getAttribute('content') || '').trim() : null; };
+  const canonEl = doc.querySelector('link[rel~="canonical" i]');
+  const canonical = canonEl ? (canonEl.getAttribute('href') || '').trim() : null;
+  if(!url) url = canonical && /^https?:/.test(canonical) ? canonical : (meta('property','og:url') || '');
+  let U = null; try { U = url ? new URL(url) : null; } catch(e) { U = null; }
+  const host = U ? U.hostname.replace(/^www\./,'') : '';
+  const root = rootDomain(host);
+  const resolve = u => { try { return new URL(u, U || 'https://pagina.invalid/'); } catch(e) { return null; } };
+  const isThird = h => h && h !== 'pagina.invalid' && rootDomain(h) !== root;
+
+  const scripts = $$('script', doc);
+  const ext = scripts.filter(s => s.hasAttribute('src')).map(s => { const r = resolve(s.getAttribute('src')); return { src: s.getAttribute('src'), host: r ? r.hostname : '', async: s.hasAttribute('async'), defer: s.hasAttribute('defer'), module: (s.getAttribute('type')||'') === 'module', head: !!s.closest('head') }; });
+  const inline = scripts.filter(s => !s.hasAttribute('src') && !/json|template|text\/x-/i.test(s.getAttribute('type')||''));
+  const inlineJS = inline.reduce((a, s) => a + s.textContent.length, 0);
+  const thirdHosts = new Set();
+  ext.forEach(s => { if(isThird(s.host)) thirdHosts.add(s.host); });
+  $$('link[href],iframe[src],img[src]', doc).forEach(el => { const r = resolve(el.getAttribute('href') || el.getAttribute('src')); if(r && /^https?:/.test(r.protocol) && isThird(r.hostname) && !(el.tagName === 'LINK' && /canonical|alternate/i.test(el.getAttribute('rel')||''))) thirdHosts.add(r.hostname); });
+
+  const ldRaw = []; let ldInvalid = 0; const types = new Set();
+  const collect = o => { if(Array.isArray(o)) o.forEach(collect); else if(o && typeof o === 'object'){ if(o['@type']) [].concat(o['@type']).forEach(t => types.add(String(t))); for(const k in o) if(k !== '@context') collect(o[k]); } };
+  $$('script[type="application/ld+json" i]', doc).forEach(s => { try { const j = JSON.parse(s.textContent); ldRaw.push(JSON.stringify(j)); collect(j); } catch(e) { ldInvalid++; } });
+  const ld = { types, invalid: ldInvalid, raw: ldRaw.join(' '), count: ldRaw.length + ldInvalid };
+  const micro = $$('[itemtype]', doc).map(e => (e.getAttribute('itemtype')||'').split('/').pop()).filter(Boolean);
+  micro.forEach(t => types.add(t + ' (microdatos)'));
+
+  const body = doc.body ? doc.body.cloneNode(true) : doc.createElement('body');
+  $$('script,style,noscript,svg,template,iframe', body).forEach(e => e.remove());
+  const text = body.textContent.replace(/\s+/g, ' ').trim();
+  const words = text ? text.split(' ').filter(w => /[\p{L}\p{N}]/u.test(w)).length : 0;
+  const sentences = text.split(/[.!?…]+(?:\s|$)/).filter(s => s.trim().split(' ').length > 2).length || 1;
+
+  const heads = $$('h1,h2,h3,h4,h5,h6', doc).map(h => ({ l: +h.tagName[1], t: h.textContent.replace(/\s+/g,' ').trim() }));
+  const links = $$('a[href]', doc).map(a => { const href = a.getAttribute('href').trim(); const r = resolve(href); const name = (a.textContent.replace(/\s+/g,' ').trim() || a.getAttribute('aria-label') || a.getAttribute('title') || ($('img[alt]', a) ? $('img[alt]', a).getAttribute('alt') : '')).trim(); return { href, r, name, el: a }; });
+  const navLinks = links.filter(l => !/^(#|javascript:|mailto:|tel:)/i.test(l.href) && l.r);
+  const intLinks = navLinks.filter(l => !isThird(l.r.hostname));
+  const extLinks = navLinks.filter(l => isThird(l.r.hostname));
+
+  const og = {}; ['title','description','image','url','type','site_name','locale','image:width','image:height','image:alt'].forEach(k => og[k] = meta('property', 'og:' + k));
+  const tw = { card: meta('name','twitter:card'), title: meta('name','twitter:title'), image: meta('name','twitter:image') };
+
+  const mt = [];
+  for(const t of MT){ const m = html.match(t.re); if(!m) continue; let ids = []; if(t.id){ const re = new RegExp(t.id.source, 'g'); let x; while((x = re.exec(html)) && ids.length < 6) ids.push(x[1] || x[0]); ids = uniq(ids); } const i = m.index; mt.push({ ...t, ids, ev: html.slice(Math.max(0, i - 40), i + 80).replace(/\s+/g,' ') }); }
+  const stack = STACK.filter(([, re]) => re.test(html)).map(([n]) => n);
+  const gen = meta('name','generator'); if(gen && !stack.some(s => gen.toLowerCase().includes(s.toLowerCase().split(' ')[0]))) stack.unshift(gen);
+
+  return { html, doc, url: U, host, root, source, size: new Blob([html]).size, meta,
+    title: (doc.querySelector('title')?.textContent || '').replace(/\s+/g,' ').trim(), titleCount: $$('title', doc).length,
+    desc: meta('name','description'), canonical, robots: (meta('name','robots') || '') + ' ' + (meta('name','googlebot') || ''),
+    lang: doc.documentElement.getAttribute('lang'), viewport: meta('name','viewport'),
+    charset: !!doc.querySelector('meta[charset]') || /charset=/i.test(meta('http-equiv','content-type') || ''),
+    heads, h1: heads.filter(h => h.l === 1), imgs: $$('img', doc), links, intLinks, extLinks, ext, inlineCount: inline.length, inlineJS, thirdHosts,
+    css: $$('link[rel~="stylesheet" i]', doc), ld, og, tw, text, words, avgSent: words / sentences, mt, mtCats: new Set(mt.map(t => t.c)), stack: uniq(stack) };
+}
+
+/* ───────────── Checks ───────────── */
+const ok = ev => ({ s: 'pass', ev });
+const warn = (ev, fix) => ({ s: 'warn', ev, fix });
+const bad = (ev, fix) => ({ s: 'fail', ev, fix });
+const na = ev => ({ s: 'na', ev });
+const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
+const has = (c, name) => c.mt.some(t => t.n === name);
+const hasCat = (c, cat) => c.mtCats.has(cat);
+
+const CATS = [
+  { id: 'tec', name: 'SEO técnico', w: 18, blurb: 'Que Google pueda rastrear, entender e indexar la página.' },
+  { id: 'onp', name: 'SEO on-page', w: 13, blurb: 'Títulos, descripciones, encabezados y enlaces.' },
+  { id: 'con', name: 'Contenido y E-E-A-T', w: 10, blurb: 'Profundidad, frescura, autoría y respuestas para buscadores con IA.' },
+  { id: 'soc', name: 'Social y vista previa', w: 6, blurb: 'Cómo se ve al compartirse.' },
+  { id: 'per', name: 'Rendimiento', w: 15, blurb: 'Señales en el código que afectan Core Web Vitals.' },
+  { id: 'a11y', name: 'Accesibilidad', w: 12, blurb: 'Que cualquier persona pueda usarla.' },
+  { id: 'pri', name: 'Privacidad y confianza', w: 11, blurb: 'Consentimiento, legales y contenido seguro.' },
+  { id: 'mtk', name: 'Madurez martech', w: 15, blurb: 'Calidad de la medición y del stack de marketing.' }
+];
+
+const CHECKS = [
+  // SEO técnico
+  { id:'https', cat:'tec', label:'HTTPS', w:3, imp:3, eff:2, run:c => !c.url ? na('Sin URL: pega la dirección para comprobarlo.') : c.url.protocol === 'https:' ? ok('Se sirve por HTTPS.') : bad('La URL usa HTTP sin cifrar.', 'Migra a HTTPS con redirección 301 de todas las URL y activa HSTS.') },
+  { id:'status', cat:'tec', label:'Código de respuesta HTTP', w:2, imp:3, eff:1, run:c => c.status == null ? na('Desconocido: el HTML llegó pegado o subido.') : c.status === 200 ? ok('200 OK.') : c.status < 400 ? warn(`Respuesta ${c.status}.`, 'Enlaza y declara canónica la URL final para evitar cadenas de redirección.') : bad(`Respuesta ${c.status}.`, 'La página devuelve error: Google la sacará del índice. Corrige la ruta o redirige con 301.') },
+  { id:'title', cat:'tec', label:'Etiqueta <title>', w:3, imp:3, eff:1, run:c => { const n = c.title.length; if(!n) return bad('No hay título.', 'Escribe un título único de 30 a 60 caracteres con la palabra clave principal al inicio y la marca al final.'); if(c.titleCount > 1) return warn(`Hay ${c.titleCount} etiquetas <title>.`, 'Deja una sola etiqueta <title> en el <head>.'); return n >= 30 && n <= 60 ? ok(`${n} caracteres: “${clip(c.title, 70)}”.`) : warn(`${n} caracteres: “${clip(c.title, 70)}”.`, n < 30 ? 'Es corto: añade la intención de búsqueda y un diferenciador (30–60 caracteres).' : 'Google lo cortará hacia los 600 px: deja lo importante en los primeros 55 caracteres.'); } },
+  { id:'canonical', cat:'tec', label:'URL canónica', w:3, imp:3, eff:1, run:c => { if(!c.canonical) return bad('No declara rel="canonical".', 'Añade <link rel="canonical" href="URL-absoluta"> autorreferenciado para consolidar señales y evitar duplicados por parámetros.'); if(!/^https?:\/\//.test(c.canonical)) return warn(`Canónica relativa: ${c.canonical}`, 'Usa una URL absoluta con protocolo y dominio.'); try { const h = new URL(c.canonical).hostname.replace(/^www\./,''); if(c.host && h !== c.host) return warn(`Apunta a otro host: ${c.canonical}`, 'Comprueba que la canónica hacia otro dominio sea intencional; si no, la página no se indexará.'); } catch(e){} return ok(clip(c.canonical, 90)); } },
+  { id:'robots', cat:'tec', label:'Meta robots (indexación)', w:3, imp:3, eff:1, run:c => /noindex/i.test(c.robots) ? bad(`Contiene “${c.robots.trim()}”.`, 'La página pide no ser indexada. Si debe posicionar, quita noindex.') : /nofollow/i.test(c.robots) ? warn(`Contiene “${c.robots.trim()}”.`, 'nofollow global impide que la autoridad fluya por tus enlaces.') : ok(c.robots.trim() ? `“${c.robots.trim()}”.` : 'Indexable (sin restricciones).') },
+  { id:'lang', cat:'tec', label:'Idioma declarado (lang)', w:2, imp:2, eff:1, run:c => c.lang ? ok(`lang="${c.lang}".`) : bad('Falta lang en <html>.', 'Añade <html lang="es-MX"> (o el idioma y país que correspondan). Ayuda a buscadores y lectores de pantalla.') },
+  { id:'viewport', cat:'tec', label:'Viewport móvil', w:3, imp:3, eff:1, run:c => !c.viewport ? bad('Sin meta viewport.', 'Añade <meta name="viewport" content="width=device-width, initial-scale=1">. Google indexa en versión móvil.') : /width=device-width/.test(c.viewport) ? ok(c.viewport) : warn(c.viewport, 'Usa width=device-width.') },
+  { id:'charset', cat:'tec', label:'Codificación de caracteres', w:1, imp:1, eff:1, run:c => c.charset ? ok('Declarada.') : warn('No hay <meta charset>.', 'Añade <meta charset="utf-8"> como primera línea del <head>.') },
+  { id:'schema', cat:'tec', label:'Datos estructurados (Schema.org)', w:3, imp:3, eff:2, run:c => { const t = [...c.ld.types]; if(c.ld.invalid) return warn(`${c.ld.invalid} bloque(s) JSON-LD con JSON inválido. Tipos válidos: ${t.join(', ') || 'ninguno'}.`, 'Corrige la sintaxis: un bloque inválido se ignora por completo. Valídalo en el Rich Results Test.'); if(!t.length) return bad('No hay JSON-LD ni microdatos.', 'Añade JSON-LD con Organization + WebSite y el tipo de la página (Article, Product, LocalBusiness, FAQPage, BreadcrumbList…). Es la base de los resultados enriquecidos y de cómo te entienden los buscadores con IA.'); return t.length >= 3 ? ok(t.join(', ')) : warn(t.join(', '), 'Amplía el grafo: combina Organization, WebSite, BreadcrumbList y el tipo específico de la página, enlazados con @id.'); } },
+  { id:'hreflang', cat:'tec', label:'Versiones por idioma o país (hreflang)', w:1, imp:1, eff:2, run:c => { const n = $$('link[rel="alternate" i][hreflang]', c.doc).length; const xd = !!c.doc.querySelector('link[hreflang="x-default" i]'); return n >= 2 && xd ? ok(`${n} alternativas con x-default.`) : n ? warn(`${n} alternativa(s)${xd ? '' : ', sin x-default'}.`, 'Declara todas las versiones de forma recíproca e incluye x-default.') : warn('Sin hreflang.', 'Si atiendes a varios países o idiomas (p. ej. es-MX, es-ES, en-US), declara cada versión con hreflang para no competir contigo mismo.'); } },
+  { id:'favicon', cat:'tec', label:'Favicon e iconos', w:1, imp:1, eff:1, run:c => { const f = !!c.doc.querySelector('link[rel~="icon" i]'); const a = !!c.doc.querySelector('link[rel="apple-touch-icon" i]'); return f && a ? ok('Favicon y apple-touch-icon.') : f ? warn('Solo favicon.', 'Añade apple-touch-icon de 180×180 px.') : warn('Sin favicon declarado.', 'Declara un favicon (SVG o 48×48 px múltiplo): Google lo muestra en los resultados móviles.'); } },
+  { id:'csr', cat:'tec', label:'Contenido visible sin JavaScript', w:3, imp:3, eff:3, run:c => c.words < 80 && c.ext.length > 5 ? bad(`Solo ${c.words} palabras en el HTML y ${c.ext.length} scripts.`, 'El contenido depende de JavaScript. Usa renderizado en servidor (SSR) o estático (SSG) para que buscadores y bots de IA vean el texto sin ejecutar JS.') : ok(`${c.words} palabras presentes en el HTML.`) },
+  { id:'refresh', cat:'tec', label:'Sin meta refresh', w:1, imp:2, eff:1, run:c => c.doc.querySelector('meta[http-equiv="refresh" i]') ? bad('Usa meta refresh.', 'Sustitúyelo por una redirección 301 en el servidor.') : ok('No usa meta refresh.') },
+  { id:'pwa', cat:'tec', label:'Manifest y theme-color', w:1, imp:1, eff:1, run:c => { const m = !!c.doc.querySelector('link[rel="manifest" i]'); const t = !!c.meta('name','theme-color'); return m && t ? ok('Manifest y theme-color presentes.') : warn(m ? 'Falta theme-color.' : t ? 'Falta manifest.' : 'Sin manifest ni theme-color.', 'Añade un web app manifest y theme-color: mejora la experiencia instalada y la barra del navegador móvil.'); } },
+
+  // On-page
+  { id:'desc', cat:'onp', label:'Meta description', w:3, imp:2, eff:1, run:c => { const n = (c.desc || '').length; if(!n) return bad('No hay meta description.', 'Escribe 140–160 caracteres que prometan un beneficio concreto y terminen con una llamada a la acción. Sube el CTR aunque no sea factor directo.'); return n >= 70 && n <= 160 ? ok(`${n} caracteres.`) : warn(`${n} caracteres: “${clip(c.desc, 90)}”.`, n < 70 ? 'Es corta: aprovecha hasta 155 caracteres.' : 'Se cortará: deja el mensaje clave en los primeros 150 caracteres.'); } },
+  { id:'h1', cat:'onp', label:'Un único H1', w:3, imp:2, eff:1, run:c => { const n = c.h1.length; if(!n) return bad('No hay H1.', 'Añade un H1 visible que describa el tema principal con la palabra clave.'); if(n > 1) return warn(`${n} H1: ${c.h1.slice(0,3).map(h => '“' + clip(h.t, 40) + '”').join(', ')}.`, 'Deja un H1 por página y convierte el resto en H2.'); return c.h1[0].t ? ok(`“${clip(c.h1[0].t, 90)}”.`) : warn('El H1 está vacío o es una imagen sin alt.', 'Dale texto real al H1.'); } },
+  { id:'hier', cat:'onp', label:'Jerarquía de encabezados', w:2, imp:2, eff:1, run:c => { let skips = 0; c.heads.reduce((p, h) => { if(h.l > p + 1) skips++; return h.l; }, 0); const h2 = c.heads.filter(h => h.l === 2).length; return !skips && h2 >= 2 ? ok(`${c.heads.length} encabezados, ${h2} H2, sin saltos.`) : warn(`${h2} H2${skips ? `, ${skips} salto(s) de nivel (p. ej. H2→H4)` : ''}.`, 'Estructura el contenido como un índice: H1 → H2 por sección → H3 por subsección, sin saltar niveles.'); } },
+  { id:'align', cat:'onp', label:'Coherencia título–H1', w:1, imp:1, eff:1, run:c => { if(!c.title || !c.h1.length) return na('Falta título o H1.'); const sw = s => new Set(s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').split(/[^a-z0-9ñ]+/).filter(w => w.length > 3)); const a = sw(c.title), b = sw(c.h1[0].t); const common = [...a].filter(w => b.has(w)); return common.length ? ok(`Comparten: ${common.slice(0,5).join(', ')}.`) : warn('Título y H1 no comparten términos relevantes.', 'Alinea título y H1 en la misma intención de búsqueda; pueden variar en redacción.'); } },
+  { id:'url', cat:'onp', label:'URL limpia', w:1, imp:1, eff:2, run:c => { if(!c.url) return na('Sin URL.'); const p = c.url.pathname; const issues = []; if(/[A-Z]/.test(p)) issues.push('mayúsculas'); if(/_/.test(p)) issues.push('guiones bajos'); if(c.url.search.length > 1) issues.push('parámetros'); if(p.length > 80) issues.push(`${p.length} caracteres`); if(/\.(php|aspx?|jsp)$/i.test(p)) issues.push('extensión técnica'); return issues.length ? warn(`${p}${c.url.search} → ${issues.join(', ')}.`, 'Usa rutas cortas, en minúsculas, con guiones y sin parámetros: /categoria/tema-principal') : ok(p || '/'); } },
+  { id:'intlinks', cat:'onp', label:'Enlazado interno', w:2, imp:2, eff:2, run:c => { const n = c.intLinks.length; return n >= 10 ? ok(`${n} enlaces internos.`) : n >= 3 ? warn(`${n} enlaces internos.`, 'Enlaza a 5–10 páginas relacionadas con texto descriptivo: reparte autoridad y ayuda al rastreo.') : bad(`${n} enlaces internos.`, 'La página es casi un callejón sin salida: añade navegación, migas de pan y enlaces contextuales.'); } },
+  { id:'anchors', cat:'onp', label:'Texto de los enlaces', w:2, imp:1, eff:1, run:c => { const L = c.links.filter(l => !/^(#|javascript:)/i.test(l.href)); if(!L.length) return na('Sin enlaces.'); const gen = L.filter(l => /^(clic aqu[ií]|click here|aqu[ií]|here|leer m[aá]s|read more|ver m[aá]s|m[aá]s|more|link|enlace)$/i.test(l.name)).length; const empty = L.filter(l => !l.name).length; const r = pct(gen + empty, L.length); return r <= 5 ? ok(`${L.length} enlaces; ${gen} genéricos, ${empty} sin texto.`) : warn(`${gen} genéricos (“leer más”, “aquí”) y ${empty} sin texto de ${L.length}.`, 'Describe el destino en el texto del enlace (“Guía de precios 2026”, no “aquí”); añade aria-label a enlaces de solo icono.'); } },
+  { id:'breadcrumb', cat:'onp', label:'Migas de pan', w:1, imp:1, eff:1, run:c => [...c.ld.types].some(t => /Breadcrumb/i.test(t)) ? ok('BreadcrumbList en Schema.') : c.doc.querySelector('[aria-label*="bread" i],[aria-label*="miga" i],.breadcrumb,.breadcrumbs') ? warn('Hay migas visibles pero sin Schema.', 'Marca las migas con BreadcrumbList para que Google las muestre en el resultado.') : warn('Sin migas de pan.', 'Añade migas de pan visibles con BreadcrumbList (excepto en la home).') },
+
+  // Contenido
+  { id:'words', cat:'con', label:'Profundidad del contenido', w:3, imp:2, eff:3, run:c => c.words >= 600 ? ok(`${c.words.toLocaleString('es')} palabras.`) : c.words >= 250 ? warn(`${c.words} palabras.`, 'Para competir en búsquedas informativas, cubre el tema a fondo: preguntas frecuentes, datos propios, ejemplos y comparativas.') : bad(`${c.words} palabras.`, 'Contenido escaso. Si es una página de destino, añade secciones de beneficios, pruebas sociales y FAQ con texto real.') },
+  { id:'read', cat:'con', label:'Legibilidad', w:1, imp:1, eff:2, run:c => c.words < 120 ? na('Muy poco texto para medir.') : c.avgSent <= 22 ? ok(`${c.avgSent.toFixed(1)} palabras por frase de media.`) : c.avgSent <= 30 ? warn(`${c.avgSent.toFixed(1)} palabras por frase.`, 'Acorta frases (≤ 20 palabras), usa listas y párrafos de 2–3 líneas.') : bad(`${c.avgSent.toFixed(1)} palabras por frase.`, 'Frases muy largas: divide y usa listas.') },
+  { id:'media', cat:'con', label:'Riqueza de formatos', w:1, imp:1, eff:2, run:c => { const v = $$('video,iframe[src*="youtube"],iframe[src*="vimeo"]', c.doc).length; const tl = $$('table,ul,ol', c.doc).filter(e => !e.closest('nav,header,footer')).length; const im = c.imgs.length; const k = (im ? 1 : 0) + (v ? 1 : 0) + (tl ? 1 : 0); return k >= 2 ? ok(`${im} imágenes, ${v} vídeos, ${tl} listas o tablas.`) : warn(`${im} imágenes, ${v} vídeos, ${tl} listas o tablas.`, 'Combina texto con imágenes propias, tablas comparativas y vídeo: aumenta tiempo en página y elegibilidad para resultados de vídeo e imagen.'); } },
+  { id:'fresh', cat:'con', label:'Fecha de publicación o actualización', w:1, imp:1, eff:1, run:c => /dateModified|datePublished/.test(c.ld.raw) || c.meta('property','article:modified_time') || c.meta('property','article:published_time') || c.doc.querySelector('time[datetime]') ? ok('Declara fechas.') : warn('No declara fechas.', 'Muestra y marca datePublished y dateModified. Las búsquedas sensibles a la actualidad lo premian.') },
+  { id:'eeat', cat:'con', label:'Señales de autoría y confianza (E-E-A-T)', w:2, imp:2, eff:2, run:c => { const author = !!(c.meta('name','author') || /"author"/.test(c.ld.raw) || c.doc.querySelector('[rel="author"],[class*="author" i],[itemprop="author"]')); const org = [...c.ld.types].some(t => /Organization|LocalBusiness|Corporation|NewsMediaOrganization/.test(t)) || c.links.some(l => /(nosotros|about|quienes-somos|sobre-|contacto|contact)/i.test(l.href)); return author && org ? ok('Autor y organización identificables.') : author || org ? warn(author ? 'Hay autor, falta identidad de la organización.' : 'Hay organización, falta autor.', 'Firma con autor real (bio, credenciales, sameAs) y enlaza a “Quiénes somos” y “Contacto”. Marca Person y Organization en Schema.') : bad('Sin autor ni identidad de la organización.', 'Añade autoría, página de la empresa y datos de contacto: es la base de la confianza para Google y para los buscadores con IA.'); } },
+  { id:'aeo', cat:'con', label:'Preparada para respuestas (FAQ, IA)', w:2, imp:2, eff:2, run:c => { const faq = [...c.ld.types].some(t => /FAQPage|QAPage|HowTo/.test(t)); const q = c.heads.filter(h => /\?\s*$/.test(h.t) || /^¿/.test(h.t)).length + $$('details > summary', c.doc).length; return faq ? ok(`Schema de preguntas presente; ${q} preguntas visibles.`) : q >= 2 ? warn(`${q} preguntas visibles sin Schema.`, 'Marca las preguntas con FAQPage y respóndelas en 40–60 palabras justo debajo: formato que extraen Google y los asistentes de IA.') : warn('No hay preguntas y respuestas.', 'Añade una sección de preguntas frecuentes con respuestas directas al inicio de cada bloque.'); } },
+
+  // Social
+  { id:'og', cat:'soc', label:'Open Graph básico', w:3, imp:2, eff:1, run:c => { const miss = ['title','description','image','url'].filter(k => !c.og[k]); return !miss.length ? ok('og:title, og:description, og:image y og:url.') : miss.length < 4 ? warn(`Falta: ${miss.map(m => 'og:' + m).join(', ')}.`, 'Completa las cuatro etiquetas Open Graph para controlar cómo se ve en WhatsApp, LinkedIn y Facebook.') : bad('Sin Open Graph.', 'Añade og:title, og:description, og:image (1200×630 px) y og:url.'); } },
+  { id:'ogimg', cat:'soc', label:'Imagen para compartir', w:2, imp:1, eff:1, run:c => { const i = c.og.image; if(!i) return bad('Sin og:image.', 'Diseña una imagen de 1200×630 px con mensaje legible en miniatura.'); const abs = /^https:\/\//.test(i); const dims = c.og['image:width'] && c.og['image:height']; return abs && dims ? ok(`${c.og['image:width']}×${c.og['image:height']} px.`) : warn(abs ? 'Sin og:image:width/height.' : 'og:image no es una URL https absoluta.', 'Usa URL https absoluta y declara og:image:width, og:image:height y og:image:alt para que la vista previa aparezca a la primera.'); } },
+  { id:'tw', cat:'soc', label:'Tarjeta de X (Twitter)', w:1, imp:1, eff:1, run:c => c.tw.card === 'summary_large_image' ? ok('summary_large_image.') : c.tw.card ? warn(`twitter:card="${c.tw.card}".`, 'Usa summary_large_image para ocupar más espacio en el timeline.') : warn('Sin twitter:card.', 'Añade <meta name="twitter:card" content="summary_large_image">.') },
+  { id:'sameas', cat:'soc', label:'Perfiles sociales enlazados', w:1, imp:1, eff:1, run:c => { const nets = uniq(c.extLinks.map(l => (l.r.hostname.match(/(facebook|instagram|linkedin|twitter|x|youtube|tiktok|threads|pinterest|whatsapp)\.com/)||[])[1]).filter(Boolean)); const sa = /"sameAs"/.test(c.ld.raw); return nets.length >= 2 && sa ? ok(`${nets.join(', ')} y sameAs en Schema.`) : warn(nets.length ? `Enlaza ${nets.join(', ')}${sa ? '' : '; sin sameAs en Schema'}.` : 'Sin enlaces a redes.', 'Enlaza tus perfiles oficiales y decláralos en Organization.sameAs: refuerza la entidad de marca en el Knowledge Graph.'); } },
+
+  // Rendimiento
+  { id:'size', cat:'per', label:'Peso del HTML', w:2, imp:2, eff:2, run:c => { const kb = Math.round(c.size / 1024); return kb < 100 ? ok(`${kb} KB.`) : kb < 250 ? warn(`${kb} KB.`, 'Reduce HTML inline (estado JSON, SVG repetidos, CSS embebido) y activa compresión Brotli.') : bad(`${kb} KB.`, 'HTML muy pesado: retrasa el primer render. Mueve datos y SVG fuera, pagina listas y comprime.'); } },
+  { id:'scripts', cat:'per', label:'Número de scripts externos', w:2, imp:2, eff:2, run:c => { const n = c.ext.length; return n <= 15 ? ok(`${n} scripts.`) : n <= 30 ? warn(`${n} scripts.`, 'Agrupa, elimina código muerto y carga lo no crítico tras la interacción.') : bad(`${n} scripts.`, 'Demasiados scripts: castigan INP y el tiempo de carga. Audita cada uno con su dueño de negocio.'); } },
+  { id:'third', cat:'per', label:'Dominios de terceros', w:3, imp:3, eff:2, run:c => { const n = c.thirdHosts.size; const list = [...c.thirdHosts].slice(0, 12).join(', '); return n <= 6 ? ok(`${n}: ${list || 'ninguno'}.`) : n <= 12 ? warn(`${n}: ${list}.`, 'Cada dominio suma DNS, TLS y JavaScript ajeno. Consolida etiquetas en GTM server-side y elimina proveedores sin uso.') : bad(`${n}: ${list}…`, 'Carga de terceros excesiva. Fija un presupuesto (≤ 6 dominios) y migra píxeles a server-side.'); } },
+  { id:'block', cat:'per', label:'Scripts que bloquean el render', w:3, imp:3, eff:1, run:c => { const b = c.ext.filter(s => s.head && !s.async && !s.defer && !s.module); return !b.length ? ok('Todos los scripts del <head> usan async, defer o module.') : b.length <= 2 ? warn(`${b.length}: ${b.map(s => clip(s.src, 50)).join(', ')}.`, 'Añade defer (o async si es independiente) a los scripts del <head>.') : bad(`${b.length} scripts bloqueantes en el <head>.`, 'Añade defer a todos los scripts no críticos: es de las mejoras de LCP más baratas.'); } },
+  { id:'css', cat:'per', label:'Hojas de estilo bloqueantes', w:2, imp:2, eff:2, run:c => { const n = c.css.filter(l => !/print/.test(l.getAttribute('media')||'')).length; return n <= 2 ? ok(`${n} hojas de estilo.`) : n <= 5 ? warn(`${n} hojas de estilo.`, 'Combina CSS y pon inline el CSS crítico de la primera pantalla.') : bad(`${n} hojas de estilo.`, 'Demasiadas hojas bloqueantes: unifica, purga CSS sin uso y difiere lo no crítico.'); } },
+  { id:'dims', cat:'per', label:'Imágenes con width y height', w:2, imp:2, eff:1, run:c => { const n = c.imgs.length; if(!n) return na('Sin imágenes.'); const k = c.imgs.filter(i => i.hasAttribute('width') && i.hasAttribute('height')).length; const p = pct(k, n); return p >= 90 ? ok(`${k} de ${n} (${p} %).`) : p >= 60 ? warn(`${k} de ${n} (${p} %).`, 'Declara width y height (o aspect-ratio) en todas las imágenes para evitar saltos de diseño (CLS).') : bad(`${k} de ${n} (${p} %).`, 'Sin dimensiones las imágenes empujan el contenido al cargar: declara width y height.'); } },
+  { id:'lazy', cat:'per', label:'Carga diferida de imágenes', w:2, imp:2, eff:1, run:c => { const n = c.imgs.length; if(n < 4) return na(`${n} imágenes: no aplica.`); const k = c.imgs.filter(i => i.getAttribute('loading') === 'lazy' || i.hasAttribute('data-src') || /lazy/.test(i.className)).length; const p = pct(k, n - 2); return p >= 50 ? ok(`${k} de ${n} diferidas.`) : k ? warn(`${k} de ${n} diferidas.`, 'Añade loading="lazy" a las imágenes bajo el pliegue (nunca a la imagen principal).') : bad(`Ninguna de ${n} imágenes diferida.`, 'Añade loading="lazy" a las imágenes fuera de la primera pantalla.'); } },
+  { id:'formats', cat:'per', label:'Formatos de imagen modernos', w:2, imp:2, eff:2, run:c => { const n = c.imgs.length; if(!n) return na('Sin imágenes.'); const modern = /\.(avif|webp)(\?|"|'|\s|$)|image\/(avif|webp)|[?&](fm|format|f)=(webp|avif|auto)|f_auto|\/_next\/image|cdn-cgi\/image/i.test(c.html); return modern ? ok('Usa AVIF o WebP, o un CDN que los sirve automáticamente.') : n > 5 ? bad(`${n} imágenes sin AVIF/WebP detectado.`, 'Sirve AVIF/WebP con <picture> o un CDN de imágenes: ahorra 30–50 % de peso.') : warn('No se detecta AVIF ni WebP.', 'Convierte las imágenes a AVIF/WebP.'); } },
+  { id:'srcset', cat:'per', label:'Imágenes responsive (srcset)', w:1, imp:2, eff:2, run:c => { const n = c.imgs.length; if(n < 2) return na('Pocas imágenes.'); const k = c.imgs.filter(i => i.hasAttribute('srcset') || i.closest('picture')).length; const p = pct(k, n); return p >= 50 ? ok(`${k} de ${n}.`) : k ? warn(`${k} de ${n}.`, 'Usa srcset y sizes para que el móvil no descargue imágenes de escritorio.') : bad(`Ninguna de ${n}.`, 'Añade srcset y sizes a las imágenes de contenido.'); } },
+  { id:'hints', cat:'per', label:'Preconnect y dns-prefetch', w:1, imp:1, eff:1, run:c => { const n = $$('link[rel~="preconnect" i],link[rel~="dns-prefetch" i]', c.doc).length; return n ? ok(`${n} sugerencias de conexión.`) : warn('Sin preconnect.', 'Añade preconnect a los 2–3 orígenes críticos (CDN, fuentes) para ahorrar 100–300 ms.'); } },
+  { id:'lcp', cat:'per', label:'Prioridad del elemento principal (LCP)', w:2, imp:2, eff:1, run:c => c.doc.querySelector('link[rel="preload" i][as="image" i],img[fetchpriority="high" i],link[rel="preload" i][imagesrcset]') ? ok('Precarga o fetchpriority="high" en imagen.') : c.imgs.length ? warn('La imagen principal no tiene prioridad.', 'Pon fetchpriority="high" (y sin lazy) en la imagen hero, o precárgala con <link rel="preload" as="image">.') : na('Sin imágenes.') },
+  { id:'fonts', cat:'per', label:'Carga de fuentes', w:1, imp:1, eff:1, run:c => { const gf = /fonts\.googleapis\.com/.test(c.html); const swap = /display=(swap|optional|fallback)|font-display\s*:\s*(swap|optional|fallback)/.test(c.html); const pre = !!c.doc.querySelector('link[rel="preload" i][as="font" i]'); const ff = /@font-face/.test(c.html) || gf; return !ff ? ok('Sin fuentes web (fuentes del sistema).') : swap || pre ? ok(`${swap ? 'font-display definido' : ''}${swap && pre ? ' y ' : ''}${pre ? 'fuentes precargadas' : ''}.`) : warn('Fuentes web sin font-display.', 'Usa font-display: swap y precarga la fuente del texto principal (woff2).'); } },
+  { id:'inline', cat:'per', label:'JavaScript inline', w:1, imp:1, eff:2, run:c => { const kb = Math.round(c.inlineJS / 1024); return kb < 50 ? ok(`${kb} KB en ${c.inlineCount} bloques.`) : kb < 150 ? warn(`${kb} KB en ${c.inlineCount} bloques.`, 'Mueve el JS inline grande a archivos cacheables.') : bad(`${kb} KB en ${c.inlineCount} bloques.`, 'Mucho JS inline: no se cachea y retrasa el parseo.'); } },
+
+  // Accesibilidad
+  { id:'alt', cat:'a11y', label:'Texto alternativo en imágenes', w:3, imp:2, eff:1, run:c => { const n = c.imgs.length; if(!n) return na('Sin imágenes.'); const k = c.imgs.filter(i => i.hasAttribute('alt')).length; const p = pct(k, n); return p >= 95 ? ok(`${k} de ${n} con alt.`) : p >= 75 ? warn(`${n - k} de ${n} sin alt.`, 'Describe cada imagen informativa; usa alt="" en las decorativas. También posiciona en Google Imágenes.') : bad(`${n - k} de ${n} sin alt.`, 'La mayoría de imágenes no tiene alt: añádelo a todas.'); } },
+  { id:'main', cat:'a11y', label:'Región principal (main)', w:2, imp:2, eff:1, run:c => c.doc.querySelector('main,[role="main"]') ? ok('Tiene <main>.') : bad('Sin <main>.', 'Envuelve el contenido principal en <main>: los lectores de pantalla saltan directo a él.') },
+  { id:'landmarks', cat:'a11y', label:'Estructura semántica', w:2, imp:1, eff:1, run:c => { const f = ['header','nav','footer'].filter(t => c.doc.querySelector(t)); return f.length === 3 ? ok('header, nav y footer.') : f.length ? warn(`Solo ${f.join(', ')}.`, 'Usa header, nav, main, article/section y footer en lugar de divs genéricos.') : bad('Sin header, nav ni footer.', 'Sustituye divs por etiquetas semánticas HTML5.'); } },
+  { id:'skip', cat:'a11y', label:'Enlace “saltar al contenido”', w:1, imp:1, eff:1, run:c => c.links.slice(0, 8).some(l => /^#/.test(l.href) && /salt|skip|ir al|contenido|content/i.test(l.name)) ? ok('Presente.') : warn('No se encontró.', 'Añade un enlace “Saltar al contenido” al inicio que apunte a #main.') },
+  { id:'labels', cat:'a11y', label:'Etiquetas en formularios', w:2, imp:2, eff:1, run:c => { const inp = $$('input:not([type=hidden]):not([type=submit]):not([type=button]):not([type=image]):not([type=reset]),select,textarea', c.doc); if(!inp.length) return na('Sin formularios.'); const lab = inp.filter(i => i.getAttribute('aria-label') || i.getAttribute('aria-labelledby') || i.getAttribute('title') || i.closest('label') || (i.id && c.doc.querySelector(`label[for="${CSS.escape(i.id)}"]`))).length; const p = pct(lab, inp.length); return p === 100 ? ok(`${inp.length} campos etiquetados.`) : p >= 80 ? warn(`${inp.length - lab} de ${inp.length} campos sin etiqueta.`, 'Asocia cada campo a un <label for> (el placeholder no cuenta).') : bad(`${inp.length - lab} de ${inp.length} campos sin etiqueta.`, 'Asocia cada campo a un <label>: afecta accesibilidad y conversión.'); } },
+  { id:'names', cat:'a11y', label:'Botones y enlaces con nombre', w:2, imp:2, eff:1, run:c => { const els = $$('button,a[href],[role="button"]', c.doc); const bad_ = els.filter(e => !(e.textContent.trim() || e.getAttribute('aria-label') || e.getAttribute('aria-labelledby') || e.getAttribute('title') || $('img[alt]:not([alt=""])', e) || $('[aria-label]', e))).length; return !bad_ ? ok(`${els.length} controles con nombre accesible.`) : bad_ <= 3 ? warn(`${bad_} controles sin nombre.`, 'Añade aria-label a botones y enlaces de solo icono.') : bad(`${bad_} controles sin nombre.`, 'Muchos controles de solo icono sin aria-label: un lector de pantalla los anuncia como “botón”.'); } },
+  { id:'iframes', cat:'a11y', label:'Títulos en iframes', w:1, imp:1, eff:1, run:c => { const f = $$('iframe', c.doc); if(!f.length) return na('Sin iframes.'); const k = f.filter(i => i.getAttribute('title')).length; return k === f.length ? ok(`${k} con title.`) : warn(`${f.length - k} de ${f.length} sin title.`, 'Añade title descriptivo a cada iframe.'); } },
+  { id:'zoom', cat:'a11y', label:'Zoom permitido', w:2, imp:2, eff:1, run:c => !c.viewport ? na('Sin viewport.') : /user-scalable\s*=\s*(no|0)|maximum-scale\s*=\s*1(\.0)?\b/i.test(c.viewport) ? bad('El viewport bloquea el zoom.', 'Quita user-scalable=no y maximum-scale=1: incumple WCAG 1.4.4.') : ok('El usuario puede ampliar.') },
+
+  // Privacidad
+  { id:'cmp', cat:'pri', label:'Gestor de consentimiento (CMP)', w:3, imp:3, eff:2, run:c => { const tr = c.mt.filter(t => TRACKING_CATS.includes(t.c)).length; const cmp = c.mt.filter(t => t.c === 'Consentimiento (CMP)'); return cmp.length ? ok(cmp.map(t => t.n).join(', ') + '.') : tr ? bad(`${tr} herramientas de seguimiento y ningún CMP detectado.`, 'Implanta un CMP certificado (Cookiebot, OneTrust, Usercentrics…) y bloquea los píxeles hasta el consentimiento. Lo exigen RGPD, LFPDPPP y CCPA.') : ok('No hay seguimiento que requiera consentimiento.'); } },
+  { id:'cmv2', cat:'pri', label:'Google Consent Mode v2', w:2, imp:3, eff:2, run:c => { const g = c.mt.some(t => /Google (Analytics|Ads|Tag)|Floodlight/.test(t.n)); if(!g) return na('Sin etiquetas de Google.'); const def = /['"]consent['"]\s*,\s*['"]default['"]/.test(c.html); const v2 = /ad_user_data|ad_personalization/.test(c.html); return def && v2 ? ok('consent default con ad_user_data y ad_personalization.') : def ? warn('Consent Mode sin los parámetros de v2.', 'Añade ad_user_data y ad_personalization: obligatorio para audiencias y conversiones de Google en el EEE.') : warn('No se ve gtag("consent","default") en el HTML.', 'Configura Consent Mode v2 (en GTM o en el código). Si lo gestiona el CMP, verifícalo con Tag Assistant.'); } },
+  { id:'privacy', cat:'pri', label:'Aviso de privacidad', w:2, imp:2, eff:1, run:c => c.links.some(l => /privac|privacy|datos-personales/i.test(l.href + ' ' + l.name)) ? ok('Enlace encontrado.') : bad('No se encontró enlace al aviso de privacidad.', 'Enlaza el aviso de privacidad desde el pie de todas las páginas y desde cada formulario.') },
+  { id:'legal', cat:'pri', label:'Términos y política de cookies', w:1, imp:1, eff:1, run:c => c.links.some(l => /t[eé]rminos|terms|condiciones|cookies|aviso-legal|aviso legal|legal/i.test(l.href + ' ' + l.name)) ? ok('Enlaces legales encontrados.') : warn('No se encontraron términos ni política de cookies.', 'Publica términos y condiciones y la política de cookies.') },
+  { id:'mixed', cat:'pri', label:'Contenido mixto (HTTP en HTTPS)', w:2, imp:2, eff:1, run:c => { if(!c.url || c.url.protocol !== 'https:') return na('Requiere URL HTTPS.'); const n = $$('script[src^="http:"],link[href^="http:"][rel~="stylesheet"],img[src^="http:"],iframe[src^="http:"]', c.doc).length; return n ? bad(`${n} recursos cargados por HTTP.`, 'Cambia esos recursos a https:// o el navegador los bloqueará.') : ok('Todos los recursos usan HTTPS.'); } },
+  { id:'noopener', cat:'pri', label:'Enlaces externos seguros', w:1, imp:1, eff:1, run:c => { const n = $$('a[target="_blank"]', c.doc).filter(a => !/noopener|noreferrer/.test(a.getAttribute('rel')||'')).length; return n ? warn(`${n} enlaces target="_blank" sin rel="noopener".`, 'Añade rel="noopener" (y "sponsored" o "nofollow" a los enlaces pagados).') : ok('Correcto.'); } },
+
+  // Martech
+  { id:'tms', cat:'mtk', label:'Gestor de etiquetas', w:2, imp:2, eff:2, run:c => { const t = c.mt.filter(x => x.c === 'Tag manager y CDP'); return t.length ? ok(t.map(x => x.n + (x.ids.length ? ` (${x.ids.join(', ')})` : '')).join(', ') + '.') : c.mt.length ? warn('Etiquetas pegadas directamente en el código.', 'Centraliza en Google Tag Manager (o Tealium o Adobe Tags): despliegas sin tocar código y controlas el consentimiento en un solo lugar.') : bad('Sin gestor de etiquetas.', 'Instala Google Tag Manager como base de toda la medición.'); } },
+  { id:'analytics', cat:'mtk', label:'Analítica web', w:3, imp:3, eff:1, run:c => { const a = c.mt.filter(x => x.c === 'Analítica' && !/retirado/.test(x.n)); if(a.length) return ok(a.map(x => x.n + (x.ids.length ? ` (${x.ids.join(', ')})` : '')).join(', ') + '.'); if(has(c,'Google Tag Manager')) return warn('No se ve analítica directa; puede estar dentro de GTM.', 'Captura con el marcador (DOM renderizado) para ver lo que GTM inyecta, o revisa el contenedor.'); return bad('No se detecta analítica.', 'Sin analítica no hay mejora posible: instala GA4 (o Matomo/Plausible si priorizas privacidad).'); } },
+  { id:'ua', cat:'mtk', label:'Sin código de analítica obsoleto', w:2, imp:2, eff:1, run:c => { const ua = has(c,'Universal Analytics (retirado)'), opt = has(c,'Google Optimize (retirado)'); return ua || opt ? warn(`Restos de ${[ua && 'Universal Analytics', opt && 'Google Optimize'].filter(Boolean).join(' y ')}.`, 'Elimina ese código: ya no procesa datos y solo añade peso y llamadas.') : ok('No hay etiquetas retiradas.'); } },
+  { id:'dup', cat:'mtk', label:'Sin duplicidad de medición', w:2, imp:2, eff:1, run:c => { const ga = c.mt.find(x => x.n === 'Google Analytics 4'); const gtm = c.mt.find(x => x.n === 'Google Tag Manager'); const n = ga ? ga.ids.length : 0; const hard = /gtag\/js\?id=G-/.test(c.html); if(n > 2) return warn(`${n} propiedades GA4 distintas: ${ga.ids.join(', ')}.`, 'Confirma que cada propiedad tenga un propósito; varias propiedades multiplican hits y coste de mantenimiento.'); if(gtm && hard && c.source !== 'dom') return warn('GA4 en código y GTM a la vez.', 'Comprueba que GA4 no se dispare también desde GTM: duplicaría sesiones y conversiones.'); return ok('No se detecta doble etiquetado.'); } },
+  { id:'datalayer', cat:'mtk', label:'Capa de datos con eventos', w:2, imp:2, eff:2, run:c => { if(!/dataLayer/.test(c.html)) return has(c,'Google Tag Manager') ? warn('GTM sin dataLayer visible.', 'Define un plan de medición y empuja eventos al dataLayer (lead, add_to_cart, purchase…) desde el código en vez de depender de clics en CSS.') : na('Sin GTM.'); return /dataLayer\.push\(\s*\{[^}]*['"]?event['"]?\s*:/.test(c.html) || /ecommerce\s*:/.test(c.html) ? ok('dataLayer con eventos personalizados.') : warn('dataLayer sin eventos en el HTML.', 'Empuja eventos de negocio con contexto (tipo de página, producto, usuario) al dataLayer.'); } },
+  { id:'ads', cat:'mtk', label:'Medición de campañas pagadas', w:2, imp:2, eff:1, run:c => { const a = c.mt.filter(x => x.c === 'Publicidad y conversión' && !/AdSense|Ad Manager|Prebid|Taboola|Outbrain|Amazon/.test(x.n)); return a.length ? ok(a.map(x => x.n).join(', ') + '.') : warn('No se detectan píxeles de conversión.', 'Si inviertes en medios, instala sus etiquetas de conversión (Google Ads, Meta, LinkedIn, TikTok) vía GTM con consentimiento.'); } },
+  { id:'sst', cat:'mtk', label:'Etiquetado server-side o first-party', w:2, imp:2, eff:3, run:c => /server_container_url|transport_url|sgtm|\/gtm\.js\?id=GTM/.test(c.html) && !/googletagmanager\.com\/gtm\.js/.test(c.html) || /server_container_url|transport_url/.test(c.html) ? ok('Indicios de GTM server-side o carga first-party.') : warn('Todo se envía desde el navegador a terceros.', 'Mueve la medición a GTM server-side con dominio propio y Meta Conversions API: recuperas 10–30 % de datos perdidos por bloqueadores e ITP y aligeras la página.') },
+  { id:'ux', cat:'mtk', label:'Analítica de comportamiento', w:1, imp:1, eff:1, run:c => hasCat(c,'Heatmaps y sesiones') ? ok(c.mt.filter(x => x.c === 'Heatmaps y sesiones').map(x => x.n).join(', ') + '.') : warn('Sin mapas de calor ni grabaciones.', 'Microsoft Clarity es gratuito y muestra dónde se atascan los usuarios.') },
+  { id:'ab', cat:'mtk', label:'Experimentación', w:1, imp:1, eff:2, run:c => c.mt.some(x => x.c === 'Experimentación y personalización' && !/retirado/.test(x.n)) ? ok(c.mt.filter(x => x.c === 'Experimentación y personalización').map(x => x.n).join(', ') + '.') : warn('Sin herramienta de tests A/B.', 'Las mejores páginas se optimizan con experimentos continuos (VWO, Optimizely, AB Tasty o PostHog).') },
+  { id:'crm', cat:'mtk', label:'Captación y CRM', w:2, imp:2, eff:2, run:c => hasCat(c,'CRM y automatización') ? ok(c.mt.filter(x => x.c === 'CRM y automatización').map(x => x.n).join(', ') + '.') : c.doc.querySelector('form input[type="email" i]') ? warn('Hay formulario con email pero no se ve un CRM conectado.', 'Conecta los formularios a un CRM o herramienta de automatización (HubSpot, Klaviyo, Brevo…) para nutrir los leads.') : warn('Sin captación de leads ni CRM.', 'Añade una vía de captación (newsletter, lead magnet, demo) conectada a un CRM.') },
+  { id:'rum', cat:'mtk', label:'Monitoreo de usuarios reales', w:1, imp:1, eff:1, run:c => hasCat(c,'Monitoreo y RUM') ? ok(c.mt.filter(x => x.c === 'Monitoreo y RUM').map(x => x.n).join(', ') + '.') : warn('Sin monitoreo de errores ni de Core Web Vitals.', 'Mide Core Web Vitals reales (web-vitals hacia GA4, SpeedCurve o Datadog) y errores de JavaScript con Sentry.') },
+  { id:'bloat', cat:'mtk', label:'Tamaño del stack', w:2, imp:2, eff:2, run:c => { const n = c.mt.length; return n <= 15 ? ok(`${n} herramientas.`) : n <= 25 ? warn(`${n} herramientas.`, 'Revisa trimestralmente cada etiqueta con su dueño; elimina las que no se usan en decisiones.') : bad(`${n} herramientas.`, 'Stack inflado: cada herramienta cuesta rendimiento, privacidad y dinero.'); } }
+];
+
+/* World-class benchmark: checks a top page passes */
+const BENCH = [
+  ['third', 'Máximo 6 dominios de terceros'], ['block', 'Cero scripts bloqueantes'], ['formats', 'Imágenes AVIF o WebP'], ['lcp', 'Imagen LCP priorizada'],
+  ['schema', 'Grafo Schema con 3 o más tipos'], ['csr', 'Contenido renderizado en servidor'], ['canonical', 'Canónica absoluta'], ['h1', 'Un H1 claro'],
+  ['eeat', 'Autor y organización identificables'], ['aeo', 'Respuestas listas para IA'], ['og', 'Vista previa social completa'], ['alt', 'Imágenes con alt'],
+  ['main', 'Semántica y región main'], ['cmp', 'Consentimiento antes del seguimiento'], ['cmv2', 'Consent Mode v2'], ['sst', 'Medición server-side'],
+  ['datalayer', 'dataLayer con eventos de negocio'], ['rum', 'Core Web Vitals reales monitorizados'], ['ab', 'Experimentación continua']
+];
+
+function score(c){
+  const results = CHECKS.map(k => { let r; try { r = k.run(c); } catch(e) { r = na('No se pudo evaluar: ' + e.message); } return { ...k, ...r }; });
+  const val = s => s === 'pass' ? 1 : s === 'warn' ? .5 : 0;
+  const cats = CATS.map(cat => { const rs = results.filter(r => r.cat === cat.id && r.s !== 'na'); const W = rs.reduce((a, r) => a + r.w, 0); return { ...cat, W, score: W ? Math.round(rs.reduce((a, r) => a + r.w * val(r.s), 0) / W * 100) : null }; });
+  const active = cats.filter(x => x.score != null); const CW = active.reduce((a, x) => a + x.w, 0);
+  const total = Math.round(active.reduce((a, x) => a + x.w * x.score, 0) / CW);
+  results.forEach(r => { const cat = cats.find(x => x.id === r.cat); r.gain = r.s === 'na' || !cat.W ? 0 : cat.w / CW * r.w * (1 - val(r.s)) / cat.W * 100; });
+  return { results, cats, total };
+}
+const grade = s => s >= 95 ? 'A+' : s >= 90 ? 'A' : s >= 80 ? 'B' : s >= 70 ? 'C' : s >= 55 ? 'D' : 'F';
+const verdict = s => s >= 90 ? 'Nivel de referencia. Lo que queda son detalles de clase mundial.' : s >= 80 ? 'Sólida. Con las mejoras de mayor impacto entra en el grupo de élite.' : s >= 70 ? 'Correcta pero con huecos que cuestan tráfico y datos.' : s >= 55 ? 'Por debajo de lo competitivo: hay fallos de base que corregir primero.' : 'Necesita una reconstrucción de los fundamentos.';
+const colorFor = s => s >= 80 ? 'var(--good)' : s >= 60 ? 'var(--warn)' : 'var(--bad)';
+const LV = ['', 'bajo', 'medio', 'alto'];
+const ST = { pass: 'Bien', warn: 'Mejorar', fail: 'Falla', na: 'N/A' };
+
+/* ───────────── Render ───────────── */
+let LAST = null;
+function render(c, isExample){
+  const S = score(c); LAST = { c, S, isExample };
+  const R = S.results;
+  const nFail = R.filter(r => r.s === 'fail').length, nWarn = R.filter(r => r.s === 'warn').length, nPass = R.filter(r => r.s === 'pass').length;
+  const circ = 2 * Math.PI * 62;
+  const road = R.filter(r => r.gain > 0.05).map(r => ({ ...r, pri: r.gain * r.imp / r.eff })).sort((a, b) => b.pri - a.pri);
+  const potential = Math.min(100, S.total + road.slice(0, 5).reduce((a, r) => a + r.gain, 0));
+  const benchRows = BENCH.map(([id, label]) => { const r = R.find(x => x.id === id); return { label, yes: r && r.s === 'pass', na: r && r.s === 'na' }; }).filter(b => !b.na);
+  const benchYes = benchRows.filter(b => b.yes).length;
+
+  // martech table
+  const byCat = CAT_ORDER.map(cat => [cat, c.mt.filter(t => t.c === cat)]).filter(([, l]) => l.length);
+  const mtRows = byCat.map(([cat, l]) => `<tr><td class="grp" colspan="4">${esc(cat)} · ${l.length}</td></tr>` + l.map(t => `<tr><td><b>${esc(t.n)}</b><div class="muted" style="font-size:12.5px">${esc(t.d)}</div></td><td class="mono">${t.ids.length ? t.ids.map(esc).join('<br>') : '<span class="muted">—</span>'}</td><td><span class="load" title="Peso de carga ${LV[t.load]}">${[1,2,3].map(i => `<i class="${i <= t.load ? 'on' : ''}"></i>`).join('')}</span> <span class="muted" style="font-size:12px">${LV[t.load]}</span></td><td class="ev">${esc(clip(t.ev, 120))}</td></tr>`).join('')).join('');
+
+  const outline = c.heads.slice(0, 60).map((h, i, a) => { const skip = i && h.l > a[i-1].l + 1; return `<div style="padding-left:${(h.l - 1) * 16}px" class="${skip ? 'skip' : ''}"><b>H${h.l}</b>${esc(clip(h.t, 110)) || '<i class="muted">(vacío)</i>'}</div>`; }).join('') || '<div class="muted">Sin encabezados.</div>';
+  const serpUrl = c.url ? (c.url.hostname + c.url.pathname.replace(/\/$/, '').split('/').filter(Boolean).map(p => ' › ' + p).join('')) : 'tu-dominio.com';
+  const enc = encodeURIComponent(c.url ? c.url.href : '');
+
+  $('#report').innerHTML = `
+  <section class="panel" aria-label="Resumen">
+    <div class="score">
+      <div class="dial" role="img" aria-label="Puntuación ${S.total} de 100">
+        <svg viewBox="0 0 150 150"><circle cx="75" cy="75" r="62" fill="none" stroke="var(--sunk)" stroke-width="12"/><circle class="fg" cx="75" cy="75" r="62" fill="none" stroke="${colorFor(S.total)}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${circ * (1 - S.total / 100)}"/></svg>
+        <div class="val"><b>${S.total}</b><span>de 100</span></div>
+      </div>
+      <div style="display:grid;gap:10px;min-width:0">
+        <div class="sumhead"><span class="grade">${grade(S.total)}</span><div style="min-width:0"><h2>${esc(clip(c.title || '(página sin título)', 90))}</h2><div class="meta-line">${esc(c.url ? c.url.href : 'URL no indicada')}</div></div>${isExample ? '<span class="example-flag">Ejemplo ficticio</span>' : ''}</div>
+        <p>${verdict(S.total)} ${road.length ? `Con las ${Math.min(5, road.length)} primeras acciones de la hoja de ruta subiría a <b class="num">${Math.round(potential)}</b>.` : ''}</p>
+        <div class="counts"><span class="chip fail">${nFail} fallas</span><span class="chip warn">${nWarn} por mejorar</span><span class="chip pass">${nPass} bien</span><span class="chip acc">${c.mt.length} herramientas martech</span><span class="chip">${Math.round(c.size/1024)} KB · ${c.ext.length} scripts · ${c.thirdHosts.size} dominios externos</span></div>
+        <div class="meta-line">Fuente: ${esc({ fetch: 'descarga del HTML del servidor', dom: 'DOM renderizado (marcador)', paste: 'código pegado', file: 'archivo subido', demo: 'página de ejemplo integrada' }[c.source] || c.source)} · ${new Date().toLocaleString('es')}</div>
+      </div>
+    </div>
+    <div class="cats">${S.cats.map(x => `<a class="cat" href="#sec-${x.id}"><span>${esc(x.name)} <small>· peso ${x.w}%</small></span><b>${x.score == null ? '—' : x.score}</b><span class="bar"><i style="width:${x.score || 0}%;background:${colorFor(x.score || 0)}"></i></span></a>`).join('')}</div>
+  </section>
+
+  <section class="panel" aria-label="Hoja de ruta">
+    <div style="display:grid;gap:4px"><span class="eyebrow">Qué le falta para ser de las mejores del mundo</span><h2>Hoja de ruta priorizada</h2><p class="muted">Ordenada por puntos ganados × impacto ÷ esfuerzo. Los puntos son los que sumaría a la nota global.</p></div>
+    ${road.length ? `<div class="road">${road.slice(0, 14).map(r => `<div class="ri"><div class="gain">+${r.gain.toFixed(1)}<small>PUNTOS</small></div><div class="body"><h3>${esc(r.label)}</h3><p>${esc(r.fix || r.ev)}</p></div><div class="tags"><span class="chip ${r.s}">${ST[r.s]}</span><span class="chip">Impacto ${LV[r.imp]}</span><span class="chip">Esfuerzo ${LV[r.eff]}</span></div></div>`).join('')}</div>` : '<p class="note ok">No quedan mejoras detectables en el código. Pasa a los puntos que este análisis no puede ver.</p>'}
+    <div style="display:grid;gap:10px"><h3>Comparación con el estándar de clase mundial · <span class="num">${benchYes} de ${benchRows.length}</span></h3>
+      <div class="bench">${benchRows.map(b => `<div class="bi ${b.yes ? 'yes' : 'no'}"><span class="mk">${b.yes ? '✓' : '×'}</span><span>${esc(b.label)}</span></div>`).join('')}</div></div>
+    <div style="display:grid;gap:10px"><h3>Lo que el código no muestra y también cuenta</h3>
+      <div class="beyond">
+        <div><b>Core Web Vitals de usuarios reales</b><span class="muted">LCP < 2,5 s, INP < 200 ms, CLS < 0,1 en el percentil 75.</span>${c.url ? `<a href="https://pagespeed.web.dev/analysis?url=${enc}" target="_blank" rel="noopener">Abrir PageSpeed Insights</a>` : ''}</div>
+        <div><b>Resultados enriquecidos</b><span class="muted">Valida que Google acepte tu Schema.</span>${c.url ? `<a href="https://search.google.com/test/rich-results?url=${enc}" target="_blank" rel="noopener">Abrir Rich Results Test</a>` : ''}</div>
+        <div><b>Cabeceras de seguridad</b><span class="muted">HSTS, CSP, X-Content-Type-Options, Referrer-Policy.</span>${c.url ? `<a href="https://securityheaders.com/?q=${enc}&followRedirects=on" target="_blank" rel="noopener">Abrir securityheaders.com</a>` : ''}</div>
+        <div><b>robots.txt, sitemap.xml y llms.txt</b><span class="muted">Que existan, se enlacen entre sí y no bloqueen recursos.</span>${c.url ? `<a href="${esc(c.url.origin)}/robots.txt" target="_blank" rel="noopener">Ver robots.txt</a>` : ''}</div>
+        <div><b>Autoridad y enlaces entrantes</b><span class="muted">Menciones y enlaces de medios del sector pesan más que cualquier ajuste on-page.</span></div>
+        <div><b>Eventos que realmente se disparan</b><span class="muted">Verifica en GA4 DebugView y Tag Assistant, antes y después de aceptar cookies.</span></div>
+      </div></div>
+  </section>
+
+  <section class="panel" aria-label="Inventario martech">
+    <div class="top"><div style="display:grid;gap:4px"><span class="eyebrow">Inventario martech</span><h2>${c.mt.length} herramientas en ${byCat.length} categorías</h2></div>
+    <div class="stack" aria-label="Stack tecnológico">${c.stack.map(s => `<span class="chip">${esc(s)}</span>`).join('') || '<span class="muted">Stack no identificado</span>'}</div></div>
+    ${c.mt.length ? `<div class="tblwrap"><table><thead><tr><th>Herramienta</th><th>ID detectado</th><th>Peso de carga</th><th>Evidencia en el código</th></tr></thead><tbody>${mtRows}</tbody></table></div>` : '<p class="note">No se detectó ninguna herramienta. Si la página usa GTM, captura el DOM con el marcador: las etiquetas que inyecta no aparecen en el código fuente.</p>'}
+    ${c.source === 'fetch' || c.source === 'paste' || c.source === 'file' ? '<p class="hint">Se analizó el código fuente. Lo que Google Tag Manager carga después solo aparece si capturas el DOM renderizado con el marcador.</p>' : ''}
+  </section>
+
+  <section class="panel" aria-label="Datos SEO">
+    <div style="display:grid;gap:4px"><span class="eyebrow">Cómo te ven Google y las redes</span><h2>Vista previa y datos extraídos</h2></div>
+    <div class="grid2">
+      <div style="display:grid;gap:12px">
+        <div class="serp" aria-label="Vista previa en Google"><span class="u">${esc(serpUrl)}</span><span class="t">${esc(clip(c.title || '(sin título)', 60))}</span><span class="d">${esc(clip(c.desc || 'Google generará un fragmento con texto de la página porque no hay meta description.', 158))}</span></div>
+        <div class="og" aria-label="Vista previa al compartir"><div class="img">${c.og.image ? 'og:image<br>' + esc(clip(c.og.image, 120)) : 'Sin og:image: la tarjeta saldrá sin imagen'}</div><div class="tx"><small>${esc(c.og.site_name || c.host || 'sitio')}</small><b>${esc(clip(c.og.title || c.title || '(sin título)', 80))}</b><span class="muted" style="font-size:13px">${esc(clip(c.og.description || c.desc || '', 120))}</span></div></div>
+        <dl class="kv">
+          <dt>CANONICAL</dt><dd>${esc(c.canonical || '—')}</dd>
+          <dt>ROBOTS</dt><dd>${esc(c.robots.trim() || 'index, follow (por defecto)')}</dd>
+          <dt>LANG</dt><dd>${esc(c.lang || '—')}</dd>
+          <dt>SCHEMA</dt><dd>${esc([...c.ld.types].join(', ') || '—')}</dd>
+          <dt>ENLACES</dt><dd class="num">${c.intLinks.length} internos · ${c.extLinks.length} externos</dd>
+          <dt>PALABRAS</dt><dd class="num">${c.words.toLocaleString('es')}</dd>
+        </dl>
+      </div>
+      <div style="display:grid;gap:8px;align-content:start"><h3>Estructura de encabezados</h3><div class="outline">${outline}</div><span class="hint">En rojo, los saltos de nivel.</span></div>
+    </div>
+  </section>
+
+  <section class="panel" id="aiPanel" aria-label="Diagnóstico de Claude" hidden>
+    <div class="top"><div style="display:grid;gap:4px"><span class="eyebrow">Segunda opinión</span><h2>Diagnóstico estratégico de Claude</h2><p class="muted">Envía el resumen de esta auditoría (no el HTML completo) y recibe un plan escrito para tu sector.</p></div><button class="btn primary" id="aiBtn" type="button">Pedir diagnóstico</button></div>
+    <div class="ai-out" id="aiOut" hidden></div>
+  </section>
+
+  <section class="panel" aria-label="Detalle">
+    <div style="display:grid;gap:4px"><span class="eyebrow">Detalle de los ${R.length} puntos</span><h2>Calificación por área</h2></div>
+    ${S.cats.map(cat => { const rs = R.filter(r => r.cat === cat.id).sort((a, b) => ({fail:0,warn:1,pass:2,na:3}[a.s]) - ({fail:0,warn:1,pass:2,na:3}[b.s])); const f = rs.filter(r => r.s === 'fail').length, w = rs.filter(r => r.s === 'warn').length; return `<details class="catsec" id="sec-${cat.id}" ${f + w ? 'open' : ''}><summary><div style="display:grid;gap:2px"><h3>${esc(cat.name)} · <span class="num" style="color:${colorFor(cat.score || 0)}">${cat.score == null ? '—' : cat.score}</span></h3><span class="hint">${esc(cat.blurb)} ${f} fallas, ${w} por mejorar.</span></div></summary><div class="checks">${rs.map(r => `<div class="ck ${r.s}"><span class="st">${ST[r.s]}</span><h3>${esc(r.label)}</h3><div class="e">${esc(r.ev)}</div>${r.fix && r.s !== 'pass' ? `<div class="fx"><b>Cómo arreglarlo:</b> ${esc(r.fix)}</div>` : ''}</div>`).join('')}</div></details>`; }).join('')}
+  </section>`;
+  setupAI();
+}
+
+/* ───────────── Claude (sample capability) ───────────── */
+let samplePromise = null;
+function setupAI(){
+  if(!window.claude || !window.claude.use) return;
+  samplePromise = samplePromise || window.claude.use('sample').catch(() => null);
+  samplePromise.then(s => { const p = $('#aiPanel'); if(!s || !p) return; p.hidden = false; $('#aiBtn').onclick = () => askClaude(s); });
+}
+let aiCtl = null;
+async function askClaude(sample){
+  const { c, S } = LAST; const btn = $('#aiBtn'), out = $('#aiOut');
+  if(aiCtl) aiCtl.abort(); aiCtl = new AbortController();
+  btn.disabled = true; btn.textContent = 'Analizando…'; out.hidden = false; out.textContent = 'Pensando…';
+  const summary = {
+    url: c.url ? c.url.href : null, titulo: c.title, descripcion: c.desc, puntuacion: S.total, nota: grade(S.total),
+    areas: S.cats.map(x => ({ area: x.name, puntuacion: x.score })), stack: c.stack,
+    martech: c.mt.map(t => `${t.n} [${t.c}]`), palabras: c.words, schema: [...c.ld.types], dominios_terceros: c.thirdHosts.size,
+    fallas: S.results.filter(r => r.s === 'fail').map(r => `${r.label}: ${r.ev}`), mejoras: S.results.filter(r => r.s === 'warn').map(r => `${r.label}: ${r.ev}`)
+  };
+  const prompt = `Eres consultor sénior de SEO, CRO y martech. Con esta auditoría automática de una página web, escribe en español un diagnóstico estratégico breve (máx. 450 palabras), en texto plano con títulos en MAYÚSCULAS y viñetas con guion:\n1. QUÉ ES Y A QUIÉN SIRVE (deduce sector y objetivo de la página).\n2. DIAGNÓSTICO EN 3 FRASES.\n3. CINCO ACCIONES PRIORITARIAS, cada una con impacto esperado y un primer paso concreto.\n4. CÓMO SERÍA LA MEJOR PÁGINA DEL MUNDO EN ESTE SECTOR: 4 rasgos concretos que esta página no tiene.\n5. RIESGOS en martech y privacidad.\nNo repitas la tabla de datos; interpreta. Si algo es una suposición, dilo.\n\nAUDITORÍA:\n${JSON.stringify(summary, null, 1)}`;
+  try {
+    const r = await sample(prompt, { signal: aiCtl.signal, modelTier: 'default', onText: ({ text }) => { out.textContent = text; } });
+    out.textContent = r.text + (r.truncated ? '\n\n(Respuesta recortada.)' : '');
+  } catch(e) {
+    out.textContent = e && e.code === 'not_granted' ? 'Sin permiso para consultar a Claude desde esta página.' : e && e.code === 'rate_limited' ? 'Demasiadas consultas seguidas. Espera un minuto y vuelve a intentarlo.' : 'No se pudo obtener el diagnóstico: ' + (e && e.message || e);
+    if(e && e.code === 'not_granted') $('#aiPanel').hidden = true;
+  } finally { btn.disabled = false; btn.textContent = 'Pedir de nuevo'; }
+}
+
+/* ───────────── Export ───────────── */
+function toMarkdown(){
+  if(!LAST) return '';
+  const { c, S } = LAST;
+  const L = [`# Auditoría Radar Martech & SEO`, ``, `- URL: ${c.url ? c.url.href : 'no indicada'}`, `- Puntuación: **${S.total}/100 (${grade(S.total)})**`, `- Fecha: ${new Date().toLocaleString('es')}`, ``, `## Puntuación por área`, ...S.cats.map(x => `- ${x.name}: ${x.score ?? '—'}`), ``, `## Martech (${c.mt.length})`];
+  CAT_ORDER.forEach(cat => { const l = c.mt.filter(t => t.c === cat); if(l.length) L.push(`- **${cat}:** ${l.map(t => t.n + (t.ids.length ? ` (${t.ids.join(', ')})` : '')).join(', ')}`); });
+  L.push('', `Stack: ${c.stack.join(', ') || '—'}`, '', '## Hoja de ruta');
+  S.results.filter(r => r.gain > .05).sort((a, b) => b.gain * b.imp / b.eff - a.gain * a.imp / a.eff).forEach((r, i) => L.push(`${i + 1}. **${r.label}** (+${r.gain.toFixed(1)} pts, impacto ${LV[r.imp]}, esfuerzo ${LV[r.eff]}): ${r.fix}`));
+  L.push('', '## Detalle');
+  S.cats.forEach(cat => { L.push(`### ${cat.name} — ${cat.score ?? '—'}`); S.results.filter(r => r.cat === cat.id).forEach(r => L.push(`- [${ST[r.s]}] ${r.label}: ${r.ev}`)); L.push(''); });
+  return L.join('\n');
+}
+$('#exportBtn').addEventListener('click', () => {
+  const md = toMarkdown(); const b = $('#exportBtn');
+  const fallback = () => { const t = document.createElement('textarea'); t.value = md; t.style.cssText = 'width:100%;min-height:200px'; $('#report').prepend(t); t.select(); setStatus('Selecciona y copia el informe del cuadro de texto que aparece arriba del informe.', 'ok'); };
+  try { navigator.clipboard.writeText(md).then(() => { b.textContent = 'Informe copiado'; setTimeout(() => b.textContent = 'Copiar informe (Markdown)', 2000); }, fallback); } catch(e) { fallback(); }
+});
+
+/* ───────────── Input handling ───────────── */
+function setStatus(msg, kind){ const s = $('#status'); s.hidden = !msg; s.className = 'note' + (kind ? ' ' + kind : ''); s.innerHTML = msg || ''; }
+$$('.tab').forEach(t => t.addEventListener('click', () => { $$('.tab').forEach(x => x.setAttribute('aria-selected', String(x === t))); $$('.pane').forEach(p => p.hidden = p.id !== t.dataset.p); try { localStorage.setItem('radar-tab', t.dataset.p); } catch(e){} }));
+
+function run(html, url, source, status){
+  if(!html || html.length < 50){ setStatus('El contenido es demasiado corto para ser una página HTML.', 'err'); return; }
+  const isDom = /^\s*<!--url:/.test(html);
+  const c = buildCtx(html, url, isDom ? 'dom' : source); c.status = status ?? null;
+  render(c, source === 'demo');
+  setStatus(source === 'demo' ? '' : `Análisis listo: ${c.mt.length} herramientas y ${CHECKS.length} puntos evaluados.`, source === 'demo' ? '' : 'ok');
+  if(source !== 'demo') $('#report').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function fetchVia(u){
+  const tries = [
+    ['directo', u],
+    ['allorigins', 'https://api.allorigins.win/get?url=' + encodeURIComponent(u), true],
+    ['codetabs', 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u)],
+    ['corsproxy', 'https://corsproxy.io/?url=' + encodeURIComponent(u)]
+  ];
+  for(const [name, p, json] of tries){
+    const ctl = new AbortController(); const tm = setTimeout(() => ctl.abort(), 15000);
+    try {
+      const r = await fetch(p, { signal: ctl.signal }); clearTimeout(tm);
+      if(!r.ok && !json) continue;
+      if(json){ const j = await r.json(); if(j.contents && j.contents.length > 200) return { html: j.contents, status: j.status && j.status.http_code, via: name }; continue; }
+      const t = await r.text(); if(t.length > 200) return { html: t, status: r.status, via: name };
+    } catch(e) { clearTimeout(tm); }
+  }
+  return null;
+}
+$('#p-url').addEventListener('submit', async e => {
+  e.preventDefault();
+  let u = $('#urlIn').value.trim(); if(!/^https?:\/\//i.test(u)) u = 'https://' + u;
+  try { new URL(u); } catch(_) { setStatus('Esa URL no es válida. Ejemplo: https://www.tusitio.com/pagina', 'err'); return; }
+  try { localStorage.setItem('radar-url', u); } catch(_){}
+  const b = $('#goUrl'); b.disabled = true; b.textContent = 'Descargando…'; setStatus('Descargando el HTML de la página…');
+  const r = await fetchVia(u);
+  b.disabled = false; b.textContent = 'Analizar URL';
+  if(r){ run(r.html, u, 'fetch', r.status); setStatus(`Análisis listo (descargado vía ${r.via}). Para ver también lo que inyecta GTM, usa el marcador.`, 'ok'); }
+  else setStatus(`No se pudo descargar la página desde aquí: este visor bloquea las conexiones a otras webs, o el sitio rechazó el proxy. Haz esto: <a href="${esc(u)}" target="_blank" rel="noopener">abre la página</a>, pulsa el marcador “Copiar DOM para Radar” (o Ctrl+U → Ctrl+A → Ctrl+C) y pégalo en la pestaña <b>Pegar código</b>.`, 'err');
+  if(!r){ $('#pasteUrl').value = u; }
+});
+$('#p-paste').addEventListener('submit', e => { e.preventDefault(); run($('#pasteIn').value, $('#pasteUrl').value.trim(), 'paste'); });
+$('#pasteIn').addEventListener('input', () => { const n = $('#pasteIn').value.length; $('#pasteSize').textContent = n ? `${Math.round(n / 1024)} KB pegados` : ''; const m = $('#pasteIn').value.match(/^\s*<!--url:(.*?)-->/); if(m && !$('#pasteUrl').value) $('#pasteUrl').value = m[1].trim(); });
+$('#p-file').addEventListener('submit', e => e.preventDefault());
+$('#fileIn').addEventListener('change', () => { const f = $('#fileIn').files[0]; if(!f) return; const rd = new FileReader(); rd.onload = () => run(String(rd.result), $('#fileUrl').value.trim(), 'file'); rd.readAsText(f); });
+$('#demoBtn').addEventListener('click', () => { run(DEMO, 'https://www.cafealtura.mx/tienda/cafe-de-especialidad-chiapas', 'demo'); setStatus('Cargado el ejemplo ficticio “Café Altura”. Pega tu URL o tu código para auditar una página real.'); });
+
+const BM = `javascript:(()=>{const h='<!--url:'+location.href+'-->\\n<!doctype html>\\n'+document.documentElement.outerHTML;const d=()=>alert('Radar: '+Math.round(h.length/1024)+' KB copiados. Pégalos en el auditor.');const f=()=>{const t=document.createElement('textarea');t.value=h;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();d()};navigator.clipboard?navigator.clipboard.writeText(h).then(d,f):f()})()`;
+$('#bmLink').setAttribute('href', BM); $('#bmCode').value = BM;
+$('#bmLink').addEventListener('click', e => { e.preventDefault(); setStatus('Arrastra el botón a la barra de marcadores; desde aquí no hace nada.'); });
+$('#bmCopy').addEventListener('click', () => { const i = $('#bmCode'); try { navigator.clipboard.writeText(BM).then(() => setStatus('Código del marcador copiado. Crea un marcador nuevo y pégalo como URL.', 'ok'), () => { i.select(); setStatus('Selecciona el texto del campo y cópialo.'); }); } catch(e) { i.select(); } });
+
+/* ───────────── Example page (fictional) ───────────── */
+const DEMO = [
+'<!doctype html><html lang="es"><head><meta charset="utf-8">',
+'<meta name="viewport" content="width=device-width, initial-scale=1">',
+'<title>Café de especialidad de Chiapas | Café Altura</title>',
+'<meta name="description" content="Café de especialidad de Chiapas tostado cada semana. Envío gratis desde $599.">',
+'<link rel="canonical" href="https://www.cafealtura.mx/tienda/cafe-de-especialidad-chiapas">',
+'<link rel="icon" href="/favicon.ico"><link rel="preconnect" href="https://fonts.googleapis.com">',
+'<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora&display=swap"><link rel="stylesheet" href="/css/theme.css"><link rel="stylesheet" href="/css/plugins.css"><link rel="stylesheet" href="/css/slider.css">',
+'<meta property="og:title" content="Café de especialidad de Chiapas"><meta property="og:description" content="Tostado cada semana."><meta property="og:image" content="/img/og-chiapas.jpg">',
+'<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("consent","default",{ad_storage:"denied",analytics_storage:"denied"});<\/script>',
+'<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i;f.parentNode.insertBefore(j,f)})(window,document,"script","dataLayer","GTM-K7Q2LMX");<\/script>',
+'<script async src="https://www.googletagmanager.com/gtag/js?id=G-8XK2M4P9QZ"><\/script><script>gtag("js",new Date());gtag("config","G-8XK2M4P9QZ");gtag("config","UA-11872345-1");<\/script>',
+'<script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" data-domain-script="0000-demo"><\/script>',
+'<script src="/js/jquery-3.6.0.min.js"><\/script><script src="/js/slider.min.js"><\/script>',
+'<script>!function(f,b,e,v,n,t,s){n=f.fbq=function(){};t=b.createElement(e);t.async=!0;t.src="https://connect.facebook.net/en_US/fbevents.js";s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script");fbq("init","1234567890123456");fbq("track","PageView");<\/script>',
+'<script>(function(h,o,t,j,a,r){h.hj=h.hj||function(){};h._hjSettings={hjid:3456789,hjsv:6};a=o.getElementsByTagName("head")[0];r=o.createElement("script");r.async=1;r.src="https://static.hotjar.com/c/hotjar-"+h._hjSettings.hjid+".js";a.appendChild(r)})(window,document);<\/script>',
+'<script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Café Altura Chiapas 340 g","offers":{"@type":"Offer","price":"289","priceCurrency":"MXN"}}<\/script>',
+'</head><body><header><a href="/"><img src="/img/logo.png" alt="Café Altura"></a><nav><a href="/tienda">Tienda</a><a href="/suscripcion">Suscripción</a><a href="/blog">Blog</a><a href="/nosotros">Nosotros</a><a href="/contacto">Contacto</a></nav></header>',
+'<div class="container"><h1>Café de especialidad de Chiapas</h1><img src="/img/hero-chiapas.jpg" class="hero">',
+'<p>Nuestro café de altura se cultiva entre 1,200 y 1,700 metros en la Sierra Madre de Chiapas, por cooperativas con las que trabajamos desde 2016. Tostamos cada martes en lotes pequeños para que recibas el grano con menos de diez días de tueste. Las notas en taza son chocolate amargo, mandarina y panela, con acidez brillante y cuerpo medio.</p>',
+'<h2>Cómo prepararlo</h2><p>Para método de filtro usa 15 gramos por cada 250 mililitros de agua a 92 grados. En prensa francesa, deja reposar cuatro minutos antes de presionar.</p>',
+'<h4>Molienda recomendada</h4><p>Media para filtro, gruesa para prensa y fina para espresso.</p>',
+'<h1>Productos relacionados</h1><img src="/img/oaxaca.jpg"><img src="/img/veracruz.jpg" alt="Café de Veracruz"><img src="/img/molino.jpg"><img src="/img/taza.jpg">',
+'<form><input type="email" placeholder="Tu correo"><button></button></form><a href="/blog/cafe-chiapas">Leer más</a></div>',
+'<footer><a href="/aviso-de-privacidad">Aviso de privacidad</a><a href="https://instagram.com/cafealtura" target="_blank">Instagram</a></footer>',
+'</body></html>'
+].join('\n');
+
+/* initial state: restore last tab and URL, show the example report */
+try { const t = localStorage.getItem('radar-tab'); if(t) { const b = $(`.tab[data-p="${t}"]`); if(b) b.click(); } const u = localStorage.getItem('radar-url'); if(u) $('#urlIn').value = u; } catch(e){}
+run(DEMO, 'https://www.cafealtura.mx/tienda/cafe-de-especialidad-chiapas', 'demo');
+</script>
+
+</body>
+</html>
