@@ -169,7 +169,7 @@ details.catsec[open] > summary{margin-bottom:12px}
     <div style="display:grid;gap:6px">
       <span class="eyebrow">Auditoría de código · martech · SEO · rendimiento · accesibilidad</span>
       <h1>Radar Martech &amp; SEO</h1>
-      <p>Lee el HTML de una página, inventaría cada herramienta de marketing que carga, califica más de 70 puntos de SEO y calidad técnica, y te dice qué le falta para jugar en la liga de las mejores páginas del mundo.</p>
+      <p>Lee el HTML de una página, inventaría cada herramienta de marketing que carga, califica 72 puntos de SEO y calidad técnica, y te dice qué le falta para jugar en la liga de las mejores páginas del mundo.</p>
     </div>
     <button class="btn" id="exportBtn" type="button">Copiar informe (Markdown)</button>
   </header>
@@ -187,7 +187,7 @@ details.catsec[open] > summary{margin-bottom:12px}
         <button class="btn primary" id="goUrl" type="submit">Analizar URL</button>
         <button class="btn" id="demoBtn" type="button">Cargar ejemplo</button>
       </div>
-      <p class="hint">Descarga el HTML a través de un proxy CORS público. Dentro del visor de claude.ai las descargas a otras webs están bloqueadas: ahí usa el marcador de la pestaña <b>Pegar código</b>, que además captura las etiquetas que inyecta Google Tag Manager.</p>
+      <p class="hint" id="urlHint">Descarga el HTML de la página y lo analiza. Si el sitio bloquea la descarga, usa el marcador de la pestaña <b>Pegar código</b>, que además captura las etiquetas que inyecta Google Tag Manager.</p>
     </form>
 
     <form id="p-paste" class="pane" hidden style="display:grid;gap:10px">
@@ -537,6 +537,7 @@ const CHECKS = [
   { id:'privacy', cat:'pri', label:'Aviso de privacidad', w:2, imp:2, eff:1, run:c => c.links.some(l => /privac|privacy|datos-personales/i.test(l.href + ' ' + l.name)) ? ok('Enlace encontrado.') : bad('No se encontró enlace al aviso de privacidad.', 'Enlaza el aviso de privacidad desde el pie de todas las páginas y desde cada formulario.') },
   { id:'legal', cat:'pri', label:'Términos y política de cookies', w:1, imp:1, eff:1, run:c => c.links.some(l => /t[eé]rminos|terms|condiciones|cookies|aviso-legal|aviso legal|legal/i.test(l.href + ' ' + l.name)) ? ok('Enlaces legales encontrados.') : warn('No se encontraron términos ni política de cookies.', 'Publica términos y condiciones y la política de cookies.') },
   { id:'mixed', cat:'pri', label:'Contenido mixto (HTTP en HTTPS)', w:2, imp:2, eff:1, run:c => { if(!c.url || c.url.protocol !== 'https:') return na('Requiere URL HTTPS.'); const n = $$('script[src^="http:"],link[href^="http:"][rel~="stylesheet"],img[src^="http:"],iframe[src^="http:"]', c.doc).length; return n ? bad(`${n} recursos cargados por HTTP.`, 'Cambia esos recursos a https:// o el navegador los bloqueará.') : ok('Todos los recursos usan HTTPS.'); } },
+  { id:'secheaders', cat:'pri', label:'Cabeceras de seguridad HTTP', w:2, imp:2, eff:1, run:c => { if(!c.headers) return na('Solo se ven al descargar la URL desde el servidor propio (/radar).'); const want = { 'strict-transport-security':'HSTS', 'content-security-policy':'CSP', 'x-content-type-options':'X-Content-Type-Options', 'referrer-policy':'Referrer-Policy' }; const miss = Object.keys(want).filter(k => !c.headers[k]).map(k => want[k]); return !miss.length ? ok('HSTS, CSP, X-Content-Type-Options y Referrer-Policy presentes.') : miss.length <= 2 ? warn('Faltan: ' + miss.join(', ') + '.', 'Configúralas en el servidor o CDN: protegen contra secuestro de sesión, inyección de scripts y fugas de datos.') : bad('Faltan: ' + miss.join(', ') + '.', 'Añade al menos HSTS, CSP, X-Content-Type-Options: nosniff y Referrer-Policy: strict-origin-when-cross-origin.'); } },
   { id:'noopener', cat:'pri', label:'Enlaces externos seguros', w:1, imp:1, eff:1, run:c => { const n = $$('a[target="_blank"]', c.doc).filter(a => !/noopener|noreferrer/.test(a.getAttribute('rel')||'')).length; return n ? warn(`${n} enlaces target="_blank" sin rel="noopener".`, 'Añade rel="noopener" (y "sponsored" o "nofollow" a los enlaces pagados).') : ok('Correcto.'); } },
 
   // Martech
@@ -719,10 +720,10 @@ $('#exportBtn').addEventListener('click', () => {
 function setStatus(msg, kind){ const s = $('#status'); s.hidden = !msg; s.className = 'note' + (kind ? ' ' + kind : ''); s.innerHTML = msg || ''; }
 $$('.tab').forEach(t => t.addEventListener('click', () => { $$('.tab').forEach(x => x.setAttribute('aria-selected', String(x === t))); $$('.pane').forEach(p => p.hidden = p.id !== t.dataset.p); try { localStorage.setItem('radar-tab', t.dataset.p); } catch(e){} }));
 
-function run(html, url, source, status){
+function run(html, url, source, status, headers){
   if(!html || html.length < 50){ setStatus('El contenido es demasiado corto para ser una página HTML.', 'err'); return; }
   const isDom = /^\s*<!--url:/.test(html);
-  const c = buildCtx(html, url, isDom ? 'dom' : source); c.status = status ?? null;
+  const c = buildCtx(html, url, isDom ? 'dom' : source); c.status = status ?? null; c.headers = headers || null;
   render(c, source === 'demo');
   setStatus(source === 'demo' ? '' : `Análisis listo: ${c.mt.length} herramientas y ${CHECKS.length} puntos evaluados.`, source === 'demo' ? '' : 'ok');
   if(source !== 'demo') $('#report').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -730,6 +731,7 @@ function run(html, url, source, status){
 
 async function fetchVia(u){
   const tries = [
+    ['servidor propio', '/api/radar-html?url=' + encodeURIComponent(u), 'worker'],
     ['directo', u],
     ['allorigins', 'https://api.allorigins.win/get?url=' + encodeURIComponent(u), true],
     ['codetabs', 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u)],
@@ -739,6 +741,7 @@ async function fetchVia(u){
     const ctl = new AbortController(); const tm = setTimeout(() => ctl.abort(), 15000);
     try {
       const r = await fetch(p, { signal: ctl.signal }); clearTimeout(tm);
+      if(json === 'worker'){ if(!r.ok) continue; const j = await r.json(); if(j.html && j.html.length > 200) return { html: j.html, status: j.status, headers: j.headers, finalUrl: j.finalUrl, via: name }; continue; }
       if(!r.ok && !json) continue;
       if(json){ const j = await r.json(); if(j.contents && j.contents.length > 200) return { html: j.contents, status: j.status && j.status.http_code, via: name }; continue; }
       const t = await r.text(); if(t.length > 200) return { html: t, status: r.status, via: name };
@@ -751,13 +754,24 @@ $('#p-url').addEventListener('submit', async e => {
   let u = $('#urlIn').value.trim(); if(!/^https?:\/\//i.test(u)) u = 'https://' + u;
   try { new URL(u); } catch(_) { setStatus('Esa URL no es válida. Ejemplo: https://www.tusitio.com/pagina', 'err'); return; }
   try { localStorage.setItem('radar-url', u); } catch(_){}
+  if(inViewer()){ guide(u); return; }
   const b = $('#goUrl'); b.disabled = true; b.textContent = 'Descargando…'; setStatus('Descargando el HTML de la página…');
   const r = await fetchVia(u);
   b.disabled = false; b.textContent = 'Analizar URL';
-  if(r){ run(r.html, u, 'fetch', r.status); setStatus(`Análisis listo (descargado vía ${r.via}). Para ver también lo que inyecta GTM, usa el marcador.`, 'ok'); }
-  else setStatus(`No se pudo descargar la página desde aquí: este visor bloquea las conexiones a otras webs, o el sitio rechazó el proxy. Haz esto: <a href="${esc(u)}" target="_blank" rel="noopener">abre la página</a>, pulsa el marcador “Copiar DOM para Radar” (o Ctrl+U → Ctrl+A → Ctrl+C) y pégalo en la pestaña <b>Pegar código</b>.`, 'err');
-  if(!r){ $('#pasteUrl').value = u; }
+  if(r){ run(r.html, r.finalUrl || u, 'fetch', r.status, r.headers); setStatus(`Análisis listo (descargado vía ${r.via}). Para ver también lo que inyecta GTM, usa el marcador.`, 'ok'); }
+  if(!r) guide(u, true);
 });
+const inViewer = () => !!(window.claude && window.claude.use) || /claude\.ai|claudeusercontent/.test(location.hostname + ' ' + document.referrer);
+function guide(u, failed){
+  $('#pasteUrl').value = u; $('#tab-paste').click();
+  setStatus(`${failed ? 'Ese sitio no dejó descargar su HTML.' : 'Aquí dentro de claude.ai no se pueden descargar otras webs, así que el análisis se hace con el marcador.'}<ol class="steps" style="color:inherit;margin-top:6px">
+    <li><a href="${esc(u)}" target="_blank" rel="noopener">Abre ${esc(clip(u, 60))}</a> en otra pestaña y espera a que cargue.</li>
+    <li>Pulsa el marcador <b>Copiar DOM para Radar</b> (instálalo abajo la primera vez). Sin marcador: Ctrl+U, Ctrl+A, Ctrl+C.</li>
+    <li>Vuelve aquí, pega en el cuadro y pulsa <b>Analizar código</b>.</li></ol>`, failed ? 'err' : '');
+  $('#pasteIn').focus();
+}
+function viewerHint(){ if(!inViewer()) return; $('#urlHint').innerHTML = 'Dentro de claude.ai no se pueden descargar otras webs: al pulsar <b>Preparar análisis</b> te llevo al marcador con la URL ya puesta. Fuera de claude.ai (o en tu Worker en <code>/radar</code>) la URL se descarga directamente.'; $('#goUrl').textContent = 'Preparar análisis'; }
+viewerHint(); setTimeout(viewerHint, 800);
 $('#p-paste').addEventListener('submit', e => { e.preventDefault(); run($('#pasteIn').value, $('#pasteUrl').value.trim(), 'paste'); });
 $('#pasteIn').addEventListener('input', () => { const n = $('#pasteIn').value.length; $('#pasteSize').textContent = n ? `${Math.round(n / 1024)} KB pegados` : ''; const m = $('#pasteIn').value.match(/^\s*<!--url:(.*?)-->/); if(m && !$('#pasteUrl').value) $('#pasteUrl').value = m[1].trim(); });
 $('#p-file').addEventListener('submit', e => e.preventDefault());

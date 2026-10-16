@@ -1,3 +1,4 @@
+import RADAR_HTML from "../tools/radar-martech-seo.html";
 // worker.js - Todo integrado en Cloudflare Workers
 
 const YOUTUBE_API_KEY = 'AIzaSyDmuNb4bZSv2qQyS5zpaOefARxbA-ZyUNg';
@@ -424,6 +425,46 @@ function extraerPalabras(texto) {
     return palabrasValidas;
 }
 
+// RADAR: descarga server-side del HTML a auditar
+const RADAR_MAX_BYTES = 5 * 1024 * 1024;
+const RADAR_HEADERS = ['strict-transport-security', 'content-security-policy', 'x-content-type-options', 'referrer-policy', 'x-frame-options', 'permissions-policy', 'server', 'cache-control', 'content-type', 'x-powered-by'];
+
+function radarJson(body, status = 200) {
+    return new Response(JSON.stringify(body), {
+        status,
+        headers: { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' }
+    });
+}
+
+async function radarFetch(target) {
+    let u;
+    try { u = new URL(target); } catch (e) { return radarJson({ error: 'URL inválida' }, 400); }
+    if (!/^https?:$/.test(u.protocol)) return radarJson({ error: 'Solo http o https' }, 400);
+    if (/^(localhost|127\.|10\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.|0\.|\[)/i.test(u.hostname) || !u.hostname.includes('.')) {
+        return radarJson({ error: 'Host no permitido' }, 400);
+    }
+    try {
+        const res = await fetch(u.href, {
+            redirect: 'follow',
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (compatible; RadarMartechSEO/1.0)',
+                'Accept': 'text/html,application/xhtml+xml',
+                'Accept-Language': 'es-MX,es;q=0.9,en;q=0.8'
+            },
+            signal: AbortSignal.timeout(15000)
+        });
+        const type = res.headers.get('content-type') || '';
+        if (!/html|xml/i.test(type)) return radarJson({ error: `La URL no devuelve HTML (${type || 'sin tipo'})`, status: res.status }, 422);
+        const buf = await res.arrayBuffer();
+        if (buf.byteLength > RADAR_MAX_BYTES) return radarJson({ error: 'Página demasiado grande (más de 5 MB)' }, 413);
+        const headers = {};
+        RADAR_HEADERS.forEach(h => { const v = res.headers.get(h); if (v) headers[h] = v; });
+        return radarJson({ html: new TextDecoder().decode(buf), status: res.status, finalUrl: res.url, headers });
+    } catch (e) {
+        return radarJson({ error: 'No se pudo descargar: ' + e.message }, 502);
+    }
+}
+
 // HANDLER PRINCIPAL
 export default {
     async fetch(request, env) {
@@ -438,6 +479,18 @@ export default {
                     'Cache-Control': 'max-age=3600'
                 }
             });
+        }
+
+        // Radar Martech & SEO: herramienta de auditoría
+        if (path === '/radar' && request.method === 'GET') {
+            return new Response(RADAR_HTML, {
+                headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'max-age=300' }
+            });
+        }
+
+        // API: descarga el HTML de una página para el Radar (evita CORS)
+        if (path === '/api/radar-html' && request.method === 'GET') {
+            return radarFetch(url.searchParams.get('url'));
         }
 
         // API: Analizar sentimiento

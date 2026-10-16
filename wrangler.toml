@@ -8,3 +8,8 @@ name = "sentiment-youtube-prod"
 [build]
 command = "npm install"
 cwd = "."
+# Permite importar la herramienta Radar (tools/*.html) como texto
+[[rules]]
+type = "Text"
+globs = ["**/*.html"]
+fallthrough = true
